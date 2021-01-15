@@ -1,0 +1,24 @@
+{
+  "name": "PDBot",
+  "version": "1.0.0",
+  "description": "PDBot is the official Discord bot for the [Programmer's Den](https://discord.gg/EuT8nrD) server. It provides many utilities for the management, moderation, and members of this server.",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^12.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Programmer-s-Organization/PDBot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Programmer-s-Organization/PDBot/issues"
+  },
+  "homepage": "https://github.com/Programmer-s-Organization/PDBot#readme"
+}
