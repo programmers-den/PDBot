@@ -1,3 +1,7 @@
+# Project Specific Files
+config.json
+data/*
+
 # Logs
 logs
 *.log
@@ -36,6 +40,9 @@ bower_components
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
+
+# Node Lock File
+package-lock.json
 
 # Dependency directories
 node_modules/

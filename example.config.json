@@ -1,0 +1,20 @@
+{
+	"token": "DISCORD_API_TOKEN",
+	"prefix": "./",
+	"guild": "MAIN_GUILD_ID",
+	"roles": {
+		"root": "ROOT_ROLE_ID",
+		"mod": "MOD_ROLE_ID",
+		"admin": "ADMIN_ROLE_ID"
+	},
+	"channels": {
+		"polls": "POLLS_CHANNEL_ID",
+		"votes": "STAFF_VOTE_CHANNEL_ID",
+		"tips": "TIP_CHANNEL_ID",
+		"starboard": "STARBOARD_CHANNEL_ID",
+		"announcements": "ANNOUNCEMENT_CHANNEL_ID",
+		"suggestions": "SUGGESTION_CHANNEL_ID",
+		"counting": "COUNTING_CHANNEL_ID"
+	},
+	"star_count": 0
+}
