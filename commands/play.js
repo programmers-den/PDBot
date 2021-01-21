@@ -28,14 +28,18 @@ exports.run = async({client, message, args, args1=undefined}) => {
     }
 
     let res;
-    let args = args.string();
-    if (args.match(/(http(s)?:\/\/.)?(www\.)/)) {
+    function isValidURL(string) {
+        var result = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+        return (result !== null)
+    }
+
+    if (isValidURL(args[0])) {
         res = await player.search(args.string(), message.author.id)
-    } else if (args == 'yt' || args == 'youtube') {
-        const eres = new SearchQuery(args1, 'youtube')
+    } else if (args[0] == 'yt' || args[0] == 'youtube') {
+        const eres = new SearchQuery(args[1], 'youtube')
         res = await player.search(eres, message.author.id)
-    } else if (args  == 'sc' || args == 'soundcloud') {
-        const eres = new SearchQuery(args1, 'soundcloud')
+    } else if (args[0]  == 'sc' || args[0] == 'soundcloud') {
+        const eres = new SearchQuery(args[1], 'soundcloud')
         res = await player.search(eres, message.author.id)
     }
 
