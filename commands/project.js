@@ -176,7 +176,10 @@ exports.run = async ({message, args, texts, prefix}) => {
 		} else return await message.channel.send(embed('RED', 'Leave Error', 'You are not a member or developer of that project.'));
 		const category = message.guild.channels.cache.get(content.category);
 		await category.updateOverwrite(message.author.id, {
-			VIEW_CHANNEL: null
+			VIEW_CHANNEL: null,
+			USE_VAD: null,
+			MANAGE_WEBHOOKS: null,
+			MANAGE_MESSAGES: null
 		}, 'Member left the project.');
 		await message.channel.send(embed('GREEN', 'Left Project', `You have successfully left \`${project}\` and are no longer a member of the project.`));
 	} else if (args.length === 3 && args[0].toLowerCase() === 'invite') {
@@ -219,6 +222,12 @@ exports.run = async ({message, args, texts, prefix}) => {
 		if (content === undefined) return await message.channel.send(embed('RED', 'Project Error', 'You do not have a project with that name.'));
 		if (projectStatus(message.author.id, content) !== 'owner') return await message.channel.send(embed('RED', 'Permission Denied', 'You do not have permission to promote members in that project.'));
 		if (!content.members.includes(member.user.id)) return await message.channel.send(embed('RED', 'Project Error', `The user **${member.user.tag}** is not a member in the project \`${project}\`.`));
+		const category = message.guild.channels.cache.get(content.category);
+		await category.updateOverwrite(member.user.id, {
+			USE_VAD: true,
+			MANAGE_WEBHOOKS: true,
+			MANAGE_MESSAGES: true
+		}, 'Member promoted in the project.');
 		content.members.splice(content.members.indexOf(member.user.id), 1);
 		content.developers.push(member.user.id);
 		await message.channel.send(embed('GREEN', 'User Promoted', `You have successfully promoted **${member.user.tag}** in the project \`${project}\`.`));
@@ -233,6 +242,12 @@ exports.run = async ({message, args, texts, prefix}) => {
 		if (content === undefined) return await message.channel.send(embed('RED', 'Project Error', 'You do not have a project with that name.'));
 		if (projectStatus(message.author.id, content) !== 'owner') return await message.channel.send(embed('RED', 'Permission Denied', 'You do not have permission to demote members in that project.'));
 		if (!content.developers.includes(member.user.id)) return await message.channel.send(embed('RED', 'Project Error', `The user **${member.user.tag}** is not a developer in the project \`${project}\`.`));
+		const category = message.guild.channels.cache.get(content.category);
+		await category.updateOverwrite(member.user.id, {
+			USE_VAD: null,
+			MANAGE_WEBHOOKS: null,
+			MANAGE_MESSAGES: null
+		}, 'Member promoted in the project.');
 		content.developers.splice(content.developers.indexOf(member.user.id), 1);
 		content.members.push(member.user.id);
 		await message.channel.send(embed('GREEN', 'User Demoted', `You have successfully demoted **${member.user.tag}** in the project \`${project}\`.`));
@@ -258,7 +273,10 @@ exports.run = async ({message, args, texts, prefix}) => {
 		}
 		const category = message.guild.channels.cache.get(content.category);
 		await category.updateOverwrite(member.user.id, {
-			VIEW_CHANNEL: null
+			VIEW_CHANNEL: null,
+			USE_VAD: null,
+			MANAGE_WEBHOOKS: null,
+			MANAGE_MESSAGES: null
 		}, 'Removed member from project.');
 		await message.channel.send(embed('GREEN', 'User Kicked', `You have successfully kicked **${member.user.tag}** from the project \`${project}\`.`));
 	} else if (args.length === 4 && args[0].toLowerCase() === 'move') {

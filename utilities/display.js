@@ -1,7 +1,7 @@
 const {client} = require('..');
 const config = require('../config.json');
 
-exports.embed = (color, name, text, fields = []) => {
+exports.embed = (color, name, text, fields = [], thumbnail) => {
 	return {
 		embed: {
 			author: {
@@ -11,12 +11,35 @@ exports.embed = (color, name, text, fields = []) => {
 			description: text,
 			color, fields,
 			footer: {
-				text: 'This was sent on'
+				text: 'This was sent'
 			},
-			timestamp: Date.now()
+			timestamp: Date.now(),
+			thumbnail: {
+				url: thumbnail
+			}
 		}
 	}
 };
+
+exports.defaultPollOptions = [
+	{
+		emoji: `<:yes:${config.emojis.yes}>`,
+		name: 'Yes',
+		count: 0
+	},
+	{
+		emoji: `<:no:${config.emojis.no}>`,
+		name: 'No',
+		count: 0
+	}
+];
+
+exports.pollEmbed = (title, options = exports.defaultPollOptions, date = Date.now()) => {
+	const result = exports.embed('PURPLE', title, options.map(option => `${option.emoji} • **${option.count} votes** • ${option.name}`).join('\n'));
+	result.content = `<@&${config.roles.polls}>`;
+	result.embed.timestamp = date;
+	return result;
+}
 
 exports.format = (text, lang, size) => {
 	size -= 8 + lang.length;

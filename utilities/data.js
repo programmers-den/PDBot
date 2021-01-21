@@ -1,5 +1,9 @@
 const {files} = require('./storage');
 
+exports.registerPoll = (id, poll) => files.polls[id] = poll;
+
+exports.fetchPoll = id => files.polls[id];
+
 exports.userData = id => {
 	if (files.users[id] === undefined) files.users[id] = {};
 	const user = files.users[id];
