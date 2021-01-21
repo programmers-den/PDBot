@@ -16,5 +16,10 @@
 		"suggestions": "SUGGESTION_CHANNEL_ID",
 		"counting": "COUNTING_CHANNEL_ID"
 	},
-	"star_count": 0
+	"star_count": 0,
+	"lavalink": {
+		"host": "lavalink-py.herokuapp.com",
+		"port": "80",
+		"pass": "LavalinkJS1"
+	}
 }
