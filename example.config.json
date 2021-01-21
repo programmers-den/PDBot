@@ -5,7 +5,13 @@
 	"roles": {
 		"root": "ROOT_ROLE_ID",
 		"mod": "MOD_ROLE_ID",
-		"admin": "ADMIN_ROLE_ID"
+		"admin": "ADMIN_ROLE_ID",
+		"announcements": "ANNOUNCEMENT_ROLE_ID",
+		"polls": "POLLS_ROLE_ID"
+	},
+	"emojis": {
+		"yes": "YES_EMOJI_ID",
+		"no": "NO_EMOJI_ID"
 	},
 	"channels": {
 		"polls": "POLLS_CHANNEL_ID",

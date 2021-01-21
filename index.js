@@ -11,7 +11,7 @@ const client = exports.client = new Client({
 const config = require('./config.json');
 const {isRoot, isAdmin, isMod} = require('./utilities/auth');
 const {embed, format} = require('./utilities/display');
-const {userData, ownedProjects} = require('./utilities/data');
+const {userData, ownedProjects, allProjects} = require('./utilities/data');
 const commands = require('./utilities/commands');
 
 // Execute Scripts
@@ -19,6 +19,86 @@ require('./utilities/cleanup');
 
 // Active Executors
 const active = [];
+
+// Suggestion Channel Message
+client.on('message', async message => {
+	if (message.channel?.id !== config.channels.suggestions || message.author.bot) return;
+	await message.delete();
+	const content = embed('PURPLE', `Suggestion: ${message.author.tag}`, message.content).embed;
+	content.author.icon_url = message.author.displayAvatarURL({
+		dynamic: true
+	});
+	const replacement = await message.channel.send({embed: content});
+	await replacement.react(config.emojis.yes);
+	await replacement.react(config.emojis.no);
+});
+
+// Counter Channel Message
+client.on('message', async message => {
+	if (message.channel?.id !== config.channels.counting) return;
+	const messages = await message.channel.messages.fetch({
+		limit: 1,
+		before: message.id
+	});
+	const previous = +messages.array().map(message => message.content)[0];
+	if (isNaN(previous) || previous <= 0 || Math.floor(previous) !== previous || previous === Infinity || previous === -Infinity) return;
+	const next = (previous + 1) + '';
+	if (message.content != next) await message.delete().catch(() => {});
+});
+
+// Counter Channel Edit
+client.on('messageUpdate', async (_, message) => {
+	if (message.channel?.id !== config.channels.counting) return;
+	const messages = await message.channel.messages.fetch({
+		limit: 1,
+		before: message.id
+	});
+	const previous = +messages.array().map(message => message.content)[0];
+	if (isNaN(previous) || previous <= 0 || Math.floor(previous) !== previous || previous === Infinity || previous === -Infinity) return;
+	const next = (previous + 1) + '';
+	if (message.content !== next) await message.delete().catch(() => {});
+});
+
+// Project Member Remover
+client.on('guildMemberRemove', async member => {
+	const projects = allProjects();
+	for (const [name, project] of Object.entries(projects)) {
+		if (project.owner === member.user.id) {
+			const owned = ownedProjects(project.owner);
+			delete owned[name];
+		} else if (project.members.includes(member.user.id)) {
+			project.members.splice(project.members.indexOf(member.user.id), 1);
+		} else if (project.developers.includes(member.user.id)) {
+			project.developers.splice(project.developers.indexOf(member.user.id), 1);
+		}
+	}
+});
+
+// Project Channel Adder
+client.on('channelCreate', async channel => {
+	if (channel.parentID === null || !['text', 'voice'].includes(channel.type)) return;
+	const projects = allProjects();
+	for (const project of Object.values(projects)) {
+		if (channel.parentID === project.category) {
+			project.channels.push(channel.id);
+		}
+	}
+});
+
+// Project Channel Remover
+client.on('channelDelete', async channel => {
+	if (channel.parentID === null || !['text', 'voice', 'category'].includes(channel.type)) return;
+	const projects = allProjects();
+	for (const [name, project] of Object.entries(projects)) {
+		console.log(project, channel.id, channel.type);
+		if (project.category === channel.id) {
+			const owned = ownedProjects(project.owner);
+			delete owned[name];
+		} else if (project.channels.includes(channel.id)) {
+			project.channels.splice(project.channels.indexOf(channel.id), 1);
+		}
+	}
+});
 
 // Project Invitation Handler
 client.on('messageReactionAdd', async (reaction, user) => {
