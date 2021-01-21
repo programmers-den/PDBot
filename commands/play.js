@@ -12,9 +12,9 @@ exports.admin = false;
 exports.mod = false;
 
 exports.run = async({message, args}) => {
-    let player = client.music.player;   
-    if (!player) {
-        await player.create({
+    let player;  
+    if (!client.music.player) {
+        player = await client.music.create({
             guild: message.guild.id,
             voiceChannel: message.member.voice.channel.id,
             textChannel: message.channel.id,
