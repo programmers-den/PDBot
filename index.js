@@ -67,6 +67,8 @@ client.Music = new Manager({
 			}
 		}, 600000)
 	});
+// Music event
+client.on('raw', (d) => {client.Music.updateVoiceState(d)})
 
 // Suggestion Channel Message
 client.on('message', async message => {
@@ -228,7 +230,7 @@ client.on('message', async message => {
 	}
 });
 
-// Ready Event
+// Ready Event + Manager Init
 client.once('ready', async () => {
 	await client.user.setPresence({
 		activity: {
@@ -238,6 +240,7 @@ client.once('ready', async () => {
 		status: 'online'
 	});
 	console.log(`${client.user.tag} is now online and ready.`);
+	client.Music.init(client.user.id)
 });
 
 // Client Login
