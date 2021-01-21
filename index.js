@@ -10,7 +10,7 @@ const client = exports.client = new Client({
 // Dependencies
 const config = require('./config.json');
 const {isRoot, isAdmin, isMod} = require('./utilities/auth');
-const {embed, format} = require('./utilities/display');
+const {embed, format, display} = require('./utilities/display');
 const {userData, ownedProjects, allProjects} = require('./utilities/data');
 const commands = require('./utilities/commands');
 
@@ -19,6 +19,58 @@ require('./utilities/cleanup');
 
 // Active Executors
 const active = [];
+
+// Music Node Init
+const { Manager } = require("erela.js");
+client.music = new Manager({
+	nodes: [{
+		host: config.lavalink.host,
+		port: parseInt(config.lavalink.port),
+		password: config.lavalink.pass,
+		identifier: 'Cheeki',
+	}],
+	send(id, payload) {
+		const guild = client.guilds.cache.get(id)
+		if (guild) guild.shard.send(payload)
+	},
+})
+	.on('nodeConnect', node => console.log(`Connected to NODE: ${node.options.identifier}`))
+	.on('nodeError', (node, err) => console.log(`Falied to connect to ${node.options.identifier} with error:\n${err.message}`))
+	.on('trackStart', (player, track) => {
+		let embed = embed('BLACK', 'Now Playing...', undefined, [
+			{
+				name: undefined,
+				value: [
+				display({
+					name: `Title`,
+					usage: `[${track.title}](${track.uri})`
+				}),
+				display({
+					name: `Requester`,
+					usage: `${track.requester}`
+				}),
+				]
+			}
+		], track.displayThumbnail('maxresdefault'))
+		client.channels.cache
+			.get(player.textChannel)
+			.send(embed);
+	})
+	.on(`queueEnd`, (player) => {
+		client.LavaQueueTimeout = setTimeout(() => {
+			if (player.queue.length != 0 || player.queue.length == 0 && player.queue.current) {return;}
+			else {
+				embed = embed('BLACK', undefined, "Looks like 10 minutes has passed and I'm not playing any music. Disconnecting to save bandwidth.")
+				client.channels.cache
+					.get(player.textChannel)
+					.send(embed);
+			}
+		}, 600000)
+	});
+// Music Event For Discord to communicate to lavalink
+client.on('raw', (d) => {
+	client.Music.updateVoiceState(d) // Sends the required info for vc, tracks id and such.
+})
 
 // Suggestion Channel Message
 client.on('message', async message => {
@@ -180,7 +232,7 @@ client.on('message', async message => {
 	}
 });
 
-// Ready Event
+// Ready Event + Manager Init
 client.once('ready', async () => {
 	await client.user.setPresence({
 		activity: {
@@ -190,6 +242,7 @@ client.once('ready', async () => {
 		status: 'online'
 	});
 	console.log(`${client.user.tag} is now online and ready.`);
+	client.Music.init(client.user.id)
 });
 
 // Client Login
