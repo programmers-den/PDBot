@@ -22,7 +22,7 @@ const active = [];
 
 // Music Node Init
 const { Manager } = require("erela.js");
-client.Music = new Manager({
+client.music = new Manager({
 	nodes: [{
 		host: config.lavalink.host,
 		port: parseInt(config.lavalink.port),
@@ -67,8 +67,10 @@ client.Music = new Manager({
 			}
 		}, 600000)
 	});
-// Music event
-client.on('raw', (d) => {client.Music.updateVoiceState(d)})
+// Music Event For Discord to communicate to lavalink
+client.on('raw', (d) => {
+	client.Music.updateVoiceState(d) // Sends the required info for vc, tracks id and such.
+})
 
 // Suggestion Channel Message
 client.on('message', async message => {

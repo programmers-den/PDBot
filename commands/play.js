@@ -1,5 +1,6 @@
 const { embed, display } = require("../utilities/display.js");
 const { SearchQuery } = require('erela.js');
+const { client } = require('..')
 
 exports.name = 'play';
 exports.type = 'Music';
@@ -10,8 +11,8 @@ exports.root = false;
 exports.admin = false;
 exports.mod = false;
 
-exports.run = async({client, message, args, args1=undefined}) => {
-    let player = client.Music.player
+exports.run = async({message, args}) => {
+    let player = client.music.player;   
     if (!player) {
         await player.create({
             guild: message.guild.id,
