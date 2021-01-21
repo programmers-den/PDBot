@@ -51,7 +51,7 @@ client.Music = new Manager({
 				}),
 				]
 			}
-		])
+		], track.displayThumbnail('maxresdefault'))
 		client.channels.cache
 			.get(player.textChannel)
 			.send(embed);

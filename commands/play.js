@@ -61,7 +61,7 @@ exports.run = async({client, message, args, args1=undefined}) => {
                         }),
                     ],
                 },
-            ])
+            ], res.tracks[0].displayThumbnail('maxresdefault'))
             await message.channel.send(embed)
             // Prevents current playing track gets skipped by queued track
             if (!player.playing && !player.paused && !player.queue.size) await player.play();
@@ -86,7 +86,7 @@ exports.run = async({client, message, args, args1=undefined}) => {
                         })
                     ]
                 }
-            ])
+            ], res.playlist.selectedTrack.displayThumbnail('maxresdefault'))
             message.channel.send(embed)
             if (!player.playing && !player.paused && !player.queue.size) await player.play();
             break;
