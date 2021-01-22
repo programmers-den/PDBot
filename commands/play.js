@@ -3,8 +3,8 @@ const { client } = require('..')
 
 exports.name = 'play';
 exports.type = 'Music';
-exports.info = 'Plays Music [Either with search term or link]'
-exports.usage = '<yt/youtube/sc/soundcloud/link> <search term/undefined>'
+exports.info = 'Plays Music [Either with search term or link]';
+exports.usage = '<yt/youtube/sc/soundcloud/link> <search term/undefined>';
 exports.alias = ['p'];
 exports.root = false;
 exports.admin = false;
@@ -90,7 +90,7 @@ exports.run = async({message, args}) => {
                 }
             ], res.playlist.selectedTrack.displayThumbnail('maxresdefault'))
             message.channel.send(embed)
-            if (!player.playing && !player.paused && !player.queue.size) await player.play();
+            if (!player.playing && !player.paused && !player.queue.totalSize === res.tracks.length) await player.play();
             break;
         case 'NO_MATCHES':
             message.reply(`No matches found for ${res.query}`)
