@@ -22,7 +22,7 @@ lavalink:
 metrics:
  prometheus:
   enabled: false
-  endpointL /metrics
+  endpoint: /metrics
 
 sentry:
  dsn: ''
