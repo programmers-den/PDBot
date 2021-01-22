@@ -1,10 +1,10 @@
 server:
- port:
- address:
+ port: 7000
+ address: 0.0.0.0
 
 lavalink:
  server:
-  password:
+  password: "LavalinkJS1"
   sources:
    youtube: true
    bandcamp: true
