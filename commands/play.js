@@ -1,5 +1,4 @@
 const { embed, display } = require("../utilities/display.js");
-const { SearchQuery } = require('erela.js');
 const { client } = require('..')
 
 exports.name = 'play';
