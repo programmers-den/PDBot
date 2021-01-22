@@ -37,11 +37,9 @@ exports.run = async({message, args}) => {
     if (isValidURL(args[0])) {
         res = await player.search(args[0], message.author.id)
     } else if (args[0] == 'yt' || args[0] == 'youtube') {
-        const eres = new SearchQuery(args[1].string(), 'youtube')
-        res = await player.search(eres, message.author.id)
+        res = await player.search({query: args[1].join(' '), source: 'youtube'}, message.author.id)
     } else if (args[0]  == 'sc' || args[0] == 'soundcloud') {
-        const eres = new SearchQuery(args[1].string(), 'soundcloud')
-        res = await player.search(eres, message.author.id)
+        res = await player.search({query: args[1].join(' '), source: 'soundcloud'}, message.author.id)
     }
 
     switch(res.loadType) {
