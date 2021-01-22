@@ -1,0 +1,37 @@
+server:
+ port:
+ address:
+
+lavalink:
+ server:
+  password:
+  sources:
+   youtube: true
+   bandcamp: true
+   soundcloud: true
+   twitch: true
+   vimeo: true
+   http: true
+   local: false
+  bufferDurationMs: 400
+  youtubePlaylistLoadLimit: 10
+  youtubeSearchEnabled: true
+  soundcloudSearchEnabled: true
+  gc-warnings: true
+
+metrics:
+ prometheus:
+  enabled: false
+  endpointL /metrics
+
+sentry:
+ dsn: ''
+
+logging:
+ file:
+  max-history: 2
+  max-size: 2MB
+ path: ./Logs/
+ level:
+  root: INFO
+  lavalink: INFO
