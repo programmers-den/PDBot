@@ -242,7 +242,7 @@ client.once('ready', async () => {
 		status: 'online'
 	});
 	console.log(`${client.user.tag} is now online and ready.`);
-	client.Music.init(client.user.id)
+	client.music.init(client.user.id)
 });
 
 // Client Login
