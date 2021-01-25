@@ -24,10 +24,10 @@ const active = [];
 const { Manager } = require("erela.js");
 client.music = new Manager({
 	nodes: [{
-		host: config.lavalink.host,
-		port: parseInt(config.lavalink.port),
-		password: config.lavalink.pass,
-		identifier: 'Cheeki',
+		host: config.lavalink.host, // Host of the node
+		port: config.lavalink.port, // Port of the node (Must be integer)
+		password: config.lavalink.pass, // Password
+		identifier: 'Cheeki', // Name of the connected node (can remove this if you want the host name instead)
 	}],
 	send(id, payload) {
 		const guild = client.guilds.cache.get(id)
@@ -37,7 +37,7 @@ client.music = new Manager({
 	.on('nodeConnect', node => console.log(`Connected to NODE: ${node.options.identifier}`))
 	.on('nodeError', (node, err) => console.log(`Falied to connect to ${node.options.identifier} with error:\n${err.message}`))
 	.on('trackStart', (player, track) => {
-		let embed = embed('BLACK', 'Now Playing...', undefined, [
+		const embed1 = embed('BLACK', 'Now Playing...', undefined, [
 			{
 				name: undefined,
 				value: [
@@ -54,23 +54,22 @@ client.music = new Manager({
 		], track.displayThumbnail('maxresdefault'))
 		client.channels.cache
 			.get(player.textChannel)
-			.send(embed);
+			.send(embed1);
 	})
 	.on(`queueEnd`, (player) => {
 		client.LavaQueueTimeout = setTimeout(() => {
 			if (player.queue.length != 0 || player.queue.length == 0 && player.queue.current) {return;}
 			else {
-				embed = embed('BLACK', undefined, "Looks like 10 minutes has passed and I'm not playing any music. Disconnecting to save bandwidth.")
+				const embed1 = embed('BLACK', undefined, "Looks like 10 minutes has passed and I'm not playing any music. Disconnecting to save bandwidth.")
 				client.channels.cache
 					.get(player.textChannel)
-					.send(embed);
+					.send(embed1);
 			}
 		}, 600000)
-	});
+	})
+
 // Music Event For Discord to communicate to lavalink
-client.on('raw', (d) => {
-	client.Music.updateVoiceState(d) // Sends the required info for vc, tracks id and such.
-})
+client.on('raw', (d) => { client.music.updateVoiceState(d) }) // Sends info to Lavalink (Track, Voice, Text and etc)
 
 // Suggestion Channel Message
 client.on('message', async message => {
@@ -242,7 +241,7 @@ client.once('ready', async () => {
 		status: 'online'
 	});
 	console.log(`${client.user.tag} is now online and ready.`);
-	client.Music.init(client.user.id)
+	client.music.init(client.user.id)
 });
 
 // Client Login

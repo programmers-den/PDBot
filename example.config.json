@@ -24,8 +24,8 @@
 	},
 	"star_count": 0,
 	"lavalink": {
-		"host": "lavalink-py.herokuapp.com",
-		"port": "80",
-		"pass": "LavalinkJS1"
+		"host": "localhost",
+		"port": 2333,
+		"pass": "youshallnotpass"
 	}
 }

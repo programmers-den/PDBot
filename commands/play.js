@@ -1,20 +1,19 @@
 const { embed, display } = require("../utilities/display.js");
-const { SearchQuery } = require('erela.js');
 const { client } = require('..')
 
 exports.name = 'play';
 exports.type = 'Music';
-exports.info = 'Plays Music [Either with search term or link]'
-exports.usage = '<yt/youtube/sc/soundcloud/link> <search term/undefined>'
+exports.info = 'Plays Music [Either with search term or link]';
+exports.usage = '<yt/youtube/sc/soundcloud/link> <search term/undefined>';
 exports.alias = ['p'];
 exports.root = false;
 exports.admin = false;
 exports.mod = false;
 
 exports.run = async({message, args}) => {
-    let player = client.music.player;   
-    if (!player) {
-        await player.create({
+    let player;  
+    if (!client.music.player) {
+        player = await client.music.create({
             guild: message.guild.id,
             voiceChannel: message.member.voice.channel.id,
             textChannel: message.channel.id,
@@ -35,20 +34,18 @@ exports.run = async({message, args}) => {
     }
 
     if (isValidURL(args[0])) {
-        res = await player.search(args.string(), message.author.id)
+        res = await player.search(args[0], message.author.id)
     } else if (args[0] == 'yt' || args[0] == 'youtube') {
-        const eres = new SearchQuery(args[1], 'youtube')
-        res = await player.search(eres, message.author.id)
+        res = await player.search({query: `${args.slice(1).join(' ')}`, source: 'youtube'}, message.author.id)
     } else if (args[0]  == 'sc' || args[0] == 'soundcloud') {
-        const eres = new SearchQuery(args[1], 'soundcloud')
-        res = await player.search(eres, message.author.id)
+        res = await player.search({query: `${args.slice(1).join(' ')}`, source: 'soundcloud'}, message.author.id)
     }
 
     switch(res.loadType) {
         case 'SEARCH_RESULT':
         case 'TRACK_LOADED':
             player.queue.add(res.tracks[0])
-            embed = embed('BLUE', `Added To Queue`, undefined, [
+            const e = embed('BLUE', `Added To Queue`, undefined, [
                 {
                     name: undefined,
                     value: [
@@ -67,33 +64,33 @@ exports.run = async({message, args}) => {
                     ],
                 },
             ], res.tracks[0].displayThumbnail('maxresdefault'))
-            await message.channel.send(embed)
+            await message.channel.send(e)
             // Prevents current playing track gets skipped by queued track
-            if (!player.playing && !player.paused && !player.queue.size) await player.play();
+            if (!player.playing && !player.paused && !player.queue.size) {await player.play();}
             break;
         case 'PLAYLIST_LOADED':
             if (!res.playlist) return;
-            embed = embed("BLUE", `Added To Queue`, undefined, [
+            const em = embed("BLUE", `Added To Queue`, undefined, [
                 {
                     name: undefined,
                     value: [
                         display({
                             name: "Playlist Name",
-                            value: `[${res.playlist.title}](${res.playlist.uri})`
+                            usage: `[${res.playlist.title}](${res.playlist.uri})`
                         }),
                         display({
                             name: "Total Tracks",
-                            value: `${res.tracks.length}`
+                            usage: `${res.tracks.length}`
                         }),
                         display({
                             name: "Requester",
-                            value: `${message.author.username}`
+                            usage: `${message.author.username}`
                         })
                     ]
                 }
             ], res.playlist.selectedTrack.displayThumbnail('maxresdefault'))
-            message.channel.send(embed)
-            if (!player.playing && !player.paused && !player.queue.size) await player.play();
+            message.channel.send(em)
+            if (!player.playing && !player.paused && !player.queue.totalSize === res.tracks.length) {await player.play();}
             break;
         case 'NO_MATCHES':
             message.reply(`No matches found for ${res.query}`)
