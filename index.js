@@ -25,7 +25,7 @@ const { Manager } = require("erela.js");
 client.music = new Manager({
 	nodes: [{
 		host: config.lavalink.host, // Host of the node
-		port: parseInt(config.lavalink.port), // Port of the node (Must be integer)
+		port: config.lavalink.port, // Port of the node (Must be integer)
 		password: config.lavalink.pass, // Password
 		identifier: 'Cheeki', // Name of the connected node (can remove this if you want the host name instead)
 	}],
