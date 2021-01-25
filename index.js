@@ -37,7 +37,7 @@ client.music = new Manager({
 	.on('nodeConnect', node => console.log(`Connected to NODE: ${node.options.identifier}`))
 	.on('nodeError', (node, err) => console.log(`Falied to connect to ${node.options.identifier} with error:\n${err.message}`))
 	.on('trackStart', (player, track) => {
-		const embed1 = embed('BLACK', 'Now Playing...', `\`\`Title:\`\` [${track.title}](${track.uri}) \n \`\`Requester:\`\` ${track.requester.username} \n \`\`Author:\`\` ${track.author}`, [], track.displayThumbnail('maxresdefault'))
+		const embed1 = embed('BLACK', 'Now Playing...', `\`\`Title:\`\` [${track.title}](${track.uri}) \n \`\`Requester:\`\` ${track.requester} \n \`\`Author:\`\` ${track.author}`, [], track.displayThumbnail('maxresdefault'))
 		client.channels.cache
 			.get(player.textChannel)
 			.send(embed1);

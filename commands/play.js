@@ -11,6 +11,24 @@ exports.admin = false;
 exports.mod = false;
 
 exports.run = async({message, args}) => {
+    if (!args.length) {
+        return message.channel.send(embed("BLACK", "Play Example", "To use this command, pls look at the following fields.", [
+            {
+                name: "Examples",
+                value: [
+                    display({
+                        name: "`Link Type`",
+                        usage: "play <link>"
+                    }),
+                    display({
+                        name: 'Search Terms',
+                        usage: 'play <source> <terms>'
+                    })
+                ]
+            }
+        ]))
+    }
+    
     let player;  
     if (!client.music.player) {
         player = await client.music.create({
