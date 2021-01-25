@@ -17,18 +17,20 @@ exports.run = async({message, args}) => {
                 name: "Examples",
                 value: [
                     display({
-                        name: "`Link Type`",
-                        usage: "play <link>"
+                        name: "play",
+                        usage: "play <link>",
+                        info: "Play music using links (yt, soundcloud)"
                     }),
                     display({
-                        name: 'Search Terms',
-                        usage: 'play <source> <terms>'
+                        name: 'play',
+                        usage: 'play <source -> yt/sc> <terms>',
+                        info: "Search for music and play the first search results"
                     })
                 ]
             }
         ]))
     }
-    
+
     let player;  
     if (!client.music.player) {
         player = await client.music.create({
