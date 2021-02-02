@@ -11,6 +11,26 @@ exports.admin = false;
 exports.mod = false;
 
 exports.run = async({message, args}) => {
+    if (!args.length) {
+        return message.channel.send(embed("BLACK", "Play Example", "To use this command, pls look at the following fields.", [
+            {
+                name: "Examples",
+                value: [
+                    display({
+                        name: "play",
+                        usage: "play <link>",
+                        info: "Play music using links (yt, soundcloud)"
+                    }),
+                    display({
+                        name: 'play',
+                        usage: 'play <source -> yt/sc> <terms>',
+                        info: "Search for music and play the first search results"
+                    })
+                ]
+            }
+        ]))
+    }
+
     let player;  
     if (!client.music.player) {
         player = await client.music.create({
@@ -45,50 +65,14 @@ exports.run = async({message, args}) => {
         case 'SEARCH_RESULT':
         case 'TRACK_LOADED':
             player.queue.add(res.tracks[0])
-            const e = embed('BLUE', `Added To Queue`, undefined, [
-                {
-                    name: undefined,
-                    value: [
-                        display({
-                            name: 'Title',
-                            usage: `[${res.tracks[0].title}](${res.tracks[0].uri})`
-                        }),
-                        display({
-                            name: `Artist`,
-                            usage: `${res.tracks[0].author}`
-                        }),
-                        display({
-                            name: `Requester`,
-                            usage: `${message.author.username}`
-                        }),
-                    ],
-                },
-            ], res.tracks[0].displayThumbnail('maxresdefault'))
+            const e = embed('BLUE', `Added To Queue`, `\`\`Title:\`\` [${res.tracks[0].title}](${res.tracks[0].uri}) \n \`\`Artist:\`\` ${res.tracks[0].author} \n \`\`Requester:\`\` ${message.author.username}`, [], res.tracks[0].displayThumbnail('maxresdefault'))
             await message.channel.send(e)
             // Prevents current playing track gets skipped by queued track
             if (!player.playing && !player.paused && !player.queue.size) {await player.play();}
             break;
         case 'PLAYLIST_LOADED':
             if (!res.playlist) return;
-            const em = embed("BLUE", `Added To Queue`, undefined, [
-                {
-                    name: undefined,
-                    value: [
-                        display({
-                            name: "Playlist Name",
-                            usage: `[${res.playlist.title}](${res.playlist.uri})`
-                        }),
-                        display({
-                            name: "Total Tracks",
-                            usage: `${res.tracks.length}`
-                        }),
-                        display({
-                            name: "Requester",
-                            usage: `${message.author.username}`
-                        })
-                    ]
-                }
-            ], res.playlist.selectedTrack.displayThumbnail('maxresdefault'))
+            const em = embed("BLUE", `Added To Queue`, `\`\`Playlist Name:\`\` [${res.playlist.title}](${res.playlist.uri}) \n \`\`Total Tracks:\`\` ${res.tracks.length} \n \`\`Requester:\`\` ${message.author.username}`, [], res.playlist.selectedTrack.displayThumbnail('maxresdefault'))
             message.channel.send(em)
             if (!player.playing && !player.paused && !player.queue.totalSize === res.tracks.length) {await player.play();}
             break;
