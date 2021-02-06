@@ -2,9 +2,9 @@ const { embed } = require("../utilities/display.js");
 const { isMod } = require('../utilities/auth');
 const { client } = require('..');
 
-exports.name = 'forceskip';
+exports.name = 'volume';
 exports.type = 'Music';
-exports.info = 'Skips the currently playing song.';
+exports.info = 'Config volume.';
 exports.usage = '';
 exports.alias = ['fs', 'fskip'];
 exports.root = false;
@@ -20,5 +20,5 @@ exports.run = async ({message}) => {
 	}
 	const mod = await isMod(message.author.id);
 	if (message.guild.channels.cache.get(message.member.voice.channelID).members.filter(member => member.user.bot).size > 1 || !mod && message.member.voice.channel.size != 2 && isNaN(num) < 0 || isNaN(num) > 100) return await message.channel.send(embed('RED', 'Volume Error', 'You can only config volume if you are alone in the voice channel or volume is out of range.'));
-    else {await player.setVolume(num); message.channel.send(embed("GREEN", "Configured Volume", `Sucessfully configured volume to ${num}`)).then(message => message.delete(10000))}
+    else {await player.setVolume(num); message.channel.send(embed("GREEN", "Configured Volume", `Sucessfully configured volume to ${num}`)).then(msg => msg.delete(10000))}
 }

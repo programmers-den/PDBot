@@ -2,11 +2,11 @@ const { embed } = require("../utilities/display.js");
 const { isMod } = require('../utilities/auth');
 const { client } = require('..');
 
-exports.name = 'forceskip';
+exports.name = 'remove';
 exports.type = 'Music';
-exports.info = 'Skips the currently playing song.';
+exports.info = 'Remove song from queue.';
 exports.usage = '';
-exports.alias = ['fs', 'fskip'];
+exports.alias = ['rm'];
 exports.root = false;
 exports.admin = false;
 exports.mod = false;

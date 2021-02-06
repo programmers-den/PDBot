@@ -44,14 +44,14 @@ music.on('trackStart', async (player, track) => {
 	const channel = client.channels.cache.get(player.textChannel);
 	if (channel === undefined) return;
 	const user = await client.users.fetch(track.requester);
-	await channel.send(embed('BLACK', 'Now Playing', `[${track.title}](${track.uri})\nRequester • ${user.tag}\nAuthor • ${track.author}\nDuration • ${duration(track.duration)}`, [], track.displayThumbnail('maxresdefault'))).then(message => message.delete(10000));
+	await channel.send(embed('BLACK', 'Now Playing', `[${track.title}](${track.uri})\nRequester • ${user.tag}\nAuthor • ${track.author}\nDuration • ${duration(track.duration)}`, [], track.displayThumbnail('maxresdefault'))).then(msg => msg.delete(10000));
 });
 music.on(`queueEnd`, player => {
 	client.lavalinkQueueTimeout = setTimeout(() => {
 		if (player.queue.length != 0 || player.queue.length == 0 && player.queue.current) {return;}
 		else {
 			client.channels.cache.get(player.textChannel)
-				.send(embed("BLACK", "Disconnected due to inactivity", "I've been inactive for too long. Saving bandwidth..")).then(message => message.delete(10000));
+				.send(embed("BLACK", "Disconnected due to inactivity", "I've been inactive for too long. Saving bandwidth..")).then(msg => msg.delete(10000));
 			player.destroy();
 		}
 	}, 600000);
