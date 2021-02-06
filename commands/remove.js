@@ -18,7 +18,7 @@ exports.run = async ({message, args}) => {
 		return await message.channel.send(embed('RED', 'Remove Error', `You must be in <#${player.voiceChannel}> and run commands in <#${player.textChannel}> to control the queue.`));
 	}
 
-    var num = +args[0]
+    const num = +args[0]
     if (player && player.queue !== null && !isNaN(num)) {
         const song = player.queue[num-1]
         await player.queue.remove(num -1)
