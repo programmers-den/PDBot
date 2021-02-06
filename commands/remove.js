@@ -13,7 +13,7 @@ exports.mod = false;
 
 exports.run = async ({message, args}) => {
 	const player = client.music.get(message.guild.id);
-	if (player && player.queue === null ) return await message.channel.send(embed('RED', 'Remove Error', 'There is no songs in the queue to remove'));
+	if (!player || player.queue === null || isNaN(num) || Math.floor(num) !== num || num < 1 || num > player.queue.size) return message.channel.send(embed('RED', 'Remove Error', 'There is no songs in the queue to remove or index out of reach.'));
 	if (player.textChannel !== message.channel.id || player.voiceChannel !== message.member.voice.channel.id) {
 		return await message.channel.send(embed('RED', 'Remove Error', `You must be in <#${player.voiceChannel}> and run commands in <#${player.textChannel}> to control the queue.`));
 	}
