@@ -24,8 +24,8 @@
 	},
 	"star_count": 0,
 	"lavalink": {
-		"host": "localhost",
-		"port": 2333,
-		"pass": "youshallnotpass"
+		"host": "LAVALINK_HOST",
+		"port": "LAVALINK_PORT_NUMBER",
+		"pass": "LAVALINK_PASS"
 	}
 }

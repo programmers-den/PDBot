@@ -8,9 +8,10 @@ const client = exports.client = new Client({
 });
 
 // Dependencies
+const { Manager } = require('erela.js');
 const config = require('./config.json');
 const {isRoot, isAdmin, isMod} = require('./utilities/auth');
-const {embed, format, display} = require('./utilities/display');
+const {embed, format, duration} = require('./utilities/display');
 const {userData, ownedProjects, allProjects} = require('./utilities/data');
 const commands = require('./utilities/commands');
 
@@ -20,43 +21,41 @@ require('./utilities/cleanup');
 // Active Executors
 const active = [];
 
-// Music Node Init
-const { Manager } = require("erela.js");
-client.music = new Manager({
+// Music Initializer
+const music = client.music = new Manager({
 	nodes: [{
-		host: config.lavalink.host, // Host of the node
-		port: config.lavalink.port, // Port of the node (Must be integer)
-		password: config.lavalink.pass, // Password
-		identifier: 'Cheeki', // Name of the connected node (can remove this if you want the host name instead)
+		host: config.lavalink.host,
+		port: +config.lavalink.port,
+		password: config.lavalink.pass,
+		identifier: 'PDBot',
 	}],
 	send(id, payload) {
 		const guild = client.guilds.cache.get(id)
 		if (guild) guild.shard.send(payload)
 	},
-})
-	.on('nodeConnect', node => console.log(`Connected to NODE: ${node.options.identifier}`))
-	.on('nodeError', (node, err) => console.log(`Falied to connect to ${node.options.identifier} with error:\n${err.message}`))
-	.on('trackStart', (player, track) => {
-		const embed1 = embed('BLACK', 'Now Playing...', `\`\`Title:\`\` [${track.title}](${track.uri}) \n \`\`Requester:\`\` ${track.requester} \n \`\`Author:\`\` ${track.author}`, [], track.displayThumbnail('maxresdefault'))
-		client.channels.cache
-			.get(player.textChannel)
-			.send(embed1);
-	})
-	.on(`queueEnd`, (player) => {
-		client.LavaQueueTimeout = setTimeout(() => {
-			if (player.queue.length != 0 || player.queue.length == 0 && player.queue.current) {return;}
-			else {
-				const embed1 = embed('BLACK', 'Empty Queue', "Looks like 10 minutes has passed and I'm not playing any music. Disconnecting to save bandwidth.")
-				client.channels.cache
-					.get(player.textChannel)
-					.send(embed1);
-				player.destroy();
-			}
-		}, 600000)
-	})
+});
+music.on('nodeConnect', node => {
+	console.log(`Connected to music node named "${node.options.identifier}"`);
+});
+music.on('nodeError', (node, err) => {
+	console.log(`Error connecting to music node "${node.options.identifier}" • ${err.message}`);
+});
+music.on('trackStart', async (player, track) => {
+	const channel = client.channels.cache.get(player.textChannel);
+	if (channel === undefined) return;
+	const user = await client.users.fetch(track.requester);
+	await channel.send(embed('BLACK', 'Now Playing', `[${track.title}](${track.uri})\nRequester • ${user.tag}\nAuthor • ${track.author}\nDuration • ${duration(track.duration)}`, [], track.displayThumbnail('maxresdefault')));
+});
+music.on(`queueEnd`, player => {
+	client.lavalinkQueueTimeout = setTimeout(() => {
+		if (player.queue.length != 0 || player.queue.length == 0 && player.queue.current) {return;}
+		else player.destroy();
+	}, 600000);
+});
 
-// Music Event For Discord to communicate to lavalink
-client.on('raw', (d) => { client.music.updateVoiceState(d) }) // Sends info to Lavalink (Track, Voice, Text and etc)
+client.on('raw', d => {
+	client.music.updateVoiceState(d);
+});
 
 // Suggestion Channel Message
 client.on('message', async message => {

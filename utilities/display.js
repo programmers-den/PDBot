@@ -50,3 +50,23 @@ exports.format = (text, lang, size) => {
 exports.display = ({name, usage, info}) => `\`${config.prefix + name + (usage.length ? ` ${usage}` : '')}\` • ${info}`;
 
 exports.properCase = text => text.replace(/\w\S*/g, text => text.charAt(0).toUpperCase() + text.slice(1).toLowerCase());
+
+exports.duration = ms => {
+	let hours = 0;
+	let minutes = 0;
+	let seconds = 0;
+	while (ms >= 1000 * 60 * 60) {
+		ms -= 1000 * 60 * 60;
+		hours++;
+	}
+	while (ms >= 1000 * 60) {
+		ms -= 1000 * 60;
+		minutes++;
+	}
+	while (ms >= 1000) {
+		ms -= 1000;
+		seconds++;
+	}
+	const result = [['hours', hours], ['minutes', minutes], ['seconds', seconds]].filter(amount => amount[1] > 0).map(amount => amount[1] + ' ' + amount[0]).join(', ');
+	return result;
+}

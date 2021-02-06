@@ -1,6 +1,9 @@
 # Project Specific Files
 config.json
+application.yml
 data/*
+*.jar
+Lavalink
 
 # Logs
 logs
