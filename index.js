@@ -49,7 +49,11 @@ music.on('trackStart', async (player, track) => {
 music.on(`queueEnd`, player => {
 	client.lavalinkQueueTimeout = setTimeout(() => {
 		if (player.queue.length != 0 || player.queue.length == 0 && player.queue.current) {return;}
-		else player.destroy();
+		else {
+			client.channels.cache.get(player.textChannel)
+				.send(embed("BLACK", "Disconnected due to inactivity", "I've been inactive for too long. Saving bandwidth..")).then(message => message.delete(10000));
+			player.destroy();
+		}
 	}, 600000);
 });
 
