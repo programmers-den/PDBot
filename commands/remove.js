@@ -22,6 +22,6 @@ exports.run = async ({message, args}) => {
     if (player && player.queue !== null) {
         const song = player.queue[num-1]
         await player.queue.remove(num -1)
-        await message.channel.send(embed("GREEN", "Song Removed From Queue", `Successfully removed [${song.title}](${song.uri}) from the queue.`))
+        await message.channel.send(embed("GREEN", "Song Removed From Queue", `Successfully removed [${song.title}](${song.uri}) from the queue.`).then(msg => msg.delete({timeout: 10000})))
     }
 }
