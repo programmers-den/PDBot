@@ -77,8 +77,8 @@ exports.run = async ({message, args, text}) => {
 		if (!shouldPlayNow) await message.channel.send(embed('BLACK', 'Added to Queue', `[${result.playlist.title}](${result.playlist.uri})\Tracks • ${result.tracks.length}\nRequester • ${message.author.tag}\nDuration • ${duration(result.tracks[0].duration)}`, [], result.playlist.selectedTrack.displayThumbnail('maxresdefault')));
 		else await player.play();
 	} else if (result.loadType === 'NO_MATCHES') {
-		await message.channel.send(embed('RED', 'Play Error', `No matches found for your query.`));
+		await message.channel.send(embed('RED', 'Soundcloud Error', `No matches found for your query.`));
 	} else if (result.loadType === 'LOAD_FAILED') {
-		await message.channel.send(embed('RED', 'Play Error', `Failed to load the tracks for your query.`));
+		await message.channel.send(embed('RED', 'Soundcloud Error', `Failed to load the tracks for your query.`));
 	}
 }
