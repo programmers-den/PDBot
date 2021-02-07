@@ -6,7 +6,7 @@ exports.name = 'volume';
 exports.type = 'Music';
 exports.info = 'Config volume.';
 exports.usage = '';
-exports.alias = ['fs', 'fskip'];
+exports.alias = ['vol'];
 exports.root = false;
 exports.admin = false;
 exports.mod = false;
@@ -19,6 +19,6 @@ exports.run = async ({message, args}) => {
 		return await message.channel.send(embed('RED', 'Volume Error', `You must be in <#${player.voiceChannel}> and run commands in <#${player.textChannel}> to control the volume.`));
 	}
 	const mod = await isMod(message.author.id);
-	if (message.guild.channels.cache.get(message.member.voice.channelID).members.filter(member => member.user.bot).size > 1 || !mod && message.member.voice.channel.size != 2 && isNaN(num) < 0 || isNaN(num) > 100) return await message.channel.send(embed('RED', 'Volume Error', 'You can only config volume if you are alone in the voice channel or volume is out of range.'));
-    else {await player.setVolume(num); message.channel.send(embed("GREEN", "Configured Volume", `Sucessfully configured volume to ${num}`)).then(msg => msg.delete({timeout: 10000}))}
+	if (message.guild.channels.cache.get(message.member.voice.channelID).members.filter(member => member.user.bot).size > 1 || !mod || num > 100 || num < 1) return await message.channel.send(embed('RED', 'Volume Error', 'You can only config volume if you are alone in the voice channel or volume is out of range.'));
+	else {await player.setVolume(num); message.channel.send(embed("GREEN", "Configured Volume", `Sucessfully configured volume to ${num}`)).then(msg => msg.delete({timeout: 10000}))}
 }
