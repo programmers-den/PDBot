@@ -13,7 +13,7 @@ exports.admin = false;
 
 exports.run = async ({message, args}) => {
     if (!args.length) {
-        await message.channel.send(embed('RED', "Announce Example", "To use this command, enter the subject followed by the main point. Each argument can be wrapped in quotes if it doesn't fit in a single word.\n\nBelow are some examples on how to make a announcement.", [
+        return await message.channel.send(embed('RED', "Announce Example", "To use this command, enter the subject followed by the main point. Each argument can be wrapped in quotes if it doesn't fit in a single word.\n\nBelow are some examples on how to make a announcement.", [
             {
 				name: 'Example of Announcement',
 				value: display({
@@ -24,6 +24,18 @@ exports.run = async ({message, args}) => {
 			},
         ]))
     } else {
+        if (!args[1] || !args[2]) {
+            return await message.channel.send(embed('RED', "Announce Example", "To use this command, enter the subject followed by the main point. Each argument can be wrapped in quotes if it doesn't fit in a single word.\n\nBelow are some examples on how to make a announcement.", [
+                {
+                    name: 'Example of Announcement',
+                    value: display({
+                        name: 'ca',
+                        usage: '"Test" "Test"',
+                        info: 'Send announcement to specific channel, With Title of Test, body of Test.'
+                    })
+                },
+            ]))
+        }
         const ch = await client.channels.cache.get(config.channels.announcements);
         const mod = await isMod(message.author.id);
         if (!mod) {return message.channel.send(embed("RED", "Announce Error", "You don't have the required role!"))};
