@@ -5,7 +5,7 @@ const { client } = require('..');
 const math = require('mathjs');
 
 exports.name = 'calc';
-exports.type = '';
+exports.type = 'Math';
 exports.info = 'Math Calulation';
 exports.usage = '0 + 1 + 3';
 exports.alias = [];
