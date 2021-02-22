@@ -11,7 +11,7 @@ const client = exports.client = new Client({
 const { Manager } = require('erela.js');
 const config = require('./config.json');
 const {isRoot, isAdmin, isMod} = require('./utilities/auth');
-const {embed, format, duration} = require('./utilities/display');
+const {embed, format, duration, newuserEmbed} = require('./utilities/display');
 const {userData, ownedProjects, allProjects} = require('./utilities/data');
 const commands = require('./utilities/commands');
 
@@ -170,6 +170,14 @@ client.on('messageReactionAdd', async (reaction, user) => {
 			}
 			break;
 		}
+	}
+});
+
+// New users handler
+client.on('guildMemberAdd', async member => {
+	if (!member.bot) {
+		const nu_channel = client.channels.cache.get(config.channels.newuser)
+		nu_channel.send(newuserEmbed(`GREEN`, `[${member.user.username}]`, `Welcome to Programmer's Den ${member.user.username}! Head <#${config.channels.serverinfo}> to get started and head to <#${config.channels.roles}> to choose your languages!`, `${member.id}`))
 	}
 });
 

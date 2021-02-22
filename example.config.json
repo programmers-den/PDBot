@@ -20,7 +20,10 @@
 		"starboard": "STARBOARD_CHANNEL_ID",
 		"announcements": "ANNOUNCEMENT_CHANNEL_ID",
 		"suggestions": "SUGGESTION_CHANNEL_ID",
-		"counting": "COUNTING_CHANNEL_ID"
+		"counting": "COUNTING_CHANNEL_ID",
+		"newuser" : "NEWUSER_CHANNEL_ID",
+		"serverinfo": "SERVERINFO_CHANNEL_ID",
+		"roles": "ROLES_CHANNEL_ID"
 	},
 	"star_count": 0,
 	"lavalink": {
