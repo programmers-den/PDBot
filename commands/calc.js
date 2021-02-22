@@ -8,7 +8,7 @@ exports.name = 'calc';
 exports.type = 'Math';
 exports.info = 'Math Calulation';
 exports.usage = '0 + 1 + 3';
-exports.alias = [];
+exports.alias = ["c"];
 exports.root = false;
 exports.mod = false;
 exports.admin = false;
@@ -19,7 +19,7 @@ exports.run = async ({message, args}) => {
             {
                 name: 'Plus Example',
                 value: display({
-                    name: 'cacl',
+                    name: 'calc',
                     usage: '10 + 5',
                     info: 'Plus 10 with 5 (+), result, 15',
                 }),
@@ -27,7 +27,7 @@ exports.run = async ({message, args}) => {
             {
                 name: `Minus Example`,
                 value: display({
-                    name: `cacl`,
+                    name: `calc`,
                     usage: `10 - 5`,
                     info: `Minus 10 with 5 (-), result 5`,
                 }),
@@ -35,7 +35,7 @@ exports.run = async ({message, args}) => {
             {
                 name: `Multiply Example`,
                 value: display({
-                    name: 'cacl',
+                    name: 'calc',
                     usage: `4 * 1`,
                     info: `Multiply Number by 1 (*), result 4`,
                 }),
@@ -43,7 +43,7 @@ exports.run = async ({message, args}) => {
             {
                 name: `Divide Example`,
                 value: display({
-                    name: `cacl`,
+                    name: `calc`,
                     usage: `4 / 2`,
                     info: `Divide 4 by 2 (/), result 2`,
                 }),
@@ -51,7 +51,7 @@ exports.run = async ({message, args}) => {
             {
                 name: `Prioritize Example`,
                 value: display({
-                    name: `cacl`,
+                    name: `calc`,
                     usage: `4 / 2 (10 - 5)`,
                     info: `Do minus then divide 4 by 2 and multiply the value inside bracket () > [] > {} , result 4`,
                 }),
@@ -59,7 +59,7 @@ exports.run = async ({message, args}) => {
             {
                 name: `Power Example`,
                 value: display({
-                    name: `cacl`,
+                    name: `calc`,
                     usage: `2^4`,
                     info: `2 are multiplied by 4 times as 4 is a power (^), result 16`,
                 }),
