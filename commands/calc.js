@@ -4,9 +4,9 @@ const config = require('../config.json');
 const { client } = require('..');
 const math = require('mathjs');
 
-exports.name = 'announce';
-exports.type = '';
-exports.info = 'Creates a server announcement.';
+exports.name = 'calc';
+exports.type = 'Math';
+exports.info = 'Math Calulation';
 exports.usage = '0 + 1 + 3';
 exports.alias = [];
 exports.root = false;

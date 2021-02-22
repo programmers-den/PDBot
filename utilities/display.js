@@ -41,6 +41,13 @@ exports.pollEmbed = (title, options = exports.defaultPollOptions, date = Date.no
 	return result;
 }
 
+exports.newuserEmbed = (color, title, options, date) => {
+	const result = exports.embed(color, title, options)
+	result.embed.footer.text = `ID • ${date}`
+	result.embed.timestamp = null
+	return result;
+}
+
 exports.format = (text, lang, size) => {
 	size -= 8 + lang.length;
 	if (text.length > size || !text.length) text = text.slice(0, Math.max(0, size - 3)) + '...';
