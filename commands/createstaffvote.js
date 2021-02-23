@@ -5,7 +5,7 @@ const {client} = require('..');
 exports.name = 'createstaffvote';
 exports.type = 'Staff';
 exports.info = 'Cast a vote for staff only';
-exports.usage = '[duration (number)] [-tags(s, m , h, d)| = Sets what duration, default min] [duration]';
+exports.usage = '[duration (number)] [desc]';
 exports.alias = ['csv'];
 exports.root = false;
 exports.mod = true;
@@ -17,46 +17,42 @@ exports.run = async({message, args}) => {
     if (global.staff_vote_amount == isNaN(global.staff_vote_amount)) {} else staff_vote_amount = 0
 
     var current_vote_count = staff_vote_amount + 1
-    if (!(args[2] in ["-s", '-h', '-m', '-d'])) {
-        var desc = args.slice(1).join(' ');
-    } else {
-        var desc = args.slice(2).join(' ');
-    }
-        var timer = args[0]
-    let timeout;
+    var timer = args[0].split(/(?=[smhd])/);
+    const timer_substring = timer[1]
+    var desc = args.slice(1).join(' ');
+    var timeout;
 
-    if (args[2].split("-")) {
-        switch(args[2]) {
-            case `${args[2].split("-")}`:
-            case 's':
-                timer = `${timer[0]} seconds`;
-                timeout = +timer[0] * 1000;
-                break;
-            case 'm':
-                timer = `${timer[0]} minutes`;
-                timeout = +timer[0] * 60000;
-                break;
-            case 'h':
-                timer = `${timer[0]} hours`;
-                timeout = +timer[0] * 360000;
-                break;
-            case 'd':
-                timer = `${timer[0]} days`;
-                timeout = +timer[0] * 86400000;
-                break;
-        };
-    } else {
-        timer = `${timer} minutes`
-        timeout = +timer * 60 * 1000
+    console.log(timer)
+    switch(timer_substring) {
+        default:
+            return message.channel.send("Invalid time given")
+        case 's':
+            timeout = +timer[0] * 1000
+            timer = `${timer[0]} seconds`
+            break;
+        case 'm':
+            timeout = +timer[0] * 60000
+            timer = `${timer[0]} minutes`
+            break;
+        case 'h':
+            timeout = +timer[0] * 360000
+            timer = `${timer[0]} hours`
+            break;
+        case 'd':
+            timeout = timer[0] * 86400000
+            timer = `${timer[0]} days`;
+            break;
     }
 
     const Embed = embed('BLUE', `Vote #${current_vote_count} [${timer}]`, `${desc}`);
 
     staff_vote_amount += 1;
+
     const v_message = await msg_channel.send(`|| ||`,Embed);
     await v_message.react(config.emojis.yes);
     await v_message.react(config.emojis.no);
-    setTimeout(() => {
+    console.log(timeout)
+    setTimeout( () => {
         const yes_count = v_message.reactions.cache.get(config.emojis.yes).size - 1
         const no_count = v_message.reactions.cache.get(config.emojis.no).size - 1
 
