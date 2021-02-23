@@ -13,8 +13,8 @@ exports.admin = false;
 
 exports.run = async({message, args}) => {
     const msg_channel = client.channels.cache.get(config.channels.votes);
-    global.staff_vote_amount = null;
-    if (global.staff_vote_amount == isNaN(global.staff_vote_amount)) {} else staff_vote_amount = 0
+    global.staff_vote_amount = '';
+    if (staff_vote_amount in global) {null} else {staff_vote_amount = 0}
 
     var current_vote_count = staff_vote_amount + 1
     var timer = args[0].split(/(?=[smhd])/);
