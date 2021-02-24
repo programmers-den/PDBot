@@ -1,61 +1,71 @@
 const {embed} = require("../utilities/display.js");
 const config = require('../config.json');
 const {client} = require('..');
-const { MessageReaction } = require("discord.js");
 
 exports.name = 'createstaffvote';
 exports.type = 'Staff';
 exports.info = 'Cast a vote for staff only';
-exports.usage = '[desc] [duration]';
+exports.usage = '[duration (number)] [desc]';
 exports.alias = ['csv'];
 exports.root = false;
 exports.mod = true;
 exports.admin = false;
 
 exports.run = async({message, args}) => {
-    var staff_vote_amount
-    const timer = args[0].split(['s', 'm', 'h', 'd'])
-    const vote_channel = client.channels.cache.get(config.channels.votes);
+    const msg_channel = client.channels.cache.get(config.channels.votes);
+    global.staff_vote_amount = '';
+    if (staff_vote_amount in global) {null} else {staff_vote_amount = 0}
 
-    if (staff_vote_amount in global) {
-    } else {
-        staff_vote_amount = 0
-    }
+    var current_vote_count = staff_vote_amount + 1
+    var timer = args[0].split(/(?=[smhd])/);
+    const timer_substring = timer[1]
+    var desc = args.slice(1).join(' ');
+    var timeout;
 
-    current_vote_count = staff_vote_amount + 1
-
-    
-    switch(timer[1]) {
-        case `${timer[0]}`:
+    console.log(timer)
+    switch(timer_substring) {
+        default:
+            return message.channel.send("Invalid time given")
         case 's':
-            var ftimer = +timer[0] * 1000;
-            var embed_time = `${timer[0]} seconds`;
+            timeout = +timer[0] * 1000
+            timer = `${timer[0]} seconds`
+            break;
         case 'm':
-            var ftimer = +timer[0] * 60000;
-            var embed_time = `${timer[0]} minutes`;
+            timeout = +timer[0] * 60000
+            timer = `${timer[0]} minutes`
+            break;
         case 'h':
-            var ftimer = +timer[0] * 36000000;
-            var embed_time = `${timer[0]} hours`;
+            timeout = +timer[0] * 360000
+            timer = `${timer[0]} hours`
+            break;
         case 'd':
-            var ftimer = +timer[0] * 864000000;
-            var embed_time = `${timer[0]} days`
+            timeout = timer[0] * 86400000
+            timer = `${timer[0]} days`;
+            break;
     }
-    var Embed = embed(`BLUE`,`Vote #${current_vote_count} [${embed_time}]`, `${args[1]}`)
-    const msg = await vote_channel.send(Embed);
-    await msg.react(config.emojis.yes);
-    await msg.react(config.emojis.no);
 
-    setTimeout(msg => {
-        const yes_count = msg.emoji(id=config.emojis.yes).size - 1;
-        const no_count = msg.emoji(id=config.emojis.no).size - 1;
+    const Embed = embed('BLUE', `Vote #${current_vote_count} [${timer}]`, `${desc}`);
+
+    staff_vote_amount += 1;
+
+    const v_message = await msg_channel.send(`|| ||`,Embed);
+    await v_message.react(config.emojis.yes);
+    await v_message.react(config.emojis.no);
+    console.log(timeout)
+    setTimeout( () => {
+        const yes_count = v_message.reactions.cache.get(config.emojis.yes).size - 1
+        const no_count = v_message.reactions.cache.get(config.emojis.no).size - 1
 
         if (yes_count > no_count) {
-            Embed = embed('GREEN', `Vote #${current_vote_count}`, `Approved!`);
+            const fEmbed = embed("GREEN", `Vote #${current_vote_count}`, `Approved!`);
+            msg_channel.send(fEmbed);
         } else if (no_count > yes_count) {
-            Embed = embed('RED', `Vote #${current_vote_count}`, `Denied!`)
-        } else {
-            Embed = embed(`YELLOW`, `Vote #${current_vote_count}`, `Vote Tied!`);
+            const fEmbed = embed("RED", `Vote #${current_vote_count}`, `Denied!`);
+            msg_channel.send(fEmbed);
+        } else if (yes_count == no_count) {
+            const fEmbed = embed("YELLOW", `Vote #${current_vote_count}`, `Vote Tied!`);
+            msg_channel.send(fEmbed);
         }
-        vote_channel.send(Embed)
-    }, ftimer)
+        staff_vote_amount -= 1
+    }, timeout);
 }
