@@ -173,12 +173,30 @@ client.on('messageReactionAdd', async (reaction, user) => {
 	}
 });
 
-// New users handler
+// New Users Handler
 client.on('guildMemberAdd', async member => {
-	if (!member.bot) {
+	if (!member.user.bot) {
 		const nu_channel = client.channels.cache.get(config.channels.newuser)
-		nu_channel.send(newuserEmbed(`GREEN`, `[${member.user.username}]`, `Welcome to Programmer's Den ${member.user.username}! Head <#${config.channels.serverinfo}> to get started and head to <#${config.channels.roles}> to choose your languages!`, `${member.id}`))
+		const nue = newuserEmbed(`GREEN`, `[${member.user.username}]`, `Welcome to Programmer's Den ${member.user.username}! Head <#${config.channels.serverinfo}> to get started and head to <#${config.channels.roles}> to choose your languages!`, `${member.id}`)
+		nue.embed.thumbnail.url = member.user.displayAvatarURL();
+		nu_channel.send(nue)
+	} else if(member.user.bot) {
+		let role = member.guild.roles.cache.get(config.roles.bot);
+		await member.roles.add(role);
 	}
+});
+
+// User Leave Handler
+client.on('guildMemberRemove', async member => {
+	const log_channel = client.channels.cache.get(config.channels.logs);
+	const date = new Date();
+	const em = embed(`RED`, `User left`, `**${member.user.username}** left the server`, [{
+		name: `Left Date`,
+		value: date.toUTCString()
+	}], member.user.avatarURL());
+	em.embed.footer.text = `ID • ${member.id}`;
+	em.embed.timestamp = null;
+	await log_channel.send(em);
 });
 
 // Command Handler
