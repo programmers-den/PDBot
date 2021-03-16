@@ -3,7 +3,7 @@ const figlet = require('figlet');
 const {embed, display} = require('../utilities/display')
 
 exports.name = 'art';
-exports.type = 'Fun';
+exports.type = 'Utilities';
 exports.info = 'You know, ascill art :)';
 exports.usage = '[font] [content]';
 exports.alias = [''];
