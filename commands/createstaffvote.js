@@ -3,7 +3,7 @@ const config = require('../config.json');
 const {client} = require('..');
 
 exports.name = 'createstaffvote';
-exports.type = 'Staff';
+exports.type = 'Moderation';
 exports.info = 'Cast a vote for staff only';
 exports.usage = '[x minutes] [desc]';
 exports.alias = ['csv'];
