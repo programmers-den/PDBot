@@ -199,6 +199,16 @@ client.on('guildMemberRemove', async member => {
 	await log_channel.send(em);
 });
 
+// Starboard handler :D
+client.on('messageReactionAdd', async (reaction) => {
+	const channel_to_send = client.channels.cache.get(config.channels.starboard);
+	const starboard_embed = embed('YELLOW', `${reaction.message.author.tag}`, `${reaction.message.content}`);
+	starboard_embed.embed.author.icon_url = reaction.message.author.displayAvatarURL();
+	if (reaction.emoji.name === '⭐' && reaction.message.reactions.cache.get('⭐').count >= 1 && reaction.message.channel != config.channels.starboard) {
+		await channel_to_send.send(`:star2: ${reaction.message.reactions.cache.get(`⭐`).count}`, starboard_embed)
+	}
+});
+
 // Command Handler
 client.on('message', async message => {
 	if (message.author.bot || !message.guild || active.includes(message.author.id)) return;
