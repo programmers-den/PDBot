@@ -45,21 +45,3 @@ exports.projectStatus = (id, project) => {
 	else if (project.members.includes(id)) return 'member';
 	else return 'outsider';
 }
-
-exports.startConstStar = id => {
-	if (files.starboard[id] === undefined) files.starboard[id] = {};
-	const starboard = files.starboard[id];
-	return starboard
-}
-
-exports.allStarMes = (id, ch) => {
-	const starboards = {};
-	for (const entries of Object.values(files.starboard)) {
-		for (const [id, channel] of Object.entries(entries)) {
-			if (id === undefined || channel.oriMesID === ch) {
-				starboards[id] = channel;
-			} 
-		}
-	}
-	return starboards;
-}

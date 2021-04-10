@@ -12,9 +12,8 @@ const { Manager } = require('erela.js');
 const config = require('./config.json');
 const {isRoot, isAdmin, isMod} = require('./utilities/auth');
 const {embed, format, duration, newuserEmbed} = require('./utilities/display');
-const {userData, ownedProjects, allProjects, startConstStar, allStarMes} = require('./utilities/data');
+const {userData, ownedProjects, allProjects} = require('./utilities/data');
 const commands = require('./utilities/commands');
-const { null } = require('mathjs');
 
 // Execute Scripts
 require('./utilities/cleanup');
@@ -202,22 +201,30 @@ client.on('guildMemberRemove', async member => {
 
 // Starboard handler :D
 client.on('messageReactionAdd', async (reaction) => {
-	
-	const channel_to_send = client.channels.cache.get(config.channels.starboard);
-	const starboard_embed = embed('YELLOW', `${reaction.message.author.tag}`, `${reaction.message.content}`);
-	starboard_embed.embed.author.icon_url = reaction.message.author.displayAvatarURL();
-	if (reaction.emoji.name === '⭐' && reaction.message.reactions.cache.get('⭐').count >= 1 && allStarMes(reaction.message.id, reaction.message.channel.id) === null || allStarMes(reaction.message.id, reaction.message.channel.id) === undefined) {
-		const mes = await channel_to_send.send(`:star2: ${reaction.message.reactions.cache.get(`⭐`).count}`, starboard_embed)
-		const starboard_data = startConstStar(reaction.message.id);
-		starboard_data[reaction.message.channel.id] = {
-			oriID: reaction.message.id,
-			oriMesID: reaction.message.channel.id,
-			starID: mes.id,
-			minStar: 3,
-			currentStar: reaction.message.reactions.cache.get(`⭐`).count
-		};
-	} else if (reaction.emoji.name === '' && reaction.message.reactions.cache.get(`⭐`).count >= 1 && reaction.message.reactions.cache.get('⭐').count >= allStarMes(reaction.message.id, reaction.message.channel.id).minStar) {
-		
+	if (reaction.emoji.name === '⭐') {
+		if (reaction.message.partial) {
+			const fetchedMessage = await reaction.message.fetch();
+			const starboarMes = embed('YELLOW', `${fetchedMessage.author.tag}`, `[Click To Jump To Message!](${fetchedMessage.url})\n${fetchedMessage.attachments ? {files: fetchedMessage.attachments} : fetchedMessage.content}`)
+			starboarMes.embed.author.icon_url = fetchedMessage.author.avatarURL();
+			starboarMes.embed.timestamp = undefined;
+			starboarMes.embed.footer.text = `${fetchedMessage.id} • #${fetchedMessage.channel.name} • ${new Date(fetchedMessage.createdTimestamp)}`;
+			const starChannel = client.channels.cache.get(config.channels.starboard);
+			await starChannel.send(starboarMes)
+		}
+		else {
+			const starChannel = client.channels.cache.get(config.channels.starboard);
+			const msgs = await starChannel.fetch({limit: 100})
+			const exist = msgs.find(message => {
+				if (message.embeds.length === 1) {
+					if (message.embeds[0].footer.startsWith(reaction.message.id)){
+						return true;
+					} return false;
+				} return false;
+			});
+			if (exist) {
+				exist.edit(`Edited Content`)
+			}
+		}
 	}
 });
 
