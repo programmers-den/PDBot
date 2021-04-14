@@ -1,7 +1,7 @@
 const {client} = require("..");
-const {embed} = require('../utilities/display');
-const axios = require('axios');
-const cheerio = require('cheerio');
+const {sendMenu, pages} = require('../utilities/menus');
+const {embed} = require("../utilities/display");
+const figlet = require('figlet');
 
 exports.name = "artfonts";
 exports.type = 'Utilities';
@@ -12,21 +12,16 @@ exports.root = false;
 exports.mod = false;
 exports.admin = false;
 
-exports.run = async ({message, args}) => {
-    const { data } = await axios.get('http://www.figlet.org/fontdb.cgi');
-    const pageData = await cheerio.load(data);
-    const fonts = pageData('td').text();
-    var x = '';
+exports.run = async ({message}) => {
+    const fonts = figlet.fontsSync();
 
-    console.log(fonts)
-    for(let n = 1, i; n < fonts.length; i = fonts[(n += 3) - 3]) {
-        if (i === undefined) break;
-        console.log(i)
-        text = i.trim();
-        if (text != 'Font Name' && text != 'Contact us at info@figlet.org') {
-        x = `${x}${text}\n`;
-        };
-    };
+    const xg = fonts.map((font, index) => `${index + 1} • **${font}**`);
+    const menu = [];
+    const size = 10;
 
-    message.channel.send(embed('BLUE', 'Fonts', `\`\`\`\css\n${x}\`\`\``))
+    for (let i = 0; i < xg.length; i += size) {
+        menu.push(embed(`BLUE`, `Font List ${i / size + 1}/${Math.ceil(xg.length / size)}`, xg.slice(i, i + size).join('\n')));
+    }
+    if (menu.length === 1) return await message.channel.send(menu[0]);
+    await sendMenu(message.channel, pages(...menu), message.author);
 }

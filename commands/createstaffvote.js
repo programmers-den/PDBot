@@ -1,71 +1,80 @@
-const {embed} = require("../utilities/display.js");
+const {embed, defaultPollOptions} = require("../utilities/display.js");
 const config = require('../config.json');
 const {client} = require('..');
 
 exports.name = 'createstaffvote';
-exports.type = 'Staff';
+exports.type = 'Moderation';
 exports.info = 'Cast a vote for staff only';
-exports.usage = '[duration (number)] [desc]';
+exports.usage = '[x minutes] [desc]';
 exports.alias = ['csv'];
 exports.root = false;
 exports.mod = true;
 exports.admin = false;
 
 exports.run = async({message, args}) => {
+    let timeout;
+    const options = [`Yes`, `No`];
     const msg_channel = client.channels.cache.get(config.channels.votes);
-    global.staff_vote_amount = '';
-    if (staff_vote_amount in global) {null} else {staff_vote_amount = 0}
+    var main_text = '';
+    
+    const defEmojiID = [
+        config.emojis.yes,
+        config.emojis.no,
+    ];
 
-    var current_vote_count = staff_vote_amount + 1
-    var timer = args[0].split(/(?=[smhd])/);
-    const timer_substring = timer[1]
-    var desc = args.slice(1).join(' ');
-    var timeout;
+    const emojiList = [];
 
-    console.log(timer)
-    switch(timer_substring) {
-        default:
-            return message.channel.send("Invalid time given")
-        case 's':
-            timeout = +timer[0] * 1000
-            timer = `${timer[0]} seconds`
-            break;
-        case 'm':
-            timeout = +timer[0] * 60000
-            timer = `${timer[0]} minutes`
-            break;
-        case 'h':
-            timeout = +timer[0] * 360000
-            timer = `${timer[0]} hours`
-            break;
-        case 'd':
-            timeout = timer[0] * 86400000
-            timer = `${timer[0]} days`;
-            break;
+    for (const emName of defEmojiID) {
+        const emoji = client.emojis.cache.get(emName)
+        emojiList.push(emoji)
     }
 
-    const Embed = embed('BLUE', `Vote #${current_vote_count} [${timer}]`, `${desc}`);
+    const emojiInfo = {};
 
-    staff_vote_amount += 1;
+    for (const option of options) {
+        const emoji = emojiList.splice(0, 1);
+        emojiInfo[emoji] = {option: option, votes: 0};
+        main_text += `${emoji} : \`${option}\`\n\n`;
+    };
+    
+    
+    const afterEmojiList = Object.keys(emojiInfo);
 
-    const v_message = await msg_channel.send(`|| ||`,Embed);
-    await v_message.react(config.emojis.yes);
-    await v_message.react(config.emojis.no);
-    console.log(timeout)
-    setTimeout( () => {
-        const yes_count = v_message.reactions.cache.get(config.emojis.yes).size - 1
-        const no_count = v_message.reactions.cache.get(config.emojis.no).size - 1
+    const poll = await msg_channel.send(embed(`BLUE`, `${args[1]}`, `${main_text}`));
+    for(const emojis of afterEmojiList) await poll.react(emojis);
 
-        if (yes_count > no_count) {
-            const fEmbed = embed("GREEN", `Vote #${current_vote_count}`, `Approved!`);
-            msg_channel.send(fEmbed);
-        } else if (no_count > yes_count) {
-            const fEmbed = embed("RED", `Vote #${current_vote_count}`, `Denied!`);
-            msg_channel.send(fEmbed);
-        } else if (yes_count == no_count) {
-            const fEmbed = embed("YELLOW", `Vote #${current_vote_count}`, `Vote Tied!`);
-            msg_channel.send(fEmbed);
+    const reactionCollector = await poll.createReactionCollector(
+        (reaction, user) => afterEmojiList.includes(reaction.emoji.name) && !user.bot,
+        timeout === 0 ? {} : {time: args[0] * 60000}
+    );
+
+    const voterInfo = new Map();
+
+    reactionCollector.on('collect', (reaction, user) => {
+        if (afterEmojiList.includes(reaction.emoji.name)) {
+            if (!voterInfo.has(user.id)) voterInfo.set(user.id, {emoji: reaction.emoji.name});
+            const votedEmoji = voterInfo.get(user.id).emoji;
+            if (votedEmoji !== reaction.emoji.name) {
+                const lastVote = poll.reactions.get(votedEmoji);
+                lastVote.count -= 1;
+                lastVote.users.remove(user.id);
+                emojiInfo[votedEmoji].votes -= 1;
+                voterInfo.set(user.id, {emoji: reaction.emoji.name});
+            }
+            emojiInfo[reaction.emoji.name].votes += 1;
         }
-        staff_vote_amount -= 1
-    }, timeout);
+    });
+
+    reactionCollector.on('dispose', (reaction, user) => {
+		if (afterEmojiList.includes(reaction.emoji.name)) {
+			voterInfo.delete(user.id);
+			emojiInfo[reaction.emoji.name].votes -= 1;
+		}
+	});
+
+    reactionCollector.on('end', async () => {
+		var end_text = `Time's up for [this vote](${poll.url})!\n Results are in,\n\n`
+		for (const emoji in emojiInfo) end_text += `\`${emojiInfo[emoji].option}\` - \`${emojiInfo[emoji].votes}\`\n\n`;
+        await poll.reply(embed(`YELLOW`, `Vote Ended`, `${end_text}`));
+	});
 }

@@ -173,11 +173,58 @@ client.on('messageReactionAdd', async (reaction, user) => {
 	}
 });
 
-// New users handler
+// New Users Handler
 client.on('guildMemberAdd', async member => {
-	if (!member.bot) {
+	if (!member.user.bot) {
 		const nu_channel = client.channels.cache.get(config.channels.newuser)
-		nu_channel.send(newuserEmbed(`GREEN`, `[${member.user.username}]`, `Welcome to Programmer's Den ${member.user.username}! Head <#${config.channels.serverinfo}> to get started and head to <#${config.channels.roles}> to choose your languages!`, `${member.id}`))
+		const nue = newuserEmbed(`GREEN`, `[${member.user.username}]`, `Welcome to Programmer's Den ${member.user.username}! Head <#${config.channels.serverinfo}> to get started and head to <#${config.channels.roles}> to choose your languages!`, `${member.id}`)
+		nue.embed.thumbnail.url = member.user.displayAvatarURL();
+		nu_channel.send(nue)
+	} else if(member.user.bot) {
+		let role = member.guild.roles.cache.get(config.roles.bot);
+		await member.roles.add(role);
+	}
+});
+
+// User Leave Handler
+client.on('guildMemberRemove', async member => {
+	const log_channel = client.channels.cache.get(config.channels.logs);
+	const date = new Date();
+	const em = embed(`RED`, `User left`, `**${member.user.username}** left the server`, [{
+		name: `Left Date`,
+		value: date.toUTCString()
+	}], member.user.avatarURL());
+	em.embed.footer.text = `ID • ${member.id}`;
+	em.embed.timestamp = null;
+	await log_channel.send(em);
+});
+
+// Starboard handler :D
+client.on('messageReactionAdd', async (reaction) => {
+	if (reaction.emoji.name === '⭐') {
+		if (reaction.message.partial) {
+			const fetchedMessage = await reaction.message.fetch();
+			const starboarMes = embed('YELLOW', `${fetchedMessage.author.tag}`, `[Click To Jump To Message!](${fetchedMessage.url})\n${fetchedMessage.attachments ? {files: fetchedMessage.attachments} : fetchedMessage.content}`)
+			starboarMes.embed.author.icon_url = fetchedMessage.author.avatarURL();
+			starboarMes.embed.timestamp = undefined;
+			starboarMes.embed.footer.text = `${fetchedMessage.id} • #${fetchedMessage.channel.name} • ${new Date(fetchedMessage.createdTimestamp)}`;
+			const starChannel = client.channels.cache.get(config.channels.starboard);
+			await starChannel.send(starboarMes)
+		}
+		else {
+			const starChannel = client.channels.cache.get(config.channels.starboard);
+			const msgs = await starChannel.fetch({limit: 100})
+			const exist = msgs.find(message => {
+				if (message.embeds.length === 1) {
+					if (message.embeds[0].footer.startsWith(reaction.message.id)){
+						return true;
+					} return false;
+				} return false;
+			});
+			if (exist) {
+				exist.edit(`Edited Content`)
+			}
+		}
 	}
 });
 

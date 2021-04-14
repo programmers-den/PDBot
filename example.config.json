@@ -7,7 +7,8 @@
 		"mod": "MOD_ROLE_ID",
 		"admin": "ADMIN_ROLE_ID",
 		"announcements": "ANNOUNCEMENT_ROLE_ID",
-		"polls": "POLLS_ROLE_ID"
+		"polls": "POLLS_ROLE_ID",
+		"bot": "BOT_ROLE_ID"
 	},
 	"emojis": {
 		"yes": "YES_EMOJI_ID",
@@ -23,7 +24,8 @@
 		"counting": "COUNTING_CHANNEL_ID",
 		"newuser" : "NEWUSER_CHANNEL_ID",
 		"serverinfo": "SERVERINFO_CHANNEL_ID",
-		"roles": "ROLES_CHANNEL_ID"
+		"roles": "ROLES_CHANNEL_ID",
+		"logs": "LOGS_CHANNEL_ID"
 	},
 	"star_count": 0,
 	"lavalink": {
