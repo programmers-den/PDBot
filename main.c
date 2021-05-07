@@ -8,6 +8,7 @@
 int main() {
     discord_global_init();
     struct discord *client = discord_config_init("bot.config");
+
     discord_set_on_ready(client, &on_ready);
     discord_set_on_command(client, "help", &help);
     discord_set_on_command(client, "ping", &ping);
