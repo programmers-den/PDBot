@@ -11,14 +11,12 @@ char *get_commands(char *location) {
     if (dp) {
         struct dirent *dir;
         while (dir = readdir(dp)) {
-            if (dir->d_name[strlen(dir->d_name)-1] == 'c') {
-                char *token = strtok(dir->d_name, ".c");
-                while (token) {
-                    strcat(cmd, token);
-                    strcat(cmd, "\n");
-                    printf("Loaded: %s\n", token);
-                    token = strtok(NULL, ".c");
-                }
+            size_t len = strlen(dir->d_name)-1;
+            if (dir->d_name[len] == 'c') {
+                char *file = malloc(len);
+                strcpy(file, dir->d_name);
+                file[len-1] = '\0';
+                printf("Loaded: %s\n", file);
             }
         }
         closedir(dp);
