@@ -9,6 +9,7 @@
 #include "src/libs/on_guild_member_remove.h"
 #include "src/libs/help.h"
 #include "src/libs/ping.h"
+#include "src/libs/icon.h"
 
 int main() {
     discord_global_init();
@@ -22,6 +23,7 @@ int main() {
     discord_set_on_guild_member_remove(client, &on_guild_member_remove);
     discord_set_on_command(client, "help", &help);
     discord_set_on_command(client, "ping", &ping);
+    discord_set_on_command(client, "icon", &icon);
 
     discord_run(client);
 
