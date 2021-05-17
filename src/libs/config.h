@@ -8,6 +8,8 @@
 // #define C_ONE_WORD 825481761189658683
 #define C_STARBOARD 800022449642012692
 // #define C_STARBOARD 757072544779206743
+#define C_POLL 800022393937723392
+// #define C_POLL 748514616966905866
 #define C_WELCOME 800748610173272159
 // #define C_WELCOME 668005380630118410
 #define C_SERVER_INFO 813202256626712616
@@ -21,7 +23,14 @@
 #define MESSAGE_URL_LENGTH 31+18+18+18+1 // https://discord.com/channels/{guild.id}/{channel.id}/{message.id} url + channel_id + message_id + nullbyte
 #define AVATAR_URL_LENGTH 40+18+1 // https://cdn.discordapp.com/ url + id + nullbyte
 #define E_STAR "⭐"
+#define E_YES_NAME "yes"
+#define E_YES_ID 800395480575901706
+// #define E_YES_ID 800395872470564904
+#define E_NO_NAME "no"
+#define E_NO_ID 821218629315723274
+// #define E_NO_ID 800395869425762345
 #define COLOR_RED 16711680
 #define COLOR_BLUE 255
 #define COLOR_MINT 10026904
 #define COLOR_YELLOW 16776960
+#define COLOR_MAGENTA 16711935

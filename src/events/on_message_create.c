@@ -5,6 +5,7 @@
 #include <orca/discord.h>
 #include <orca/log.h>
 #include "../libs/config.h"
+#include "../libs/get_icon_url.h"
 
 void on_message_create(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
     switch (message->channel_id) {
@@ -21,6 +22,7 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
                 }
             }
             else discord_delete_message(client, message->channel_id, message->id);
+
             break;
         }
         case C_ONE_WORD: {
@@ -28,6 +30,30 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
                 if (message->content[i] == ' ') discord_delete_message(client, message->channel_id, message->id);
                 else continue;
             }
+
+            break;
+        }
+        case C_POLL: {
+            if (message->author->bot) break;
+
+            discord_delete_message(client, message->channel_id, message->id);
+            struct discord_embed *embed = discord_embed_alloc();
+            struct discord_create_message_params params = {.embed = embed};
+            struct discord_message *poll_message = discord_message_alloc();
+            char *icon_url = get_icon_url(bot);
+
+            embed->color = COLOR_MAGENTA;
+            discord_embed_set_author(embed, message->content, NULL, icon_url, NULL);
+            snprintf(embed->description, 2049, "<:%s:%lu> Yes\n<:%s:%lu> No", E_YES_NAME, E_YES_ID, E_NO_NAME, E_NO_ID);
+            discord_create_message(client, message->channel_id, &params, poll_message);
+            discord_create_reaction(client, poll_message->channel_id, poll_message->id, E_YES_ID, E_YES_NAME);
+            discord_create_reaction(client, poll_message->channel_id, poll_message->id, E_NO_ID, E_NO_NAME);
+
+            free(icon_url);
+            discord_message_free(poll_message);
+            discord_embed_free(embed);
+
+            break;
         }
         default: break;
     }

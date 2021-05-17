@@ -9,7 +9,6 @@ void on_message_reaction_remove(struct discord *client, const struct discord_use
     // if (count == STARBOARD_REACTION_COUNT && !strcmp(emoji->name, E_STAR)) discord_delete_message(client, channel_id, message_id);
 
     // discord_message_free(message);
-    printf("%lu\n", guild_id);
 
     return;
 }
