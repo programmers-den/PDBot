@@ -6,7 +6,7 @@
 #include <string.h>
 #include <orca/discord.h>
 #include <orca/log.h>
-#include "../libs/config.h"
-#include "../libs/get_icon_url.h"
+#include "config.h"
+#include "get_icon_url.h"
 
 void on_message_create(struct discord *client, const struct discord_user *bot, const struct discord_message *message);

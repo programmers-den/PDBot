@@ -12,6 +12,7 @@
 #include "src/libs/help.h"
 #include "src/libs/ping.h"
 #include "src/libs/icon.h"
+#include "src/libs/stat.h"
 
 int main() {
     discord_global_init();
@@ -28,6 +29,7 @@ int main() {
     discord_set_on_command(client, "help", &help);
     discord_set_on_command(client, "ping", &ping);
     discord_set_on_command(client, "icon", &icon);
+    discord_set_on_command(client, "stat", &stat);
 
     discord_run(client);
 
