@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
+#include <string.h>
 #include <orca/discord.h>
 #include <orca/log.h>
 #include "../libs/config.h"
@@ -14,7 +15,6 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
                 struct discord_get_channel_messages_params params = {.limit = 2};
                 discord_get_channel_messages(client, message->channel_id, &params, &msgs);
                 if (msgs) {
-                    // No nullbyte
                     size_t prev_val = atoi((char*)msgs[1]->content);
                     if (val-1 == prev_val) break;
                     else discord_delete_message(client, message->channel_id, message->id);
@@ -22,6 +22,12 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
             }
             else discord_delete_message(client, message->channel_id, message->id);
             break;
+        }
+        case C_ONE_WORD: {
+            for (size_t i=0; i<strlen(message->content); i++) {
+                if (message->content[i] == ' ') discord_delete_message(client, message->channel_id, message->id);
+                else continue;
+            }
         }
         default: break;
     }
