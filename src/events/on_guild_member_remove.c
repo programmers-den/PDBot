@@ -7,7 +7,7 @@ void on_guild_member_remove(struct discord *client, const struct discord_user *b
     struct discord_embed *embed = discord_embed_alloc();
     struct discord_create_message_params params = {.embed = embed};
 
-    embed->color = 16711680;
+    embed->color = COLOR_RED;
     embed->timestamp = orka_timestamp_ms();
     char *icon_url = get_icon_url(user);
     discord_embed_set_author(embed, (char*)user->username, NULL, icon_url, NULL);
@@ -17,6 +17,7 @@ void on_guild_member_remove(struct discord *client, const struct discord_user *b
 
     discord_create_message(client, C_LOG, &params, NULL);
     free(icon_url);
+    discord_embed_free(embed);
 
     return;
 }

@@ -7,7 +7,7 @@ void on_guild_member_add(struct discord *client, const struct discord_user *bot,
     struct discord_embed *embed = discord_embed_alloc();
     struct discord_create_message_params params = {.embed = embed};
 
-    embed->color = 10026904;
+    embed->color = COLOR_MINT;
     embed->timestamp = member->joined_at;
     char *icon_url = get_icon_url(member->user);
     discord_embed_set_author(embed, member->user->username, NULL, icon_url, NULL);
@@ -23,6 +23,7 @@ void on_guild_member_add(struct discord *client, const struct discord_user *bot,
 
     discord_create_message(client, C_LOG, &params, NULL);
     free(icon_url);
+    discord_embed_free(embed);
 
     return;
 }

@@ -6,6 +6,8 @@
 // #define C_COUNTER 713233286574637127
 #define C_ONE_WORD 843892866651652136
 // #define C_ONE_WORD 825481761189658683
+#define C_STARBOARD 800022449642012692
+// #define C_STARBOARD 757072544779206743
 #define C_WELCOME 800748610173272159
 // #define C_WELCOME 668005380630118410
 #define C_SERVER_INFO 813202256626712616
@@ -15,3 +17,11 @@
 #define VC_CHAT_ONE 668000598834151427
 #define VC_CHAT_TWO 839937352193015808
 #define VC_MUSIC 668288521219473428
+#define STARBOARD_REACTION_COUNT 1
+#define MESSAGE_URL_LENGTH 31+18+18+18+1 // https://discord.com/channels/{guild.id}/{channel.id}/{message.id} url + channel_id + message_id + nullbyte
+#define AVATAR_URL_LENGTH 40+18+1 // https://cdn.discordapp.com/ url + id + nullbyte
+#define E_STAR "⭐"
+#define COLOR_RED 16711680
+#define COLOR_BLUE 255
+#define COLOR_MINT 10026904
+#define COLOR_YELLOW 16776960

@@ -9,6 +9,7 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
     embed->timestamp = orka_timestamp_ms();
 
     discord_create_message(client, C_LOG, &params, NULL);
+    discord_embed_free(embed);
 
     return;
 }
