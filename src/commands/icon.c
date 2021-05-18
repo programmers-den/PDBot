@@ -9,10 +9,10 @@ void icon(struct discord *client, const struct discord_user *user, const struct 
     struct discord_create_message_params params = {.embed = embed};
 
     embed->timestamp = orka_timestamp_ms();
-    embed->color = COLOR_BLUE;
+    embed->color = COLOR_AERO;
     char *icon_url = get_icon_url(msg->author);
     discord_embed_set_author(embed, msg->author->username, NULL, icon_url, NULL);
-    discord_embed_set_image(embed, icon_url, NULL, 64, 64);
+    discord_embed_set_image(embed, icon_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
     
     discord_create_message(client, msg->channel_id, &params, NULL);
     free(icon_url);

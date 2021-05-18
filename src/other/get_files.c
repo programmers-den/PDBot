@@ -4,8 +4,8 @@
 #include <dirent.h>
 #include <string.h>
 
-char *get_commands(char *location) {
-    char *cmd = malloc(1024);
+char *get_files(char *location) {
+    char *files = malloc(1024);
     DIR *dp = opendir(location);
 
     if (dp) {
@@ -16,12 +16,15 @@ char *get_commands(char *location) {
                 char *file = malloc(len);
                 strcpy(file, dir->d_name);
                 file[len-1] = '\0';
-                printf("Loaded: %s\n", file);
+                strcat(files, file);
+                strcat(files, "\n");
+                printf("✔️  Loaded: %s\n", file);
+                free(file);
             }
         }
         closedir(dp);
     }
     else printf("Failed to open %s\n", location);
 
-    return cmd;
+    return files;
 }

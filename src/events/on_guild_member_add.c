@@ -11,7 +11,7 @@ void on_guild_member_add(struct discord *client, const struct discord_user *bot,
     embed->timestamp = member->joined_at;
     char *icon_url = get_icon_url(member->user);
     discord_embed_set_author(embed, member->user->username, NULL, icon_url, NULL);
-    discord_embed_set_thumbnail(embed, icon_url, NULL, 64, 64);
+    discord_embed_set_thumbnail(embed, icon_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
     snprintf(embed->title, 257, "Welcome %s#%s!", member->user->username, member->user->discriminator);
     snprintf(embed->description, 2049, "Welcome **%s#%s** to PD! Please checkout <#%lu> and <#%lu> to get started!", member->user->username, member->user->discriminator, C_SERVER_INFO, C_ROLES);
     snprintf(embed->footer->text, 2049, "ID: %lu", member->user->id);

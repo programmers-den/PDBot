@@ -9,6 +9,14 @@
 
 void on_message_create(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
     switch (message->channel_id) {
+        case C_VERIFY: {
+            if (message->author->id != ID_SYNTH) {
+                orka_sleep_ms(VERIFY_SLEEP);
+                discord_delete_message(client, message->channel_id, message->id);
+            }
+
+            break;
+        }
         case C_COUNTER: {
             size_t val = atoi((char*)message->content);
             if (val) {

@@ -6,4 +6,4 @@
 #include <dirent.h>
 #include <string.h>
 
-char *get_commands(char *location);
+char *get_files(char *location);
