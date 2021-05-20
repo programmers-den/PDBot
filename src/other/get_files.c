@@ -6,6 +6,7 @@
 
 char *get_files(char *location) {
     char *files = malloc(1024);
+    memset(files, 0, 1024);
     DIR *dp = opendir(location);
 
     if (dp) {
@@ -14,6 +15,7 @@ char *get_files(char *location) {
             size_t len = strlen(dir->d_name)-1;
             if (dir->d_name[len] == 'c') {
                 char *file = malloc(len);
+                memset(file, 0, len);
                 strcpy(file, dir->d_name);
                 file[len-1] = '\0';
                 strcat(files, file);
