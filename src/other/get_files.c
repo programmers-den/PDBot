@@ -12,12 +12,12 @@ char *get_files(char *location) {
     if (dp) {
         struct dirent *dir;
         while (dir = readdir(dp)) {
-            size_t len = strlen(dir->d_name)-1;
-            if (dir->d_name[len] == 'c') {
-                char *file = malloc(len);
-                memset(file, 0, len);
+            size_t len = strlen(dir->d_name);
+            if (dir->d_name[len-1] == 'c') {
+                char *file = malloc(len+1);
+                memset(file, 0, len+1);
                 strcpy(file, dir->d_name);
-                file[len-1] = '\0';
+                file[len-2] = '\0';
                 strcat(files, file);
                 strcat(files, "\n");
                 printf("✔️  Loaded: %s\n", file);
