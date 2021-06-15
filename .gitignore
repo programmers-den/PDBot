@@ -55,6 +55,7 @@ dkms.conf
 .vscode/
 bot.config
 bot.log
+bot.db
 dump.json
 *.o
 main

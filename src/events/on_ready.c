@@ -2,6 +2,7 @@
 #include <orca/discord.h>
 #include <json-c/json.h>
 #include "../libs/get_files.h"
+#include "../libs/check_for_db.h"
 
 void on_ready(struct discord *client, const struct discord_user *user) {
     printf("%s%s connected successfully\n\n", user->username, user->discriminator);
@@ -20,7 +21,7 @@ void on_ready(struct discord *client, const struct discord_user *user) {
         free(files);
         json_object_to_file_ext("src/json/help.json", parsed_json, 0);
     }
-    else printf("❌  Failed to load help.json file\n");
+    else printf("❌ Failed to load help.json file\n");
 
     printf("\nLoading events:\n\n");
     char *events = get_files("src/events/");
@@ -29,6 +30,8 @@ void on_ready(struct discord *client, const struct discord_user *user) {
     printf("\nLoading etc:\n\n");
     char *etc = get_files("src/other/");
     free(etc);
+
+    check_for_db();
 
     printf("\n✔️  Ready!\n\n");
 

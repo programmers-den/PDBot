@@ -6,8 +6,10 @@
 #include <orca/log.h>
 #include "../libs/config.h"
 #include "../libs/get_icon_url.h"
+#include "../libs/add_message_db.h"
 
 void on_message_create(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
+    add_message_db(message);
     switch (message->channel_id) {
         case C_VERIFY: {
             if (message->author->id != ID_SYNTH) {

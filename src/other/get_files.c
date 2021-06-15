@@ -26,7 +26,7 @@ char *get_files(char *location) {
         }
         closedir(dp);
     }
-    else printf("Failed to open %s\n", location);
+    else printf("❌  Failed to open %s\n", location);
 
     return files;
 }

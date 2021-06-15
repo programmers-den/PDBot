@@ -1,5 +1,7 @@
 #pragma once
 
+#define BOT_DB "bot.db"
+#define MESSAGE_TABLE "messages"
 #define C_LOG 820803540367704105
 // #define C_LOG 820803540367704105
 #define C_COUNTER 800022514943655936
@@ -20,8 +22,14 @@
 // #define C_VERIFY 709783674857586759
 #define VERIFY_SLEEP 6000
 #define VC_CHAT_ONE 668000598834151427
+#define R_VC_CHAT_ONE 845832767689850900
+// #define R_VC_CHAT_ONE 706860693521039390
 #define VC_CHAT_TWO 839937352193015808
+#define R_VC_CHAT_TWO 845832843674124339
+// #define R_VC_CHAT_TWO 845831844367826995
 #define VC_MUSIC 668288521219473428
+#define R_VC_MUSIC 845832873101885461
+// #define R_VC_MUSIC 845832134110871582
 #define STARBOARD_REACTION_COUNT 1
 #define MESSAGE_URL_LENGTH 31+18+18+18+1 // https://discord.com/channels/{guild.id}/{channel.id}/{message.id} url + channel_id + message_id + nullbyte
 #define AVATAR_URL_LENGTH 40+18+1 // https://cdn.discordapp.com/ url + id + nullbyte
