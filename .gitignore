@@ -57,5 +57,6 @@ bot.config
 bot.log
 bot.db
 dump.json
+help.json
 *.o
 main
