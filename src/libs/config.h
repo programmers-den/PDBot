@@ -2,6 +2,8 @@
 
 #define BOT_DB "bot.db"
 #define MESSAGE_TABLE "messages"
+#define HELP_JSON "src/json/help.json"
+#define HELP_JSON_DEFAULT "{\"title\":\"[Commands]\",\"description\":\"\",\"color\":49151}"
 #define C_LOG 820803540367704105
 // #define C_LOG 820803540367704105
 #define C_COUNTER 800022514943655936
