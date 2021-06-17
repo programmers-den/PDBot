@@ -2,6 +2,6 @@
 
 #include <stdio.h>
 #include <sqlite3.h>
-#include "../libs/config.h"
+#include "config.h"
 
 void check_for_db();
