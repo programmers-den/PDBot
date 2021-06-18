@@ -9,11 +9,10 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
     struct discord_embed *embed = discord_embed_alloc();
     struct discord_create_message_params params = {.embed = embed};
     struct discord_message *message = fetch_message_db(client, guild_id, message_id);
-    puts(message->content);
     embed->color = COLOR_RED;
     embed->timestamp = orka_timestamp_ms();
 
-    if (message) {
+    if (message->content[0]) {
         char *icon_url = get_icon_url(message->author);
         discord_embed_set_author(embed, message->author->username, NULL, icon_url, NULL);
         discord_embed_set_thumbnail(embed, icon_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
@@ -30,11 +29,11 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
         discord_create_message(client, C_LOG, &params, NULL);
 
         free(icon_url);
-        discord_message_free(message);
         discord_embed_free(embed);
 
         remove_message_db(message_id);
     }
+    else discord_message_free(message);
 
     return;
 }

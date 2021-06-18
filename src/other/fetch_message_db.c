@@ -6,6 +6,8 @@
 
 struct discord_message *fetch_message_db(struct discord *client, u64_snowflake_t guild_id, u64_snowflake_t message_id) {
     struct discord_message *message = discord_message_alloc();
+    message->content = malloc(1);
+    memset(message->content, 0, 1);
     sqlite3 *db = NULL;
     sqlite3_stmt *stmt = NULL;
     int rc = sqlite3_open(BOT_DB, &db);
@@ -13,12 +15,12 @@ struct discord_message *fetch_message_db(struct discord *client, u64_snowflake_t
     else {
         char *query = NULL, *errMsg = NULL;
         query = sqlite3_mprintf("SELECT timestamp, author_id, message_id, content FROM %s WHERE message_id = %lu;", MESSAGE_TABLE, message_id);
-        puts(query);
+        // puts(query);
         rc = sqlite3_prepare_v2(db, query, -1, &stmt, NULL);
 
         while ((rc = sqlite3_step(stmt)) != SQLITE_DONE) {
             u64_snowflake_t db_message_id = 0;
-            printf("Timestamp: %lu, Author_id: %lu, Message_id: %lu, Content: %s\n", sqlite3_column_int64(stmt, 0), sqlite3_column_int64(stmt, 1), sqlite3_column_int64(stmt, 2), sqlite3_column_text(stmt, 3));
+            // printf("Timestamp: %lu, Author_id: %lu, Message_id: %lu, Content: %s\n", sqlite3_column_int64(stmt, 0), sqlite3_column_int64(stmt, 1), sqlite3_column_int64(stmt, 2), sqlite3_column_text(stmt, 3));
             if ((db_message_id = sqlite3_column_int64(stmt, 2)) == message_id) {
                 printf("%lu, %lu\n", db_message_id, message_id);
                 struct discord_user *member = discord_user_alloc();
@@ -31,13 +33,12 @@ struct discord_message *fetch_message_db(struct discord *client, u64_snowflake_t
                 strcpy(message->content, sqlite3_column_text(stmt, 3));
             }
         }
+        // if (rc) {
+        //     printf("\nSQL Error: %s\n\n", errMsg);
+        //     sqlite3_free(errMsg);
+        // }
+
         sqlite3_free(query);
-
-        if (rc != SQLITE_OK) {
-            printf("\nSQL Error: %s\n\n", errMsg);
-            sqlite3_free(errMsg);
-        }
-
         sqlite3_close(db);
     }
 
