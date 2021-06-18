@@ -23,9 +23,9 @@ struct discord_message *fetch_message_db(struct discord *client, u64_snowflake_t
                 printf("%lu, %lu\n", db_message_id, message_id);
                 struct discord_user *member = discord_user_alloc();
                 message->timestamp = sqlite3_column_int64(stmt, 0);
-                discord_get_guild_member(client, guild_id, db_message_id, (struct discord_guild_member*)member);
-                message->author = member;
                 message->author->id = sqlite3_column_int64(stmt, 1);
+                discord_get_user(client, message->author->id, member);
+                message->author = member;
                 message->id = db_message_id;
                 message->content = malloc(4001);
                 strcpy(message->content, sqlite3_column_text(stmt, 3));
