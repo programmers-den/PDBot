@@ -1,16 +1,14 @@
-#include <sqlite3.h>
 #include <orca/discord.h>
-#include <orca/orka-utils.h>
+#include <sqlite3.h>
 #include "../libs/config.h"
 
-void add_message_db(const struct discord_message *message) {
+void update_message_db(const struct discord_message *message) {
     sqlite3 *db = NULL;
     int rc = sqlite3_open(BOT_DB, &db);
-
     if (rc) printf("\nFailed to open %s!\n\n", BOT_DB);
     else {
         char *query = NULL, *errMsg = NULL;
-        query = sqlite3_mprintf("INSERT INTO %s(timestamp, author_id, message_id, content) values(%lu, %lu, %lu, '%s');", MESSAGE_TABLE, orka_timestamp_ms(), message->author->id, message->id, message->content);
+        query = sqlite3_mprintf("UPDATE %s SET content = '%s' WHERE message_id = %lu;", MESSAGE_TABLE, message->content, message->id);
         rc = sqlite3_exec(db, query, NULL, NULL, &errMsg);
         sqlite3_free(query);
         if (rc != SQLITE_OK) {

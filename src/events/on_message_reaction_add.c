@@ -15,7 +15,7 @@ void on_message_reaction_add(struct discord *client, const struct discord_user *
         embed->color = COLOR_YELLOW;
         embed->timestamp = orka_timestamp_ms();
         char *icon_url = get_icon_url(member->user);
-        char *url = get_message_url(guild_id, message);
+        char *url = get_message_url(message);
         discord_embed_set_author(embed, (char*)member->user->username, NULL, icon_url, NULL);
         discord_embed_set_thumbnail(embed, icon_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
         snprintf(embed->description, 2049, "%s\n\n**[Jump to message](%s)**", message->content, url);

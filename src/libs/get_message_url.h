@@ -4,4 +4,4 @@
 #include <orca/orka-utils.h>
 #include "config.h"
 
-char *get_message_url(const u64_snowflake_t guild_id, struct discord_message *message);
+char *get_message_url(const struct discord_message *message);

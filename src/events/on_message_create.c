@@ -9,6 +9,8 @@
 #include "../libs/add_message_db.h"
 
 void on_message_create(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
+    if (message->author->bot) return;
+    
     add_message_db(message);
     switch (message->channel_id) {
         case C_VERIFY: {
