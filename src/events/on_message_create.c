@@ -49,10 +49,13 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
             if (message->author->bot) break;
 
             discord_delete_message(client, message->channel_id, message->id);
+
+            char *icon_url = malloc(AVATAR_URL_LEN);
             struct discord_embed *embed = discord_embed_alloc();
             struct discord_create_message_params params = {.embed = embed};
             struct discord_message *poll_message = discord_message_alloc();
-            char *icon_url = get_icon_url(bot);
+
+            get_icon_url(icon_url, bot);
 
             embed->color = COLOR_MAGENTA;
             discord_embed_set_author(embed, message->content, NULL, icon_url, NULL);

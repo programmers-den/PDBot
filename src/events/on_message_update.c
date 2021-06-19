@@ -10,16 +10,18 @@
 void on_message_update(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
     if (message->author->bot) return;
 
+    char *icon_url = malloc(AVATAR_URL_LEN), message_id_str[ID_STR_LEN], message_str[MESSAGE_URL_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN];
     struct discord_embed *embed = discord_embed_alloc();
     struct discord_create_message_params params = {.embed = embed};
     struct discord_message *db_message = fetch_message_db(client, message->guild_id, message->id);
-    char *icon_url = get_icon_url(message->author);
-    char *message_id_str = id_to_str(message->id);
-    char *message_str = message_mention("Jump to message", message);
-    char *channel_id_str = id_to_str(message->channel_id);
-    char *channel_str = channel_mention(message->channel_id);
-    char *author_id_str = id_to_str(message->author->id);
-    char *author_str = user_mention(message->author->id);
+
+    get_icon_url(icon_url, message->author);
+    id_to_str(message_id_str, message->id);
+    message_mention(message_str, "Jump to message", message);
+    id_to_str(channel_id_str, message->channel_id);
+    channel_mention(channel_str, message->channel_id);
+    id_to_str(author_id_str, message->author->id);
+    user_mention(author_str, message->author->id);
 
     if (db_message->content[0]) update_message_db(message);
     else add_message_db(message);
@@ -42,12 +44,6 @@ void on_message_update(struct discord *client, const struct discord_user *bot, c
     discord_create_message(client, C_LOG, &params, NULL);
 
     free(icon_url);
-    free(message_id_str);
-    free(message_str);
-    free(channel_id_str);
-    free(channel_str);
-    free(author_id_str);
-    free(author_str);
     discord_embed_free(embed);
     discord_message_free(db_message);
 

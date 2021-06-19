@@ -6,4 +6,4 @@
 #include <dirent.h>
 #include <string.h>
 
-char *get_files(char *location);
+void get_files(char buf[], char *location);

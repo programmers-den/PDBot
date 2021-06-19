@@ -4,49 +4,47 @@
 #include "../libs/config.h"
 #include "../libs/get_message_url.h"
 
-char *id_to_str(u64_snowflake_t id) {
-    char *id_str = malloc(ID_LENGTH+1);
-    snprintf(id_str, ID_LENGTH+1, "%lu", id);
+void id_to_str(char buf[], u64_snowflake_t id) {
+    // buf[ID_STR_LEN]
+    snprintf(buf, ID_STR_LEN, "%lu", id);
 
-    return id_str;
+    return;
 }
 
-char *timestamp_to_str(u64_unix_ms_t timestamp) {
-    char *formatted_timestamp = malloc(TIMESTAMP_LENGTH+1);
-    orka_timestamp_str(formatted_timestamp, TIMESTAMP_LENGTH);
+void timestamp_to_str(char buf[], u64_unix_ms_t timestamp) {
+    // buf[TIMESTAMP_STR_LEN]
+    orka_timestamp_str(buf, TIMESTAMP_STR_LEN);
 
-    return formatted_timestamp;
+    return;
 }
 
-char *message_mention(char *mention_label, const struct discord_message *message) {
-    char *message_url = get_message_url(message);
-    size_t mention_label_len = strlen(mention_label)+strlen(message_url)+9;
+void message_mention(char buf[], char *mention_label, const struct discord_message *message) {
+    // buf[MESSAGE_URL_LEN]
+    char message_url[MESSAGE_URL_LEN];
 
-    char *formatted_message = malloc(mention_label_len);
-    snprintf(formatted_message, mention_label_len, "**[%s](%s)**", mention_label, message_url);
+    get_message_url(message_url, message);
+    snprintf(buf, strlen(mention_label)+MESSAGE_URL_LEN+9, "**[%s](%s)**", mention_label, message_url);
 
-    free(message_url);
-    return formatted_message;
+    return;
 }
 
-char *channel_mention(u64_snowflake_t channel_id) {
-    char *formatted_channel = malloc(ID_LENGTH+4);
-    snprintf(formatted_channel, CHANNEL_MENTiON_LENGTH+4, "<#%lu>", channel_id);
+void channel_mention(char buf[], u64_snowflake_t channel_id) {
+    // buf[CHANNEL_MENTiON_LEN]
+    snprintf(buf, CHANNEL_MENTiON_LEN, "<#%lu>", channel_id);
 
-    return formatted_channel;
+    return;
 }
 
-char *user_mention(u64_snowflake_t user_id) {
-    char *formatted_user = malloc(ID_LENGTH+4);
-    snprintf(formatted_user, ID_LENGTH+4, "<@%lu>", user_id);
+void user_mention(char buf[], u64_snowflake_t user_id) {
+    // buf[USER_MENTION_LEN]
+    snprintf(buf, USER_MENTION_LEN, "<@%lu>", user_id);
 
-    return formatted_user;
+    return;
 }
 
-char *username_and_discriminator_to_str(const struct discord_user *user) {
-    size_t username_and_discriminator_len = strlen(user->username+6);
-    char *formatted_user = malloc(username_and_discriminator_len);
-    snprintf(formatted_user, username_and_discriminator_len, "%s#%s", user->username, user->discriminator);
+void username_and_discriminator_to_str(char buf[], const struct discord_user *user) {
+    // buf[USER_AND_DESCRIM_LEN]
+    snprintf(buf, USER_AND_DESCRIM_LEN, "%s#%s", user->username, user->discriminator);
 
-    return formatted_user;
+    return;
 }

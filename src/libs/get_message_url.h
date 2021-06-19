@@ -4,4 +4,4 @@
 #include <orca/orka-utils.h>
 #include "config.h"
 
-char *get_message_url(const struct discord_message *message);
+void get_message_url(char buf[], const struct discord_message *message);

@@ -33,8 +33,8 @@
 #define R_VC_MUSIC 845832873101885461
 // #define R_VC_MUSIC 845832134110871582
 #define STARBOARD_REACTION_COUNT 1
-#define MESSAGE_URL_LENGTH 31+18+18+18+1 // https://discord.com/channels/{guild.id}/{channel.id}/{message.id} url + channel_id + message_id + nullbyte
-#define AVATAR_URL_LENGTH 40+18+1 // https://cdn.discordapp.com/ url + id + nullbyte
+#define MESSAGE_URL_LEN 31+18+18+18+1 // https://discord.com/channels/{guild.id}/{channel.id}/{message.id} url + channel_id + message_id + nullbyte
+#define AVATAR_URL_LEN 40+18+1024+1 // https://cdn.discordapp.com/ url + id + avatar length + nullbyte
 #define AVATAR_HEIGHT 124
 #define AVATAR_WIDTH 124
 #define E_STAR "⭐"
@@ -44,10 +44,13 @@
 #define E_NO_NAME "no"
 #define E_NO_ID 821218629315723274
 // #define E_NO_ID 800395869425762345
-#define ID_LENGTH 18
-#define CHANNEL_MENTiON_LENGTH 18+4
-#define USER_MENTION_LENGTH 18+4
-#define TIMESTAMP_LENGTH 10
+#define ID_LEN 18
+#define ID_STR_LEN 19
+#define CHANNEL_MENTiON_LEN 18+4
+#define USER_MENTION_LEN 18+4
+#define USER_AND_DESCRIM_LEN 32+4+1 // username + discriminator + nullbyte
+#define TIMESTAMP_LEN 10
+#define TIMESTAMP_STR_LEN 11
 #define ID_SYNTH 300126997718237195
 #define COLOR_RED 16711680
 #define COLOR_BLUE 255

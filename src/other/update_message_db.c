@@ -5,6 +5,7 @@
 void update_message_db(const struct discord_message *message) {
     sqlite3 *db = NULL;
     int rc = sqlite3_open(BOT_DB, &db);
+
     if (rc) printf("\nFailed to open %s!\n\n", BOT_DB);
     else {
         char *query = NULL, *errMsg = NULL;

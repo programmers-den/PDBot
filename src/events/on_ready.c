@@ -10,12 +10,10 @@ void on_ready(struct discord *client, const struct discord_user *user) {
     check_for_json();
 
     printf("\nLoading events:\n\n");
-    char *events = get_files("src/events/");
-    free(events);
+    get_files(NULL, "src/events/");
 
     printf("\nLoading etc:\n\n");
-    char *etc = get_files("src/other/");
-    free(etc);
+    get_files(NULL, "src/other/");
 
     check_for_db();
 
