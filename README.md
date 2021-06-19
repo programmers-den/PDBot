@@ -34,12 +34,9 @@ make install
 apt install -y libsqlite3-dev
 ```
 
-## 1.2. Latest major change
-> Implemented message reaction logs
-## 1.3. Latest minor change
-> Cleaned and organized code
-## 1.4. Config
-> Delete comments if copy and pasting or will not work
+## 1.2. Bot config file
+> Create a `bot.config` file in the root directory of the bot with the following contents
+> Delete comments if copy and pasting from below or will not work
 ```json
 {
   "logging": {
@@ -63,7 +60,7 @@ apt install -y libsqlite3-dev
 }
 ```
 
-## 1.5. Commands
+## 1.3. Commands
 > The prefix is `./`
 
 | Commands | Syntax   |
@@ -72,6 +69,12 @@ apt install -y libsqlite3-dev
 | icon     | `./icon` |
 | ping     | `./ping` |
 | stat     | `./stat` |
+
+## 1.4. Latest major change
+> Implemented message reaction logs
+
+## 1.5. Latest minor change
+> Cleaned and organized code
 
 ## 1.6. To-do
 - [ ] Add no-mic roles to users when they join a vc to access hidden channel
