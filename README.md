@@ -1,6 +1,7 @@
 # 1. ~$ PDBot
+![PD logo](https://cdn.discordapp.com/icons/668000598221651975/9c38858cf48263dbbc5ef4b3315bdc6d.webp?size=64)
+
 PDBot is the official Discord bot for the [Programmer's Den](https://pden.net) server. It provides many utilities for the management, moderation, and members of this server
-![PD logo](https://cdn.discordapp.com/icons/668000598221651975/9c38858cf48263dbbc5ef4b3315bdc6d.webp?size=256)
 
 ## 1.1. Dependencies and install instructions
 > [orca](https://github.com/cee-studio/orca)
