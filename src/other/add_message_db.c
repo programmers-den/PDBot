@@ -4,6 +4,8 @@
 #include "../libs/config.h"
 
 void add_message_db(const struct discord_message *message) {
+    if (!message->content[0]) return;
+
     sqlite3 *db = NULL;
     int rc = sqlite3_open(BOT_DB, &db);
 

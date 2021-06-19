@@ -15,7 +15,7 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
     embed->timestamp = orka_timestamp_ms();
 
     if (message->content[0]) {
-        char *icon_url = malloc(AVATAR_URL_LEN), message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN];
+        char *icon_url = malloc(AVATAR_URL_LEN), message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
 
         get_icon_url(icon_url, message->author);
         id_to_str(message_id_str, message_id);
@@ -23,8 +23,9 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
         channel_mention(channel_str, channel_id);
         id_to_str(author_id_str, message->author->id);
         user_mention(author_str, message->author->id);
+        username_and_discriminator_to_str(username_and_discriminator, message->author);
 
-        snprintf(embed->title, 257, "Deleted message by %s#%s", message->author->username, message->author->discriminator);
+        snprintf(embed->title, 257, "Deleted message by %s",username_and_discriminator);
 
         discord_embed_set_author(embed, message->author->username, NULL, icon_url, NULL);
         discord_embed_set_thumbnail(embed, icon_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);

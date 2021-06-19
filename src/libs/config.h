@@ -1,4 +1,5 @@
 #pragma once
+#include <orca/discord.h>
 
 #define BOT_DB "bot.db"
 #define MESSAGE_TABLE "messages"
@@ -45,16 +46,22 @@
 #define E_NO_ID 821218629315723274
 // #define E_NO_ID 800395869425762345
 #define ID_LEN 18
-#define ID_STR_LEN 19
-#define CHANNEL_MENTiON_LEN 18+4
-#define USER_MENTION_LEN 18+4
-#define USER_AND_DESCRIM_LEN 32+4+1 // username + discriminator + nullbyte
+#define ID_STR_LEN ID_LEN+1
+#define MESSAGE_MENTION_LEN MESSAGE_URL_LEN+8+1
+#define CHANNEL_MENTiON_LEN ID_LEN+4 // <#ID>
+#define USER_MENTION_LEN ID_LEN+4 // <@ID>
+#define USER_NICK_MENTION_LEN USER_MENTION_LEN+1 // <@!ID>
+#define USER_AND_DESCRIM_LEN MAX_USERNAME_LEN+MAX_DISCRIMINATOR_LEN-1 // username + nullbye + discriminator + nullbyte - nullbyte
+#define ROLE_MENTION_LEN ID_LEN+5 // <@&ROLE_ID>
 #define TIMESTAMP_LEN 10
 #define TIMESTAMP_STR_LEN 11
 #define ID_SYNTH 300126997718237195
 #define COLOR_RED 16711680
+#define COLOR_GREEN 65280
 #define COLOR_BLUE 255
 #define COLOR_AERO 8174056
+#define COLOR_PINK_PANTONE 14108820
+#define COLOR_LIGHT_GREEN 9498256
 #define COLOR_MINT 10026904
 #define COLOR_YELLOW 16776960
 #define COLOR_MAGENTA 16711935

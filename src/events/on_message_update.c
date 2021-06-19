@@ -10,7 +10,7 @@
 void on_message_update(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
     if (message->author->bot) return;
 
-    char *icon_url = malloc(AVATAR_URL_LEN), message_id_str[ID_STR_LEN], message_str[MESSAGE_URL_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN];
+    char *icon_url = malloc(AVATAR_URL_LEN), message_id_str[ID_STR_LEN], message_str[MESSAGE_URL_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
     struct discord_embed *embed = discord_embed_alloc();
     struct discord_create_message_params params = {.embed = embed};
     struct discord_message *db_message = fetch_message_db(client, message->guild_id, message->id);
@@ -22,6 +22,7 @@ void on_message_update(struct discord *client, const struct discord_user *bot, c
     channel_mention(channel_str, message->channel_id);
     id_to_str(author_id_str, message->author->id);
     user_mention(author_str, message->author->id);
+    username_and_discriminator_to_str(username_and_discriminator, message->author);
 
     if (db_message->content[0]) update_message_db(message);
     else add_message_db(message);
@@ -31,7 +32,7 @@ void on_message_update(struct discord *client, const struct discord_user *bot, c
     discord_embed_set_author(embed, message->author->username, NULL, icon_url, NULL);
     discord_embed_set_thumbnail(embed, icon_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
     snprintf(embed->footer->text, 2049, "Author ID: %lu", message->author->id);
-    snprintf(embed->title, 257, "Edit message by %s#%s", message->author->username, message->author->discriminator);
+    snprintf(embed->title, 257, "Edit message by %s", username_and_discriminator);
     discord_embed_add_field(embed, "Message ID", message_id_str, true);
     discord_embed_add_field(embed, "Channel ID", channel_id_str, true);
     discord_embed_add_field(embed, "Author ID", author_id_str, true);
