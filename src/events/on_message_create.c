@@ -1,12 +1,5 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <stddef.h>
-#include <string.h>
 #include <orca/discord.h>
-#include <orca/log.h>
-#include "../libs/config.h"
-#include "../libs/get_icon_url.h"
-#include "../libs/add_message_db.h"
+#include "../libs/bot_include.h"
 
 void on_message_create(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
     if (message->author->bot) return;
@@ -15,7 +8,7 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
     switch (message->channel_id) {
         case C_VERIFY: {
             if (message->author->id != ID_SYNTH) {
-                orka_sleep_ms(VERIFY_SLEEP);
+                cee_sleep_ms(VERIFY_SLEEP);
                 discord_delete_message(client, message->channel_id, message->id);
             }
 

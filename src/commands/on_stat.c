@@ -1,9 +1,8 @@
 #include <orca/discord.h>
-#include <orca/orka-utils.h>
-#include "../libs/config.h"
-#include "../libs/get_icon_url.h"
+#include <orca/cee-utils.h>
+#include "../libs/bot_include.h"
 
-void stat(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
+void on_stat(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
     if (message->author->bot) return;
 
     char *icon_url = malloc(AVATAR_URL_LEN), user_id[ID_STR_LEN];
@@ -13,7 +12,7 @@ void stat(struct discord *client, const struct discord_user *bot, const struct d
     get_icon_url(icon_url, message->author);
     snprintf(user_id, ID_STR_LEN, "%lu", message->author->id);
 
-    embed->timestamp = orka_timestamp_ms();
+    embed->timestamp = cee_timestamp_ms();
     discord_embed_set_author(embed, message->author->username, NULL, icon_url, NULL);
     discord_embed_set_image(embed, icon_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
     discord_embed_add_field(embed, "ID", user_id, false);

@@ -1,8 +1,6 @@
-#include <string.h>
 #include <orca/discord.h>
-#include <orca/orka-utils.h>
-#include "../libs/config.h"
-#include "../libs/get_message_url.h"
+#include <orca/cee-utils.h>
+#include "../libs/bot_include.h"
 
 void id_to_str(char buf[], u64_snowflake_t id) {
     // buf[ID_STR_LEN]
@@ -13,7 +11,7 @@ void id_to_str(char buf[], u64_snowflake_t id) {
 
 void timestamp_to_str(char buf[], u64_unix_ms_t timestamp) {
     // buf[TIMESTAMP_STR_LEN]
-    orka_timestamp_str(buf, TIMESTAMP_STR_LEN);
+    cee_timestamp_str(buf, TIMESTAMP_STR_LEN);
 
     return;
 }

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <json-c/json.h>
-#include "../libs/config.h"
-#include "../libs/get_files.h"
+#include "../libs/bot_include.h"
 
 void check_for_json() {
     FILE *fp = fopen(HELP_JSON, "r");

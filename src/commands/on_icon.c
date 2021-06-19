@@ -1,15 +1,15 @@
 #include <orca/discord.h>
-#include "../libs/config.h"
-#include "../libs/get_icon_url.h"
+#include <orca/cee-utils.h>
+#include "../libs/bot_include.h"
 
-void icon(struct discord *client, const struct discord_user *user, const struct discord_message *msg) {
+void on_icon(struct discord *client, const struct discord_user *user, const struct discord_message *msg) {
     if (msg->author->bot) return;
 
     char *icon_url = malloc(AVATAR_URL_LEN);
     struct discord_embed *embed = discord_embed_alloc();
     struct discord_create_message_params params = {.embed = embed};
 
-    embed->timestamp = orka_timestamp_ms();
+    embed->timestamp = cee_timestamp_ms();
     embed->color = COLOR_AERO;
 
     get_icon_url(icon_url, msg->author);

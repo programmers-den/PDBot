@@ -1,11 +1,6 @@
 #include <orca/discord.h>
 #include <orca/orka-utils.h>
-#include "../libs/config.h"
-#include "../libs/fetch_message_db.h"
-#include "../libs/add_message_db.h"
-#include "../libs/update_message_db.h"
-#include "../libs/get_icon_url.h"
-#include "../libs/format_message.h"
+#include "../libs/bot_include.h"
 
 void on_message_update(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
     if (message->author->bot) return;
@@ -28,7 +23,7 @@ void on_message_update(struct discord *client, const struct discord_user *bot, c
     else add_message_db(message);
 
     embed->color = COLOR_YELLOW;
-    embed->timestamp = orka_timestamp_ms();
+    embed->timestamp = cee_timestamp_ms();
     discord_embed_set_author(embed, message->author->username, NULL, icon_url, NULL);
     discord_embed_set_thumbnail(embed, icon_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
     snprintf(embed->footer->text, 2049, "Author ID: %lu", message->author->id);

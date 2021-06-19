@@ -1,8 +1,8 @@
-#include <string.h>
+#pragma once
+
 #include <orca/discord.h>
-#include <orca/orka-utils.h>
-#include "config.h"
-#include "get_message_url.h"
+#include <orca/cee-utils.h>
+#include "bot_include.h"
 
 void id_to_str(char buf[], u64_snowflake_t id);
 void timestamp_to_str(char buf[], u64_unix_ms_t timestamp);

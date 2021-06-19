@@ -1,4 +1,5 @@
 #pragma once
+
 #include <orca/discord.h>
 
 #define BOT_DB "bot.db"

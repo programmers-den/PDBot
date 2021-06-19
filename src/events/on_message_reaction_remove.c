@@ -1,7 +1,6 @@
 #include <orca/discord.h>
-#include "../libs/config.h"
-#include "../libs/get_icon_url.h"
-#include "../libs/format_message.h"
+#include <orca/cee-utils.h>
+#include "../libs/bot_include.h"
 
 void on_message_reaction_remove(struct discord *client, const struct discord_user *bot, const u64_snowflake_t user_id, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t guild_id, const struct discord_emoji *emoji) {
     struct discord_user *member = discord_user_alloc();
@@ -15,7 +14,7 @@ void on_message_reaction_remove(struct discord *client, const struct discord_use
     struct discord_create_message_params params = {.embed = embed};
 
     message->guild_id = guild_id;
-    embed->timestamp = orka_timestamp_ms();
+    embed->timestamp = cee_timestamp_ms();
     embed->color = COLOR_PINK_PANTONE;
 
     get_icon_url(icon_url, member);

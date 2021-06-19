@@ -1,8 +1,5 @@
 #include <orca/discord.h>
-#include <orca/orka-utils.h>
-#include "../libs/config.h"
-#include "../libs/get_icon_url.h"
-#include "../libs/format_message.h"
+#include "../libs/bot_include.h"
 
 void on_guild_member_add(struct discord *client, const struct discord_user *bot, const u64_snowflake_t guild_id, const struct discord_guild_member *member) {
     char *icon_url = malloc(AVATAR_URL_LEN), username_and_discriminator[MAX_USERNAME_LEN], user_id_str[ID_STR_LEN], user_str[USER_MENTION_LEN], timestamp_str[TIMESTAMP_STR_LEN];

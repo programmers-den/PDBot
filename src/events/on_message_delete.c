@@ -1,10 +1,6 @@
 #include <orca/discord.h>
 #include <orca/orka-utils.h>
-#include "../libs/config.h"
-#include "../libs/get_icon_url.h"
-#include "../libs/fetch_message_db.h"
-#include "../libs/remove_message_db.h"
-#include "../libs/format_message.h"
+#include "../libs/bot_include.h"
 
 void on_message_delete(struct discord *client, const struct discord_user *bot, const u64_snowflake_t message_id, const u64_snowflake_t channel_id, const u64_snowflake_t guild_id) {
     struct discord_embed *embed = discord_embed_alloc();
@@ -12,7 +8,7 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
     struct discord_message *message = fetch_message_db(client, guild_id, message_id);
 
     embed->color = COLOR_RED;
-    embed->timestamp = orka_timestamp_ms();
+    embed->timestamp = cee_timestamp_ms();
 
     if (message->content[0]) {
         char *icon_url = malloc(AVATAR_URL_LEN), message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];

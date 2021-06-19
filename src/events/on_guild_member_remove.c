@@ -1,8 +1,6 @@
 #include <orca/discord.h>
-#include <orca/orka-utils.h>
-#include "../libs/config.h"
-#include "../libs/get_icon_url.h"
-#include "../libs/format_message.h"
+#include <orca/cee-utils.h>
+#include "../libs/bot_include.h"
 
 void on_guild_member_remove(struct discord *client, const struct discord_user *bot, const u64_snowflake_t guild_id, const struct discord_user *user) {
     char *icon_url = malloc(AVATAR_URL_LEN), user_id_str[ID_STR_LEN], user_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN], timestamp_str[TIMESTAMP_STR_LEN];
@@ -15,7 +13,7 @@ void on_guild_member_remove(struct discord *client, const struct discord_user *b
     username_and_discriminator_to_str(username_and_discriminator, user);
 
     embed->color = COLOR_RED;
-    embed->timestamp = orka_timestamp_ms();
+    embed->timestamp = cee_timestamp_ms();
 
     timestamp_to_str(timestamp_str, embed->timestamp);
 

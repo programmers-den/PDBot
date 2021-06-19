@@ -1,8 +1,6 @@
 #pragma once
 
-#include <stdio.h>
 #include <orca/discord.h>
-#include <json-c/json.h>
-#include "get_files.h"
+#include "bot_include.h"
 
 void on_ready(struct discord *client, const struct discord_user *user);
