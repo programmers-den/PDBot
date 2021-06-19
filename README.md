@@ -36,6 +36,7 @@ apt install -y libsqlite3-dev
 
 ## 1.2. Bot config file
 > Create a `bot.config` file in the root directory of the bot with the following contents
+
 > Delete comments if copy and pasting from below or will not work
 ```json
 {
