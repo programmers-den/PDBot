@@ -72,13 +72,13 @@ apt install -y libsqlite3-dev
 | stat     | `./stat` |
 
 ## 1.4. Latest major change
-> Implemented message reaction logs
+> Implemented no-mic channel roles when joining a vc
 
 ## 1.5. Latest minor change
-> Cleaned and organized code
+> Fixed segfault when user join and left due to mistake in code
 
 ## 1.6. To-do
-- [ ] Add no-mic roles to users when they join a vc to access hidden channel
+- [x] Add no-mic roles to users when they join a vc to access hidden channel
 - [ ] Implement blacklist words filter
 - [ ] Add more information to stat command embed
 - [ ] Add logs for channel events
