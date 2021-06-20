@@ -7,7 +7,7 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
     add_message_db(message);
     switch (message->channel_id) {
         case C_VERIFY: {
-            if (message->author->id != ID_SYNTH) {
+            if (message->author->id != ID_OWNER) {
                 cee_sleep_ms(VERIFY_SLEEP);
                 discord_delete_message(client, message->channel_id, message->id);
             }
