@@ -21,4 +21,5 @@
 #include "on_ready.h"
 #include "on_voice_state_update.h"
 #include "ping.h"
+#include "rm_role_all_user.h"
 #include "stat.h"

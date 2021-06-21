@@ -1,7 +1,7 @@
 #include <orca/discord.h>
 #include "../libs/bot_include.h"
 
-void add_role_all_user(struct discord *client, const struct discord_user *bot, const struct discord_message *msg) {
+void rm_role_all_user(struct discord *client, const struct discord_user *bot, const struct discord_message *msg) {
     if (msg->author->bot) return;
 
     uint8_t has_role = 0;
@@ -18,7 +18,7 @@ void add_role_all_user(struct discord *client, const struct discord_user *bot, c
     discord_embed_set_author(embed, msg->author->username, NULL, author_avatar_url, NULL);
     discord_get_guild_member(client, msg->guild_id, msg->author->id, guild_member);
 
-    for (size_t i=0; guild_member->roles[i]; i++) if (guild_member->roles[i]->value == R_OWNER) has_role = 1;
+    if (msg->mention_roles) for (size_t i=0; msg->mention_roles[i]; i++) for (size_t j=0; guild->members[j]; j++) if (!guild->members[j]->user->bot) discord_remove_guild_member_role(client, msg->guild_id, guild->members[j]->user->id, msg->mention_roles[i]->value);
 
     if (!has_role) {
         embed->color = COLOR_RED;
@@ -59,15 +59,23 @@ void add_role_all_user(struct discord *client, const struct discord_user *bot, c
             discord_list_guild_members(client, msg->guild_id, &list_guild_members_params, &guild->members);
 
             snprintf(embed->title, 257, "Please wait...");
-            snprintf(embed->description, 2049, "Adding roles to %lu members", guild_preview.approximate_member_count);
+            snprintf(embed->description, 2049, "Removing roles from %lu members", guild_preview.approximate_member_count);
 
             discord_create_message(client, msg->channel_id, &params, embed_message);
 
-            if (msg->mention_roles) for (size_t i=0; msg->mention_roles[i]; i++) for (size_t j=0; guild->members[j]; j++) if (!guild->members[j]->user->bot) discord_add_guild_member_role(client, msg->guild_id, guild->members[j]->user->id, msg->mention_roles[i]->value);
+            if (msg->mention_roles) {
+                for (size_t i=0; msg->mention_roles[i]; i++) {
+                    printf("%lu\n", msg->mention_roles[i]);
+                    for (size_t j=0; guild->members[j]; j++) {
+                        puts(guild->members[j]->user->username);
+                        discord_remove_guild_member_role(client, msg->guild_id, guild->members[j]->user->id, msg->mention_roles[i]->value);
+                    }
+                }
+            }
 
             embed->color = COLOR_MINT;
             snprintf(embed->title, 257, "Done! Took %lu ms", cee_timestamp_ms()-msg->timestamp);
-            snprintf(embed->description, 2049, "Added roles to %lu members", guild_preview.approximate_member_count);
+            snprintf(embed->description, 2049, "Removed roles from %lu members", guild_preview.approximate_member_count);
 
             discord_edit_message(client, msg->channel_id, embed_message->id, &edit_params, NULL);
 
