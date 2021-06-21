@@ -11,9 +11,9 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
     embed->timestamp = cee_timestamp_ms();
 
     if (message->content[0]) {
-        char *icon_url = malloc(AVATAR_URL_LEN), message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
+        char *author_avatar_url = malloc(AVATAR_URL_LEN), message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
 
-        get_icon_url(icon_url, message->author);
+        get_avatar_url(author_avatar_url, message->author);
         id_to_str(message_id_str, message_id);
         id_to_str(channel_id_str, message->id);
         channel_mention(channel_str, channel_id);
@@ -21,10 +21,10 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
         user_mention(author_str, message->author->id);
         username_and_discriminator_to_str(username_and_discriminator, message->author);
 
-        snprintf(embed->title, 257, "Deleted message by %s",username_and_discriminator);
+        snprintf(embed->title, 257, "Deleted message by %s", username_and_discriminator);
 
-        discord_embed_set_author(embed, message->author->username, NULL, icon_url, NULL);
-        discord_embed_set_thumbnail(embed, icon_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
+        discord_embed_set_author(embed, message->author->username, NULL, author_avatar_url, NULL);
+        discord_embed_set_thumbnail(embed, author_avatar_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
         discord_embed_add_field(embed, "Message ID", message_id_str, true);
         discord_embed_add_field(embed, "Channel ID", channel_id_str, true);
         discord_embed_add_field(embed, "Author ID", author_id_str, true);
@@ -35,7 +35,7 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
 
         discord_create_message(client, C_LOG, &params, NULL);
 
-        free(icon_url);
+        free(author_avatar_url);
         discord_embed_free(embed);
 
         remove_message_db(message_id);

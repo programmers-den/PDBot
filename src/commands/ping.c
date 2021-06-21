@@ -2,7 +2,7 @@
 #include <orca/cee-utils.h>
 #include "../libs/bot_include.h"
 
-void on_ping(struct discord *client, const struct discord_user *user, const struct discord_message *msg) {
+void ping(struct discord *client, const struct discord_user *bot, const struct discord_message *msg) {
     if (msg->author->bot) return;
 
     char content[TIMESTAMP_STR_LEN+10];

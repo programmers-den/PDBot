@@ -2,11 +2,11 @@
 #include "../libs/bot_include.h"
 
 void on_guild_member_add(struct discord *client, const struct discord_user *bot, const u64_snowflake_t guild_id, const struct discord_guild_member *member) {
-    char *icon_url = malloc(AVATAR_URL_LEN), username_and_discriminator[MAX_USERNAME_LEN], user_id_str[ID_STR_LEN], user_str[USER_MENTION_LEN], timestamp_str[TIMESTAMP_NORMAL_STR_LEN];
+    char *avatar_url = malloc(AVATAR_URL_LEN), username_and_discriminator[MAX_USERNAME_LEN], user_id_str[ID_STR_LEN], user_str[USER_MENTION_LEN], timestamp_str[TIMESTAMP_NORMAL_STR_LEN];
     struct discord_embed *embed = discord_embed_alloc();
     struct discord_create_message_params params = {.embed = embed};
 
-    get_icon_url(icon_url, member->user);
+    get_avatar_url(avatar_url, member->user);
     username_and_discriminator_to_str(username_and_discriminator, member->user);
     id_to_str(user_id_str, member->user->id);
     user_mention(user_str, member->user->id);
@@ -15,8 +15,8 @@ void on_guild_member_add(struct discord *client, const struct discord_user *bot,
     embed->color = COLOR_MINT;
     embed->timestamp = member->joined_at;
 
-    discord_embed_set_author(embed, member->user->username, NULL, icon_url, NULL);
-    discord_embed_set_thumbnail(embed, icon_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
+    discord_embed_set_author(embed, member->user->username, NULL, avatar_url, NULL);
+    discord_embed_set_thumbnail(embed, avatar_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
 
     if (member->user->bot) {
         discord_add_guild_member_role(client, guild_id, member->user->id, R_BOT);
@@ -50,7 +50,7 @@ void on_guild_member_add(struct discord *client, const struct discord_user *bot,
 
     discord_create_message(client, C_LOG, &params, NULL);
 
-    free(icon_url);
+    free(avatar_url);
     discord_embed_free(embed);
 
     return;

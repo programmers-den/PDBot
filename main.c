@@ -15,10 +15,11 @@ int main() {
     discord_set_on_guild_member_remove(client, &on_guild_member_remove);
     discord_set_on_voice_state_update(client, &on_voice_state_update);
 
-    discord_set_on_command(client, "help", &on_help);
-    discord_set_on_command(client, "ping", &on_ping);
-    discord_set_on_command(client, "icon", &on_icon);
-    discord_set_on_command(client, "stat", &on_stat);
+    discord_set_on_command(client, "add_role_all_user", &add_role_all_user);
+    discord_set_on_command(client, "help", &help);
+    discord_set_on_command(client, "ping", &ping);
+    discord_set_on_command(client, "icon", &icon);
+    discord_set_on_command(client, "stat", &stat);
 
     discord_run(client);
 
