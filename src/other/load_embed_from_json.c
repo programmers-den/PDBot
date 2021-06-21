@@ -2,7 +2,7 @@
 #include <orca/cee-utils.h>
 
 struct discord_embed *load_embed_from_json(char *filename) {
-    size_t len;
+    size_t len = 0;
     char *json_payload = cee_load_whole_file(filename, &len);
 
     struct discord_embed *new_embed = discord_embed_alloc();

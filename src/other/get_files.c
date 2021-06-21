@@ -6,6 +6,7 @@
 
 void get_files(char buf[], char *location) {
     // buf[1024]
+    if (buf) memset(buf, 0, 1024);
     DIR *dp = opendir(location);
 
     if (dp) {
