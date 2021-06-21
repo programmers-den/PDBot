@@ -10,6 +10,7 @@ void message_mention(char buf[], char *mention_label, const struct discord_messa
 void user_mention(char buf[], u64_snowflake_t user_id);
 void user_nick_mention(char buf[], u64_snowflake_t user_id);
 void channel_mention(char buf[], u64_snowflake_t channel_id);
+void role_mention(char buf[], u64_snowflake_t role_id);
 size_t emoji_mention_len(const struct discord_emoji *emoji);
 void emoji_mention(char buf[], const struct discord_emoji *emoji);
 void username_and_discriminator_to_str(char buf[], const struct discord_user *user);

@@ -4,6 +4,7 @@
 
 void id_to_str(char buf[], u64_snowflake_t id) {
     // buf[ID_STR_LEN]
+    memset(buf, 0, ID_STR_LEN);
     snprintf(buf, ID_STR_LEN, "%lu", id);
 
     return;
@@ -11,6 +12,7 @@ void id_to_str(char buf[], u64_snowflake_t id) {
 
 void timestamp_to_str(char buf[], u64_unix_ms_t timestamp) {
     // buf[TIMESTAMP_STR_LEN]
+    memset(buf, 0, TIMESTAMP_STR_LEN);
     snprintf(buf, TIMESTAMP_STR_LEN, "%lu", timestamp);
 
     return;
@@ -18,6 +20,7 @@ void timestamp_to_str(char buf[], u64_unix_ms_t timestamp) {
 
 void message_mention(char buf[], char *mention_label, const struct discord_message *message) {
     // buf[MESSAGE_MENTION_LEN]
+    memset(buf, 0, MESSAGE_MENTION_LEN);
     char message_url[MESSAGE_URL_LEN];
 
     get_message_url(message_url, message);
@@ -28,6 +31,7 @@ void message_mention(char buf[], char *mention_label, const struct discord_messa
 
 void user_mention(char buf[], u64_snowflake_t user_id) {
     // buf[USER_MENTION_LEN]
+    memset(buf, 0, USER_MENTION_LEN);
     snprintf(buf, USER_MENTION_LEN, "<@%lu>", user_id);
 
     return;
@@ -35,6 +39,7 @@ void user_mention(char buf[], u64_snowflake_t user_id) {
 
 void user_nick_mention(char buf[], u64_snowflake_t user_id) {
     // buf[USER_NICK_MENTION_LEN]
+    memset(buf, 0, USER_NICK_MENTION_LEN);
     snprintf(buf, USER_NICK_MENTION_LEN, "<@!%lu>", user_id);
 
     return;
@@ -42,7 +47,16 @@ void user_nick_mention(char buf[], u64_snowflake_t user_id) {
 
 void channel_mention(char buf[], u64_snowflake_t channel_id) {
     // buf[CHANNEL_MENTiON_LEN]
+    memset(buf, 0, CHANNEL_MENTiON_LEN);
     snprintf(buf, CHANNEL_MENTiON_LEN, "<#%lu>", channel_id);
+
+    return;
+}
+
+void role_mention(char buf[], u64_snowflake_t role_id) {
+    // buf[ROLE_MENTION_LEN]
+    memset(buf, 0, ROLE_MENTION_LEN);
+    snprintf(buf, ROLE_MENTION_LEN, "<@&%lu>", role_id);
 
     return;
 }
@@ -55,6 +69,7 @@ size_t emoji_mention_len(const struct discord_emoji *emoji) {
 void emoji_mention(char buf[], const struct discord_emoji *emoji) {
     // buf[emoji_mention_len(emoji)]
     size_t len = emoji_mention_len(emoji);
+    memset(buf, 0, len);
     if (emoji->animated) snprintf(buf, len, "<a:%s:%lu>", emoji->name, emoji->id);
     else snprintf(buf, len, "<:%s:%lu>", emoji->name, emoji->id);
 
@@ -63,6 +78,7 @@ void emoji_mention(char buf[], const struct discord_emoji *emoji) {
 
 void username_and_discriminator_to_str(char buf[], const struct discord_user *user) {
     // buf[USER_AND_DESCRIM_LEN]
+    memset(buf, 0, USER_AND_DESCRIM_LEN);
     snprintf(buf, USER_AND_DESCRIM_LEN, "%s#%s", user->username, user->discriminator);
 
     return;
