@@ -19,17 +19,21 @@ void check_for_json() {
     fp = fopen(HELP_JSON, "r");
 
     if (fp) {
-        char buffer[1024], files[1024];
-        struct json_object *parsed_json = json_tokener_parse(buffer);
-        struct json_object *commands;
+        char *buffer = malloc(1024), *files = malloc(1024);
 
         get_files(files, "src/commands/");
         fread(buffer, 1024, 1, fp);
+
+        struct json_object *parsed_json = json_tokener_parse(buffer), *commands = NULL;
+
         fclose(fp);
 
         json_object_object_get_ex(parsed_json, "description", &commands);
         json_object_set_string(commands, files);
         json_object_to_file_ext(HELP_JSON, parsed_json, 0);
+
+        free(buffer);
+        free(files);
     }
 
     return;
