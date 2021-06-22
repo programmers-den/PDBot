@@ -2,7 +2,7 @@
 #include <orca/cee-utils.h>
 #include "../libs/bot_include.h"
 
-void id_to_str(char buf[], u64_snowflake_t id) {
+void id_to_str(char *buf, u64_snowflake_t id) {
     // buf[ID_STR_LEN]
     memset(buf, 0, ID_STR_LEN);
     snprintf(buf, ID_STR_LEN, "%lu", id);
@@ -10,7 +10,7 @@ void id_to_str(char buf[], u64_snowflake_t id) {
     return;
 }
 
-void timestamp_to_str(char buf[], u64_unix_ms_t timestamp) {
+void timestamp_to_str(char *buf, u64_unix_ms_t timestamp) {
     // buf[TIMESTAMP_STR_LEN]
     memset(buf, 0, TIMESTAMP_STR_LEN);
     snprintf(buf, TIMESTAMP_STR_LEN, "%lu", timestamp);
@@ -18,7 +18,7 @@ void timestamp_to_str(char buf[], u64_unix_ms_t timestamp) {
     return;
 }
 
-void message_mention(char buf[], char *mention_label, const struct discord_message *message) {
+void message_mention(char *buf, char *mention_label, const struct discord_message *message) {
     // buf[MESSAGE_MENTION_LEN]
     memset(buf, 0, MESSAGE_MENTION_LEN);
     char message_url[MESSAGE_URL_LEN];
@@ -29,7 +29,7 @@ void message_mention(char buf[], char *mention_label, const struct discord_messa
     return;
 }
 
-void user_mention(char buf[], u64_snowflake_t user_id) {
+void user_mention(char *buf, u64_snowflake_t user_id) {
     // buf[USER_MENTION_LEN]
     memset(buf, 0, USER_MENTION_LEN);
     snprintf(buf, USER_MENTION_LEN, "<@%lu>", user_id);
@@ -37,7 +37,7 @@ void user_mention(char buf[], u64_snowflake_t user_id) {
     return;
 }
 
-void user_nick_mention(char buf[], u64_snowflake_t user_id) {
+void user_nick_mention(char *buf, u64_snowflake_t user_id) {
     // buf[USER_NICK_MENTION_LEN]
     memset(buf, 0, USER_NICK_MENTION_LEN);
     snprintf(buf, USER_NICK_MENTION_LEN, "<@!%lu>", user_id);
@@ -45,7 +45,7 @@ void user_nick_mention(char buf[], u64_snowflake_t user_id) {
     return;
 }
 
-void channel_mention(char buf[], u64_snowflake_t channel_id) {
+void channel_mention(char *buf, u64_snowflake_t channel_id) {
     // buf[CHANNEL_MENTiON_LEN]
     memset(buf, 0, CHANNEL_MENTiON_LEN);
     snprintf(buf, CHANNEL_MENTiON_LEN, "<#%lu>", channel_id);
@@ -53,10 +53,20 @@ void channel_mention(char buf[], u64_snowflake_t channel_id) {
     return;
 }
 
-void role_mention(char buf[], u64_snowflake_t role_id) {
+void role_mention(char *buf, u64_snowflake_t role_id) {
     // buf[ROLE_MENTION_LEN]
     memset(buf, 0, ROLE_MENTION_LEN);
     snprintf(buf, ROLE_MENTION_LEN, "<@&%lu>", role_id);
+
+    return;
+}
+
+void role_list_mention(char **buf, u64_snowflake_t *role_ids) {
+    // *buf[ROLE_MENTION_LEN]
+    for (size_t i=0; role_ids[i]; i++) {
+        memset(buf[i], 0, ROLE_MENTION_LEN);
+        snprintf(buf[i], ROLE_MENTION_LEN, "<@%lu>", role_ids[i]);
+    }
 
     return;
 }
@@ -66,7 +76,7 @@ size_t emoji_mention_len(const struct discord_emoji *emoji) {
     else return strlen(emoji->name)+ID_LEN+6+1;
 }
 
-void emoji_mention(char buf[], const struct discord_emoji *emoji) {
+void emoji_mention(char *buf, const struct discord_emoji *emoji) {
     // buf[emoji_mention_len(emoji)]
     size_t len = emoji_mention_len(emoji);
     memset(buf, 0, len);
@@ -76,7 +86,7 @@ void emoji_mention(char buf[], const struct discord_emoji *emoji) {
     return;
 }
 
-void username_and_discriminator_to_str(char buf[], const struct discord_user *user) {
+void username_and_discriminator_to_str(char *buf, const struct discord_user *user) {
     // buf[USER_AND_DESCRIM_LEN]
     memset(buf, 0, USER_AND_DESCRIM_LEN);
     snprintf(buf, USER_AND_DESCRIM_LEN, "%s#%s", user->username, user->discriminator);

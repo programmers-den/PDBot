@@ -2,7 +2,9 @@
 
 #include "add_role_all_user.h"
 #include "bot_db.h"
+#include "bot_include.h"
 #include "check_for_json.h"
+#include "cmd_args_format.h"
 #include "config.h"
 #include "format_message.h"
 #include "get_avatar_url.h"
@@ -22,4 +24,5 @@
 #include "on_voice_state_update.h"
 #include "ping.h"
 #include "rm_role_all_user.h"
+#include "role_utils.h"
 #include "stat.h"

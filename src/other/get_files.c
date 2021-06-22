@@ -11,7 +11,7 @@ void get_files(char buf[], char *location) {
 
     if (dp) {
         struct dirent *dir;
-        while (dir = readdir(dp)) {
+        while ((dir = readdir(dp))) {
             size_t len = strlen(dir->d_name);
             if (dir->d_name[len-1] == 'c') {
                 char file[len+1];
