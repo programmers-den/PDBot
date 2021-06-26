@@ -10,7 +10,7 @@ void add_role_all_user(struct discord *client, const struct discord_user *bot, c
 
     embed->timestamp = msg->timestamp;
     get_avatar_url(author_avatar_url, msg->author);
-    snprintf(embed->footer->text, 2049, "Author ID: %lu", msg->author->id);
+    snprintf(embed->footer->text, 2049, "Author ID: %llu", msg->author->id);
     discord_embed_set_author(embed, msg->author->username, NULL, author_avatar_url, NULL);
     discord_get_guild_member(client, msg->guild_id, msg->author->id, guild_member);
 
@@ -40,7 +40,7 @@ void add_role_all_user(struct discord *client, const struct discord_user *bot, c
 
             embed->color = COLOR_RED;
             snprintf(embed->title, 257, "Not an id!");
-            snprintf(embed->description, 2049, "Error arg[%lu]: %s", err_arg, arg_str[0]?arg_str:"NULL");
+            snprintf(embed->description, 2049, "Error arg[%zu]: %s", err_arg, arg_str[0]?arg_str:"NULL");
 
             discord_create_message(client, msg->channel_id, &params, NULL);
 

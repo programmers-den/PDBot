@@ -1,15 +1,17 @@
-target = main
-cc = gcc
-src = $(wildcard src/*/*.c)
-obj = $(src:.c=.o)
-flags = -g -ldiscord -lcurl -lcrypto -lssl -lm -lpthread -pthread -lsqlite3 `pkg-config --cflags --libs json-c`
-all: $(target)
+TARGET = main
+CC = gcc
+SRC = $(wildcard src/*/*.c)
+OBJ = $(SRC:.c=.o)
+FLAGS = -g -ldiscord -lcurl -lcrypto -lssl -lm -lpthread -pthread -lsqlite3 -ljson-c
+# FLAGS = -g -static -ldiscord -lcurl-bearssl -lbearssl -lm -lpthread -pthread -lsqlite3 -ljson-c
 
-$(target): main.c $(obj)
-	$(cc) $^ $(flags) -o $@
+all: $(TARGET)
+
+$(TARGET): main.c $(OBJ)
+	$(CC) $^ $(FLAGS) -o $@
 
 %.o: %.c
-	$(cc) -c $(flags) $^ -o $@
+	$(CC) -c $(FLAGS) $^ -o $@
 
 clean:
-	rm -rfv $(obj) $(target)
+	rm -rfv $(OBJ) $(TARGET)

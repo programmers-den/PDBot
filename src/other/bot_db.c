@@ -59,7 +59,7 @@ struct discord_message *fetch_message_db(struct discord *client, u64_snowflake_t
                 message->author = member;
                 message->id = db_message_id;
                 message->content = malloc(4001);
-                strcpy(message->content, sqlite3_column_text(stmt, 3));
+                strcpy(message->content, (const char*)sqlite3_column_text(stmt, 3));
             }
         }
         // if (rc) {
