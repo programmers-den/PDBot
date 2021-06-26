@@ -44,7 +44,6 @@ void add_role_all_user(struct discord *client, const struct discord_user *bot, c
 
             discord_create_message(client, msg->channel_id, &params, NULL);
 
-            discord_guild_member_free(guild_member);
             discord_embed_free(embed);
 
             return;
@@ -96,6 +95,7 @@ void add_role_all_user(struct discord *client, const struct discord_user *bot, c
             free(args_ids_int);
             discord_guild_free(guild);
             discord_embed_free(embed);
+            discord_message_free(embed_message);
         }
     }
 
