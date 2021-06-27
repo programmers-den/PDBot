@@ -10,8 +10,9 @@ void add_role_all_user(struct discord *client, const struct discord_user *bot, c
 
     embed->timestamp = msg->timestamp;
     get_avatar_url(author_avatar_url, msg->author);
-    snprintf(embed->footer->text, 2049, "Author ID: %llu", msg->author->id);
+    snprintf(embed->footer->text, 2049, "Author ID: %lu", msg->author->id);
     discord_embed_set_author(embed, msg->author->username, NULL, author_avatar_url, NULL);
+    // causes segfault
     discord_get_guild_member(client, msg->guild_id, msg->author->id, guild_member);
 
     if (!guild_member_has_role(guild_member, R_OWNER)) {
@@ -63,8 +64,7 @@ void add_role_all_user(struct discord *client, const struct discord_user *bot, c
             snprintf(embed->title, 257, "Please wait...");
             snprintf(embed->description, 2049, "Adding roles to %d members", guild_preview.approximate_member_count);
 
-            size_t args_count = get_args_len(msg, " ");
-            u64_snowflake_t *args_ids_int = calloc(args_count, sizeof(u64_snowflake_t));
+            u64_snowflake_t *args_ids_int = calloc(get_args_len(msg, " "), sizeof(u64_snowflake_t));
             get_args_ids_as_int(args_ids_int, msg, " ");
 
             for (size_t i=0; args_ids_int[i]; i++) {
