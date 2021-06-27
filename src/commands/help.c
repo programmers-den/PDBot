@@ -13,5 +13,7 @@ void help(struct discord *client, const struct discord_user *bot, const struct d
     
     discord_create_message(client, msg->channel_id, &params, NULL);
 
+    free(embed);
+
     return;
 }
