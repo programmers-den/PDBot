@@ -40,11 +40,10 @@ void rm_role_all_user(struct discord *client, const struct discord_user *bot, co
 
             embed->color = COLOR_RED;
             snprintf(embed->title, 257, "Not an id!");
-            snprintf(embed->description, 2049, "Error arg[%lu]: %s", err_arg, arg_str[0]?arg_str:"NULL");
+            snprintf(embed->description, 2049, "Error arg[%zu]: %s", err_arg, arg_str[0]?arg_str:"NULL");
 
             discord_create_message(client, msg->channel_id, &params, NULL);
 
-            discord_guild_member_free(guild_member);
             discord_embed_free(embed);
 
             return;
@@ -64,8 +63,7 @@ void rm_role_all_user(struct discord *client, const struct discord_user *bot, co
             snprintf(embed->title, 257, "Please wait...");
             snprintf(embed->description, 2049, "Removing roles from %d members", guild_preview.approximate_member_count);
 
-            size_t args_count = get_args_len(msg, " ");
-            u64_snowflake_t *args_ids_int = calloc(args_count, sizeof(u64_snowflake_t));
+            u64_snowflake_t *args_ids_int = calloc(get_args_len(msg, " "), sizeof(u64_snowflake_t));
             get_args_ids_as_int(args_ids_int, msg, " ");
 
             for (size_t i=0; args_ids_int[i]; i++) {
@@ -81,7 +79,7 @@ void rm_role_all_user(struct discord *client, const struct discord_user *bot, co
             for (size_t i=0; args_ids_int[i]; i++) {
                 for (size_t j=0; guild->members[j]; j++) {
                     if (!guild->members[j]->user->bot) {
-                        discord_remove_guild_member_role(client, msg->guild_id, guild->members[j]->user->id, args_ids_int[i]);
+                        discord_add_guild_member_role(client, msg->guild_id, guild->members[j]->user->id, args_ids_int[i]);
                     }
                 }
             }
@@ -96,6 +94,7 @@ void rm_role_all_user(struct discord *client, const struct discord_user *bot, co
             free(args_ids_int);
             discord_guild_free(guild);
             discord_embed_free(embed);
+            discord_message_free(embed_message);
         }
     }
 
