@@ -74,7 +74,7 @@
 #define CHANNEL_MENTiON_LEN ID_LEN+4 // <#ID>
 #define USER_MENTION_LEN ID_LEN+4 // <@ID>
 #define USER_NICK_MENTION_LEN USER_MENTION_LEN+1 // <@!ID>
-#define USER_AND_DESCRIM_LEN MAX_USERNAME_LEN+MAX_DISCRIMINATOR_LEN-1 // username + nullbye + discriminator + nullbyte - nullbyte
+#define USER_AND_DESCRIM_LEN DISCORD_MAX_USERNAME_LEN+DISCORD_MAX_DISCRIMINATOR_LEN-1 // username + nullbye + discriminator + nullbyte - nullbyte
 #define ROLE_MENTION_LEN ID_LEN+5 // <@&ROLE_ID>
 #define TIMESTAMP_LEN 10
 #define TIMESTAMP_STR_LEN TIMESTAMP_LEN+1
