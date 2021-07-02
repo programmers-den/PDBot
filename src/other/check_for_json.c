@@ -11,14 +11,11 @@ void check_for_json() {
         fp = fopen(HELP_JSON, "w");
         fclose(fp);
         struct json_object *parsed_json = json_tokener_parse(HELP_JSON_DEFAULT);
-        printf("✔️  Created %s\n\n", HELP_JSON);
         json_object_to_file_ext(HELP_JSON, parsed_json, 0);
+        printf("✔️  Created %s\n\n", HELP_JSON);
     }
-    else fclose(fp);
 
-    fp = fopen(HELP_JSON, "r");
-
-    if (fp) {
+    else {
         char *buffer = malloc(1024), *files = malloc(1024);
 
         get_files(files, "src/commands/");

@@ -4,38 +4,39 @@
 void add_role_all_user(struct discord *client, const struct discord_user *bot, const struct discord_message *msg) {
     if (msg->author->bot) return;
 
-    char author_avatar_url[AVATAR_URL_LEN];
+    char *author_avatar_url = malloc(AVATAR_URL_LEN), *owner_role_mention = malloc(ROLE_MENTION_LEN);
+    struct discord_guild *guild = discord_guild_alloc();
     struct discord_guild_member *guild_member = discord_guild_member_alloc();
     struct discord_embed *embed = discord_embed_alloc();
+    struct discord_create_message_params params = {.embed = embed};
 
     embed->timestamp = msg->timestamp;
+    role_mention(owner_role_mention, R_OWNER);
     get_avatar_url(author_avatar_url, msg->author);
     snprintf(embed->footer->text, 2049, "Author ID: %lu", msg->author->id);
     discord_embed_set_author(embed, msg->author->username, NULL, author_avatar_url, NULL);
-    // causes segfault
     discord_get_guild_member(client, msg->guild_id, msg->author->id, guild_member);
 
     if (!guild_member_has_role(guild_member, R_OWNER)) {
-        char role_mention_str[ROLE_MENTION_LEN];
-        struct discord_create_message_params params = {.embed = embed};
-        role_mention(role_mention_str, R_OWNER);
         embed->color = COLOR_RED;
         snprintf(embed->title, 257, "No permission!");
-        discord_embed_add_field(embed, "Required role", role_mention_str, true);
+        discord_embed_add_field(embed, "Required role", owner_role_mention, true);
 
         discord_create_message(client, msg->channel_id, &params, NULL);
 
+        free(author_avatar_url);
+        free(owner_role_mention);
         discord_guild_member_free(guild_member);
+        discord_guild_free(guild);
         discord_embed_free(embed);
 
         return;
     }
     else {
-        discord_guild_member_free(guild_member);
         size_t err_arg = 0;
 
-        if ((err_arg = get_args_ids_as_int(NULL, msg, " "))) {
-            char arg_str[MAX_CMD_ARGS_LEN];
+        if ((err_arg = check_if_args_ids(msg, " "))) {
+            char *arg_str = malloc(MAX_CMD_ARGS_LEN);
             struct discord_create_message_params params = {.embed = embed};
             get_arg_at(arg_str, msg, err_arg, " ");
 
@@ -45,57 +46,55 @@ void add_role_all_user(struct discord *client, const struct discord_user *bot, c
 
             discord_create_message(client, msg->channel_id, &params, NULL);
 
+            free(arg_str);
+            free(author_avatar_url);
+            free(owner_role_mention);
+            discord_guild_member_free(guild_member);
+            discord_guild_free(guild);
             discord_embed_free(embed);
 
             return;
         }
         else {
-            char args_id_str[ID_STR_LEN], role_mention_str[ROLE_MENTION_LEN];
-            struct discord_guild *guild = discord_guild_alloc();
+            free(author_avatar_url);
+            free(owner_role_mention);
+            discord_guild_member_free(guild_member);
+
+            u64_snowflake_t arg_id_int = get_args_ids_as_int_at(msg, 1, " ");
+            char role_mention_str[ROLE_MENTION_LEN];
             struct discord_message *embed_message = discord_message_alloc();
+            struct discord_edit_message_params edit_params = {.embed = embed};
             struct discord_list_guild_members_params list_guild_members_params = {.limit = 1000};
             struct discord_guild_preview guild_preview;
+            embed->color = COLOR_YELLOW;
 
             discord_get_guild(client, msg->guild_id, guild);
             discord_list_guild_members(client, msg->guild_id, &list_guild_members_params, &guild->members);
             discord_get_guild_preview(client, msg->guild_id, &guild_preview);
+            role_mention(role_mention_str, arg_id_int);
 
-            embed->color = COLOR_YELLOW;
             snprintf(embed->title, 257, "Please wait...");
-            snprintf(embed->description, 2049, "Adding roles to %d members", guild_preview.approximate_member_count);
+            snprintf(embed->description, 2049, "Adding %s to %d members", role_mention_str, guild_preview.approximate_member_count);
 
-            u64_snowflake_t *args_ids_int = calloc(get_args_len(msg, " "), sizeof(u64_snowflake_t));
-            get_args_ids_as_int(args_ids_int, msg, " ");
-
-            for (size_t i=0; args_ids_int[i]; i++) {
-                get_args_ids_as_str_at(args_id_str, msg, i, " ");
-                role_mention(role_mention_str, args_ids_int[i]);
-
-                discord_embed_add_field(embed, args_id_str, role_mention_str, false);
-            }
-
-            struct discord_create_message_params params = {.embed = embed};
             discord_create_message(client, msg->channel_id, &params, embed_message);
 
-            for (size_t i=0; args_ids_int[i]; i++) {
-                for (size_t j=0; guild->members[j]; j++) {
-                    if (!guild->members[j]->user->bot) {
-                        discord_add_guild_member_role(client, msg->guild_id, guild->members[j]->user->id, args_ids_int[i]);
-                    }
+            for (size_t j=0; guild->members[j]; j++) {
+                if (!guild->members[j]->user->bot) {
+                    discord_add_guild_member_role(client, msg->guild_id, guild->members[j]->user->id, arg_id_int);
                 }
             }
 
             embed->color = COLOR_MINT;
             snprintf(embed->title, 257, "Done! Took %lu ms", cee_timestamp_ms()-msg->timestamp);
-            snprintf(embed->description, 2049, "Added roles to %d members", guild_preview.approximate_member_count);
+            snprintf(embed->description, 2049, "Added %s to %d members", role_mention_str, guild_preview.approximate_member_count);
 
-            struct discord_edit_message_params edit_params = {.embed = embed};
             discord_edit_message(client, msg->channel_id, embed_message->id, &edit_params, NULL);
 
-            free(args_ids_int);
             discord_guild_free(guild);
             discord_embed_free(embed);
             discord_message_free(embed_message);
+
+            return;
         }
     }
 
