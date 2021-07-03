@@ -6,7 +6,7 @@
 #define MESSAGE_TABLE "messages"
 #define HELP_JSON "src/json/help.json"
 #define HELP_JSON_DEFAULT "{\"title\":\"[Commands]\",\"description\":\"\",\"color\":49151}"
-#define C_LOG 820803540367704105
+#define C_LOG 668009901884309515
 #define C_COUNTER 713233286574637127
 #define C_ONE_WORD 825481761189658683
 #define C_STARBOARD 757072544779206743
