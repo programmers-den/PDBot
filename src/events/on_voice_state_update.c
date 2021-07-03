@@ -5,7 +5,7 @@ void on_voice_state_update(struct discord *client, const struct discord_user *bo
     struct discord_guild_member *guild_member = discord_guild_member_alloc();
     discord_get_guild_member(client, vs->guild_id, vs->user_id, guild_member);
 
-    else if (vs->channel_id) {
+    if (vs->channel_id) {
         switch (vs->channel_id) {
             case VC_CHAT_ONE: if (!guild_member_has_role(guild_member, R_VC_CHAT_ONE)) discord_add_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_ONE); break;
             case VC_CHAT_TWO: if (!guild_member_has_role(guild_member, R_VC_CHAT_TWO)) discord_add_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_TWO); break;
