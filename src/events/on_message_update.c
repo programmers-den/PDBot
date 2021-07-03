@@ -41,7 +41,7 @@ void on_message_update(struct discord *client, const struct discord_user *bot, c
     discord_create_message(client, C_LOG, &params, NULL);
 
     discord_embed_free(embed);
-    discord_message_free(db_message);
+    // discord_message_free(db_message);
 
     return;
 }
