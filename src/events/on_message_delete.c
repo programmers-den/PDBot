@@ -10,7 +10,7 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
     embed->color = COLOR_RED;
     embed->timestamp = cee_timestamp_ms();
 
-    if (message->content[0]) {
+    if (!message->content[0]) {
         discord_embed_free(embed);
         discord_message_free(message);
         return;

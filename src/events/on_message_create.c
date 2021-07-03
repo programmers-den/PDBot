@@ -14,6 +14,13 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
             break;
         }
         case C_COUNTER: {
+            for (size_t i=0; i<strlen(message->content); i++) {
+                if (message->content[i] == '\n') {
+                    discord_delete_message(client, message->channel_id, message->id);
+                    break;
+                }
+            }
+
             size_t val = atoi((char*)message->content);
             if (val) {
                 NTL_T(struct discord_message) msgs = NULL;
