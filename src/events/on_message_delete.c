@@ -42,11 +42,11 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
 
         free(author_avatar_url);
         discord_embed_free(embed);
+        discord_message_free(message);
 
         remove_message_db(message_id);
     }
 
-    discord_message_free(message);
 
     return;
 }
