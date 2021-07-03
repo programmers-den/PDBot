@@ -48,7 +48,7 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
             struct discord_create_message_params params = {.embed = embed};
             struct discord_message *poll_message = discord_message_alloc();
 
-            get_avatar_url(avatar_url, bot);
+            get_avatar_url(avatar_url, message->author->id);
 
             embed->color = COLOR_MAGENTA;
             discord_embed_set_author(embed, message->content, NULL, avatar_url, NULL);
