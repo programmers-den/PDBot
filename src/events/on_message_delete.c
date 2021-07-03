@@ -11,6 +11,11 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
     embed->timestamp = cee_timestamp_ms();
 
     if (message->content[0]) {
+        discord_embed_free(embed);
+        discord_message_free(message);
+        return;
+    }
+    else if (message->content[0]) {
         char *author_avatar_url = malloc(AVATAR_URL_LEN), message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
 
         get_avatar_url(author_avatar_url, message->author);
@@ -37,11 +42,11 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
 
         free(author_avatar_url);
         discord_embed_free(embed);
+        discord_message_free(message);
 
         remove_message_db(message_id);
     }
 
-    discord_message_free(message);
 
     return;
 }

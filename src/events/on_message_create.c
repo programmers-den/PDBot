@@ -3,7 +3,7 @@
 
 void on_message_create(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
     if (message->author->bot) return;
-    
+
     add_message_db(message);
     switch (message->channel_id) {
         case C_VERIFY: {
@@ -41,19 +41,18 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
         case C_POLL: {
             if (message->author->bot) break;
 
-            discord_delete_message(client, message->channel_id, message->id);
-
             char *avatar_url = malloc(AVATAR_URL_LEN);
             struct discord_embed *embed = discord_embed_alloc();
             struct discord_create_message_params params = {.embed = embed};
             struct discord_message *poll_message = discord_message_alloc();
 
-            get_avatar_url(avatar_url, bot);
+            get_avatar_url(avatar_url, message->author);
 
             embed->color = COLOR_MAGENTA;
             discord_embed_set_author(embed, message->content, NULL, avatar_url, NULL);
             snprintf(embed->description, 2049, "<:%s:%lu> Yes\n<:%s:%lu> No", E_YES_NAME, E_YES_ID, E_NO_NAME, E_NO_ID);
             discord_create_message(client, message->channel_id, &params, poll_message);
+            discord_delete_message(client, message->channel_id, message->id);
             discord_create_reaction(client, poll_message->channel_id, poll_message->id, E_YES_ID, E_YES_NAME);
             discord_create_reaction(client, poll_message->channel_id, poll_message->id, E_NO_ID, E_NO_NAME);
 
