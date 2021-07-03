@@ -38,7 +38,6 @@ void on_voice_state_update(struct discord *client, const struct discord_user *bo
             }
         }
     }
-}
 
     discord_guild_member_free(guild_member);
 
