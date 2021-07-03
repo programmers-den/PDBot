@@ -7,7 +7,10 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
     struct discord_create_message_params params = {.embed = embed};
     struct discord_message *message = fetch_message_db(client, guild_id, message_id);
 
-    if (message->author->bot) return;
+    if (message->author->bot) {
+        discord_embed_free(embed);
+        return;
+    }
 
     embed->color = COLOR_RED;
     embed->timestamp = cee_timestamp_ms();
