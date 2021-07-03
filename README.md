@@ -3,7 +3,23 @@
 
 PDBot is the official Discord bot for the [Programmer's Den](https://pden.net) server. It provides many utilities for the management, moderation, and members of this server
 
-## 1.1. Dependencies and install instructions
+## 1.1. Table of contents
+- [1. ~$ PDBot](#1--pdbot)
+  - [1.1. Table of contents](#11-table-of-contents)
+  - [1.2. Dependencies and install instructions](#12-dependencies-and-install-instructions)
+  - [1.3. Bot config file](#13-bot-config-file)
+  - [1.4. Compiling and running bot](#14-compiling-and-running-bot)
+  - [1.5. Commands](#15-commands)
+  - [1.6. Latest major change](#16-latest-major-change)
+  - [1.7. Latest minor change](#17-latest-minor-change)
+  - [1.8. To-do](#18-to-do)
+
+## 1.2. Dependencies and install instructions
+> Requirements
+```bash
+apt install -y git build-essential libcurl4-openssl-dev cmake libsqlite3-dev
+```
+
 > [orca](https://github.com/cee-studio/orca)
 ```bash
 apt install -y git build-essential libcurl4-openssl-dev libssl-dev
@@ -35,7 +51,7 @@ make install
 apt install -y libsqlite3-dev
 ```
 
-## 1.2. Bot config file
+## 1.3. Bot config file
 > Create a `bot.config` file in the root directory of the bot with the following contents
 
 > Delete comments if copy and pasting from below or will not work
@@ -62,27 +78,41 @@ apt install -y libsqlite3-dev
 }
 ```
 
-## 1.3. Commands
+## 1.4. Compiling and running bot
+```bash
+git clone "https://github.com/programmers-den/PDBot.git"
+
+cd PDBot/
+# Must create bot.config and paste token as defined in section 1.2
+
+make -j$(nproc) # or number of threads
+./main
+```
+
+
+## 1.5. Commands
 > The prefix is `./`
 
-| Commands | Syntax   |
-| -------- | -------- |
-| help     | `./help` |
-| icon     | `./icon` |
-| ping     | `./ping` |
-| stat     | `./stat` |
+| Commands          | Syntax                        |
+| ----------------- | ----------------------------- |
+| help              | `./help`                      |
+| icon              | `./icon`                      |
+| ping              | `./ping`                      |
+| stat              | `./stat`                      |
+| add_role_all_user | `./add_role_all_user ROLE_ID` |
+| rm_role_all_user  | `./rm_role_all_user ROLE_ID`  |
 
-## 1.4. Latest major change
-> Implemented no-mic channel roles when joining a vc
+## 1.6. Latest major change
+> Added logs for channel create, delete, and update
 
-## 1.5. Latest minor change
-> Fixed segfault when user join and left due to mistake in code
+## 1.7. Latest minor change
+> Fixed segfaulting when updating a message not present in db
 
-## 1.6. To-do
+## 1.8. To-do
 - [x] Add no-mic roles to users when they join a vc to access hidden channel
 - [ ] Implement blacklist words filter
 - [ ] Add more information to stat command embed
-- [ ] Add logs for channel events
+- [x] Add logs for channel events
 - [ ] Add logs for role events
-- [ ] Add logs for emoji events
+- [x] Add logs for emoji events
 - [ ] Add logs for moderation events
