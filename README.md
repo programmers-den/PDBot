@@ -8,8 +8,9 @@ PDBot is the official Discord bot for the [Programmer's Den](https://pden.net) s
 ```bash
 apt install -y git build-essential libcurl4-openssl-dev libssl-dev
 
-git clone "https://github.com/json-c/json-c.git"
+git clone "https://github.com/cee-studio/orca.git"
 
+cd orca/
 make purge
 make -j$(nproc) # or number of threads
 make install
