@@ -25,7 +25,7 @@ git clone "https://github.com/json-c/json-c.git"
 cd json-c/
 mkdir build
 cd build/
-cmake ../json-c
+cmake ../
 make -j$(nproc) # or number of threads
 make test
 make install
