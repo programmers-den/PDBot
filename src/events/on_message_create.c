@@ -2,9 +2,8 @@
 #include "../libs/bot_include.h"
 
 void on_message_create(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
-    if (message->author->bot) return;
+    if (!message->author->bot) add_message_db(message);
 
-    add_message_db(message);
     switch (message->channel_id) {
         case C_VERIFY: {
             if (message->author->id != ID_OWNER) {
@@ -39,8 +38,6 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
             break;
         }
         case C_POLL: {
-            if (message->author->bot) break;
-
             char *avatar_url = malloc(AVATAR_URL_LEN);
             struct discord_embed *embed = discord_embed_alloc();
             struct discord_create_message_params params = {.embed = embed};
