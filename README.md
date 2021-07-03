@@ -106,7 +106,7 @@ make -j$(nproc) # or number of threads
 > Added logs for channel create, delete, and update
 
 ## 1.7. Latest minor change
-> Fixed segfaulting when updating a message not present in db
+> Fixed vc roles updating when not leaving
 
 ## 1.8. To-do
 - [x] Add no-mic roles to users when they join a vc to access hidden channel
