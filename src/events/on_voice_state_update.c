@@ -11,14 +11,13 @@ void on_voice_state_update(struct discord *client, const struct discord_user *bo
             default: break;
         }
     }
-    else {
-        for (size_t i=0; vs->member->roles[i]; i++) {
-            switch (vs->member->roles[i]->value) {
-                case R_VC_CHAT_ONE: discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_ONE); break;
-                case R_VC_CHAT_TWO: discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_TWO); break;
-                case R_VC_MUSIC: discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_MUSIC); break;
-                default: break;
-            }
+
+    for (size_t i=0; vs->member->roles[i]; i++) {
+        switch (vs->member->roles[i]->value) {
+            case R_VC_CHAT_ONE: discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_ONE); break;
+            case R_VC_CHAT_TWO: discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_TWO); break;
+            case R_VC_MUSIC: discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_MUSIC); break;
+            default: break;
         }
     }
 
