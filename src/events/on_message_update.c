@@ -5,18 +5,19 @@
 void on_message_update(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
     if (message->author->bot) return;
 
-    char *author_avatar_url = malloc(AVATAR_URL_LEN), message_id_str[ID_STR_LEN], message_str[MESSAGE_URL_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
+    char author_avatar_url[AVATAR_URL_LEN], message_id_str[ID_STR_LEN], message_str[MESSAGE_URL_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
     struct discord_embed *embed = discord_embed_alloc();
     struct discord_create_message_params params = {.embed = embed};
     struct discord_message *db_message = fetch_message_db(client, message->guild_id, message->id);
 
-    get_avatar_url(author_avatar_url, message->author);
 
     if (db_message->content[0]) update_message_db(message);
     else add_message_db(message);
 
     embed->color = COLOR_YELLOW;
     embed->timestamp = cee_timestamp_ms();
+
+    get_avatar_url(author_avatar_url, message->author);
     discord_embed_set_author(embed, message->author->username, NULL, author_avatar_url, NULL);
     discord_embed_set_thumbnail(embed, author_avatar_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
     snprintf(embed->footer->text, 2049, "Author ID: %lu", message->author->id);
@@ -39,7 +40,6 @@ void on_message_update(struct discord *client, const struct discord_user *bot, c
 
     discord_create_message(client, C_LOG, &params, NULL);
 
-    free(author_avatar_url);
     discord_embed_free(embed);
     discord_message_free(db_message);
 
