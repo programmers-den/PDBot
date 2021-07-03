@@ -7,9 +7,24 @@ void on_voice_state_update(struct discord *client, const struct discord_user *bo
 
     if (vs->channel_id) {
         switch (vs->channel_id) {
-            case VC_CHAT_ONE: if (!guild_member_has_role(guild_member, R_VC_CHAT_ONE)) discord_add_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_ONE); break;
-            case VC_CHAT_TWO: if (!guild_member_has_role(guild_member, R_VC_CHAT_TWO)) discord_add_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_TWO); break;
-            case VC_MUSIC: if (!guild_member_has_role(guild_member, R_VC_MUSIC)) discord_add_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_MUSIC); break;
+            case VC_CHAT_ONE: {
+                if (!guild_member_has_role(guild_member, R_VC_CHAT_ONE)) discord_add_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_ONE);
+                else if (guild_member_has_role(guild_member, R_VC_CHAT_TWO)) discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_TWO);
+                else if (guild_member_has_role(guild_member, R_VC_MUSIC)) discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_MUSIC);
+                break;
+            }
+            case VC_CHAT_TWO: {
+                if (!guild_member_has_role(guild_member, R_VC_CHAT_TWO)) discord_add_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_TWO);
+                else if (guild_member_has_role(guild_member, R_VC_CHAT_ONE)) discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_ONE);
+                else if (guild_member_has_role(guild_member, R_VC_MUSIC)) discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_MUSIC);
+                break;
+            }
+            case VC_MUSIC: {
+                if (!guild_member_has_role(guild_member, R_VC_MUSIC)) discord_add_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_MUSIC);
+                else if (guild_member_has_role(guild_member, R_VC_CHAT_ONE)) discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_ONE);
+                else if (guild_member_has_role(guild_member, R_VC_CHAT_TWO)) discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_TWO);
+                break;   
+            }
             default: break;
         }
     }
@@ -23,6 +38,7 @@ void on_voice_state_update(struct discord *client, const struct discord_user *bo
             }
         }
     }
+}
 
     discord_guild_member_free(guild_member);
 
