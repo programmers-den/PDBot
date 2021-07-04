@@ -34,7 +34,7 @@ void on_message_update(struct discord *client, const struct discord_user *bot, c
     discord_embed_add_field(embed, "Channel", channel_str, true);
     user_mention(author_str, message->author->id);
     discord_embed_add_field(embed, "Author", author_str, true);
-    if (!db_message->content[0]) discord_embed_add_field(embed, "Previous content", db_message->content, false);
+    if (db_message->content[0]) discord_embed_add_field(embed, "Previous content", db_message->content, false);
     discord_embed_add_field(embed, "New content", message->content, false);
 
     discord_create_message(client, C_LOG, &params, NULL);
