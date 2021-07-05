@@ -5,7 +5,8 @@
 void stat(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
     if (message->author->bot) return;
 
-    char *author_avatar_url = malloc(AVATAR_URL_LEN), user_id[ID_STR_LEN];
+    char user_id[ID_STR_LEN];
+    char *author_avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_embed *embed = discord_embed_alloc();
     struct discord_create_message_params params = {.embed = embed};
 
