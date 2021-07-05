@@ -3,6 +3,7 @@
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
     char username_and_descrim[USER_AND_DESCRIM_LEN];
+
     username_and_discriminator_to_str(username_and_descrim, bot);
     printf("%s connected successfully\n\n", username_and_descrim);
 

@@ -3,7 +3,8 @@
 #include "../libs/bot_include.h"
 
 void on_guild_member_remove(struct discord *client, const struct discord_user *bot, const u64_snowflake_t guild_id, const struct discord_user *user) {
-    char *avatar_url = malloc(AVATAR_URL_LEN), user_id_str[ID_STR_LEN], user_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN], timestamp_str[TIMESTAMP_NORMAL_STR_LEN];
+    char user_id_str[ID_STR_LEN], user_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN], timestamp_str[TIMESTAMP_NORMAL_STR_LEN];
+    char *avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_embed *embed = discord_embed_alloc();
     struct discord_create_message_params params = {.embed = embed};
 

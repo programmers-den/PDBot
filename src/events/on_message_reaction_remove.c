@@ -5,10 +5,11 @@
 void on_message_reaction_remove(struct discord *client, const struct discord_user *bot, const u64_snowflake_t user_id, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t guild_id, const struct discord_emoji *emoji) {
     struct discord_user *member = discord_user_alloc();
     discord_get_user(client, user_id, member);
+
     if (member->bot) return;
 
-    size_t count = 0;
-    char *avatar_url = malloc(AVATAR_URL_LEN), message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN], emoji_str[emoji_mention_len(emoji)];
+    char message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN], emoji_str[emoji_mention_len(emoji)];
+    char *avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_message *message = discord_message_alloc();
     struct discord_embed *embed = discord_embed_alloc();
     struct discord_create_message_params params = {.embed = embed};

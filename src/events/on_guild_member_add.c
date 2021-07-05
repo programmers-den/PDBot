@@ -2,7 +2,8 @@
 #include "../libs/bot_include.h"
 
 void on_guild_member_add(struct discord *client, const struct discord_user *bot, const u64_snowflake_t guild_id, const struct discord_guild_member *member) {
-    char *avatar_url = malloc(AVATAR_URL_LEN), username_and_discriminator[DISCORD_MAX_USERNAME_LEN], user_id_str[ID_STR_LEN], user_mention_str[USER_MENTION_LEN], timestamp_str[TIMESTAMP_NORMAL_STR_LEN];
+    char username_and_discriminator[DISCORD_MAX_USERNAME_LEN], user_id_str[ID_STR_LEN], timestamp_str[TIMESTAMP_NORMAL_STR_LEN];
+    char *avatar_url = malloc(AVATAR_URL_LEN), *user_mention_str = malloc(USER_MENTION_LEN);
     struct discord_embed *embed = discord_embed_alloc();
     struct discord_create_message_params params = {.embed = embed};
 
@@ -51,6 +52,7 @@ void on_guild_member_add(struct discord *client, const struct discord_user *bot,
     discord_create_message(client, C_LOG, &params, NULL);
 
     free(avatar_url);
+    free(user_mention_str)
     discord_embed_free(embed);
 
     return;
