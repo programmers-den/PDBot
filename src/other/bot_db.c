@@ -75,7 +75,7 @@ struct discord_message *fetch_message_db(struct discord *client, u64_snowflake_t
 }
 
 void add_message_db(const struct discord_message *message) {
-    if (!message->content) return;
+    if (!message->content[0]) return;
 
     sqlite3 *db = NULL;
     int rc = sqlite3_open(BOT_DB, &db);
@@ -118,7 +118,7 @@ void remove_message_db(u64_snowflake_t message_id) {
 }
 
 void update_message_db(const struct discord_message *message) {
-    if (!message->content) return;
+    if (!message->content[0]) return;
 
     sqlite3 *db = NULL;
     int rc = sqlite3_open(BOT_DB, &db);
