@@ -52,7 +52,7 @@ void on_guild_member_add(struct discord *client, const struct discord_user *bot,
     discord_create_message(client, C_LOG, &params, NULL);
 
     free(avatar_url);
-    free(user_mention_str)
+    free(user_mention_str);
     discord_embed_free(embed);
 
     return;
