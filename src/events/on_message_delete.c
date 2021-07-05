@@ -16,7 +16,8 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
         return;
     }
     else if (message->content[0]) {
-        char *author_avatar_url = malloc(AVATAR_URL_LEN), message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
+        char message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
+        char *author_avatar_url = malloc(AVATAR_URL_LEN);
 
         get_avatar_url(author_avatar_url, message->author);
         id_to_str(message_id_str, message_id);
