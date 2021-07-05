@@ -12,7 +12,7 @@ void on_message_update(struct discord *client, const struct discord_user *bot, c
     struct discord_message *db_message = fetch_message_db(client, message->guild_id, message->id);
 
     if (db_message->content[0]) update_message_db(message);
-    else add_message_db(message);
+    else if (message->content[0]) add_message_db(message);
 
     embed->color = COLOR_YELLOW;
     embed->timestamp = cee_timestamp_ms();
