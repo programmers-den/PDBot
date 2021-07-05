@@ -41,7 +41,6 @@ struct discord_message *fetch_message_db(struct discord *client, u64_snowflake_t
     int rc = sqlite3_open(BOT_DB, &db);
     if (rc) printf("\nFailed to open %s!\n\n", BOT_DB);
     else {
-        free(message->content);
         char *query = NULL, *errMsg = NULL;
         query = sqlite3_mprintf("SELECT timestamp, author_id, message_id, content FROM %s WHERE message_id = %lu;", MESSAGE_TABLE, message_id);
         // puts(query);
@@ -51,6 +50,7 @@ struct discord_message *fetch_message_db(struct discord *client, u64_snowflake_t
             u64_snowflake_t db_message_id = 0;
             // printf("Timestamp: %lu, Author_id: %lu, Message_id: %lu, Content: %s\n", sqlite3_column_int64(stmt, 0), sqlite3_column_int64(stmt, 1), sqlite3_column_int64(stmt, 2), sqlite3_column_text(stmt, 3));
             if ((db_message_id = sqlite3_column_int64(stmt, 2)) == message_id) {
+                free(message->content);
                 printf("%lu, %lu\n", db_message_id, message_id);
                 struct discord_user *member = discord_user_alloc();
                 message->timestamp = sqlite3_column_int64(stmt, 0);
