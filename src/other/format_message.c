@@ -93,3 +93,11 @@ void username_and_discriminator_to_str(char *buf, const struct discord_user *use
 
     return;
 }
+
+void failed_message(struct discord *client, struct discord_embed *embed, struct discord_create_message_params *params, char *reason, u64_snowflake_t channel_id) {
+    embed->color = COLOR_RED;
+    snprintf(embed->title, 257, "Failed!");
+    snprintf(embed->description, 2049, "Reason: %s", reason);
+
+    discord_create_message(client, channel_id, params, NULL);
+}

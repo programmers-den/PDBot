@@ -15,3 +15,4 @@ void role_list_mention(char **buf, u64_snowflake_t *role_ids);
 size_t emoji_mention_len(const struct discord_emoji *emoji);
 void emoji_mention(char *buf, const struct discord_emoji *emoji);
 void username_and_discriminator_to_str(char *buf, const struct discord_user *user);
+void failed_message(struct discord *client, struct discord_embed *embed, struct discord_create_message_params *params, char *reason, u64_snowflake_t channel_id);

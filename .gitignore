@@ -59,4 +59,5 @@ bot.db
 dump.json
 help.json
 *.o
+*.sh
 main

@@ -19,6 +19,7 @@ int main() {
     discord_set_on_channel_update(client, &on_channel_update);
 
     discord_set_on_command(client, "add_role_all_user", &add_role_all_user);
+    discord_set_on_command(client, "get_messages", &get_messages);
     discord_set_on_command(client, "help", &help);
     discord_set_on_command(client, "ping", &ping);
     discord_set_on_command(client, "icon", &icon);
