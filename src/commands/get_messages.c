@@ -18,8 +18,9 @@ void get_messages(struct discord *client, const struct discord_user *bot, const 
 
     if (rc) failed_message(client, embed, &params, (char*)sqlite3_errmsg(db), msg->channel_id);
     else {
-        query = sqlite3_mprintf("SELECT timestamp, author_id, message_id, content FROM %s WHERE message_id = %lu;", MESSAGE_TABLE, msg->id);
-        rc = sqlite3_exec(db, query, callback, fp, &errMsg);
+        query = sqlite3_mprintf("SELECT timestamp, author_id, message_id, content FROM %s WHERE author_id = %lu;", MESSAGE_TABLE, msg->author->id);
+        rc = sqlite3_exec(db, query, &callback, fp, &errMsg);
+        fclose(fp);
 
         if (rc != SQLITE_OK) {
             failed_message(client, embed, &params, errMsg, msg->channel_id);
@@ -29,10 +30,13 @@ void get_messages(struct discord *client, const struct discord_user *bot, const 
             size_t filename_len = strlen(filename);
             embed->color = COLOR_MINT;
             snprintf(embed->title, 257, "Sent!");
-            snprintf(embed->description, 2049, "Please check your dms from the bot: %s", errMsg);
-            params.file.name = filename;
+            snprintf(embed->description, 2049, "Please check your dms from the bot");
 
             discord_create_dm(client, msg->author->id, dm_channel);
+            discord_create_message(client, msg->channel_id, &params, NULL);
+
+            params.embed = NULL;
+            params.file.name = filename;
             discord_create_message(client, dm_channel->id, &params, NULL);
 
             remove(params.file.name);
@@ -51,7 +55,7 @@ static int callback(void *handle, int argc, char **argv, char **azColName) {
      const char *sep = NULL;
 
      for (size_t i=0; i<argc ;i++) {
-         fprintf(fp, "%s\"%s\"", sep, argv[i]);
+         fprintf(fp, "\"%s\"", argv[i]);
          sep = ", ";
      }
 
