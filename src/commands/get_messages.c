@@ -54,7 +54,7 @@ static int callback(void *handle, int argc, char **argv, char **azColName) {
      FILE *fp = handle;
      char sep[] = ", ";
 
-     fprintf(fp, "\"timestamp\", \"author_id\", \"message_id\", \"content\"");
+     fprintf(fp, "\"timestamp\", \"author_id\", \"message_id\", \"content\"\n");
 
      for (size_t i=0; i<argc; i++) {
          fprintf(fp, "%s\"%s\"", sep, argv[i]);
