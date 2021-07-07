@@ -18,7 +18,7 @@ void get_messages(struct discord *client, const struct discord_user *bot, const 
 
     if (rc) failed_message(client, embed, &params, (char*)sqlite3_errmsg(db), msg->channel_id);
     else {
-        fprintf(fp, "\"timestamp\", \"author_id\", \"message_id\", \"content\"\n");
+        fprintf(fp, "\"timestamp\", \"author_id\", \"message_id\", \"content\", \n");
         query = sqlite3_mprintf("SELECT timestamp, author_id, message_id, content FROM %s WHERE author_id = %lu;", MESSAGE_TABLE, msg->author->id);
         rc = sqlite3_exec(db, query, &callback, fp, &errMsg);
         fclose(fp);
