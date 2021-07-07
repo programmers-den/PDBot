@@ -1,3 +1,4 @@
+#include <regex.h>
 #include <orca/discord.h>
 #include "../libs/bot_include.h"
 
@@ -52,13 +53,20 @@ void get_messages(struct discord *client, const struct discord_user *bot, const 
 }
 
 static int callback(void *handle, int argc, char **argv, char **azColName) {
-     FILE *fp = handle;
+    FILE *fp = handle;
+    regex_t regex;
+    regcomp(&regex, "^\"*\"$", REG_EXTENDED|REG_NOSUB);
 
-     for (size_t i=0; i<argc; i++) {
-         fprintf(fp, "\"%s\", ", argv[i]);
-     }
+    for (size_t i=0; i<argc; i++) {
+        if (regexec(&regex, argv[i], 0, NULL, 0)) {
+            regfree(&regex);
+            fprintf(fp, "\"\"\"%s\"\"\", ", argv[i]);
+        }
+        else fprintf(fp, "\"%s\", ", argv[i]);
+    }
 
-     fprintf(fp, "\n");
+    fprintf(fp, "\n");
+    regfree(&regex);
 
-     return 0;
+    return 0;
 }

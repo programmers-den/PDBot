@@ -1,5 +1,6 @@
 #pragma once
 
+#include <regex.h>
 #include <orca/discord.h>
 #include "bot_include.h"
 
