@@ -59,7 +59,6 @@ static int callback(void *handle, int argc, char **argv, char **azColName) {
 
     for (size_t i=0; i<argc; i++) {
         if (regexec(&regex, argv[i], 0, NULL, 0)) {
-            regfree(&regex);
             fprintf(fp, "\"\"\"%s\"\"\", ", argv[i]);
         }
         else fprintf(fp, "\"%s\", ", argv[i]);
