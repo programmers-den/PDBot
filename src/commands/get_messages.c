@@ -53,10 +53,9 @@ void get_messages(struct discord *client, const struct discord_user *bot, const 
 
 static int callback(void *handle, int argc, char **argv, char **azColName) {
      FILE *fp = handle;
-     char sep[] = ", ";
 
      for (size_t i=0; i<argc; i++) {
-         fprintf(fp, "%s\"%s\"", sep, argv[i]);
+         fprintf(fp, "\"%s\", ", argv[i]);
      }
 
      fprintf(fp, "\n");
