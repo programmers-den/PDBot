@@ -58,10 +58,8 @@ static int callback(void *handle, int argc, char **argv, char **azColName) {
     regcomp(&regex, "^\".*\"$", REG_EXTENDED|REG_NOSUB);
 
     for (size_t i=0; i<argc; i++) {
-        if (regexec(&regex, argv[i], 0, NULL, 0)) {
-            fprintf(fp, "\"\"%s\"\", ", argv[i]);
-        }
-        else fprintf(fp, "\"%s\", ", argv[i]);
+        if (regexec(&regex, argv[i], 0, NULL, 0)) fprintf(fp, "\"%s\", ", argv[i]);
+        else fprintf(fp, "\"\"%s\"\", ", argv[i]);
     }
 
     fprintf(fp, "\n");
