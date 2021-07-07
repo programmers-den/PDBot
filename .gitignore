@@ -60,4 +60,5 @@ dump.json
 help.json
 *.o
 *.sh
+*.csv
 main
