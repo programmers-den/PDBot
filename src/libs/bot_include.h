@@ -10,6 +10,7 @@
 #include "get_avatar_url.h"
 #include "get_files.h"
 #include "get_message_url.h"
+#include "get_messages.h"
 #include "help.h"
 #include "icon.h"
 #include "load_embed_from_json.h"

@@ -101,12 +101,13 @@ make -j$(nproc) # or number of threads
 | stat              | `./stat`                      |
 | add_role_all_user | `./add_role_all_user ROLE_ID` |
 | rm_role_all_user  | `./rm_role_all_user ROLE_ID`  |
+| get_messages      | `./get_messages`              |
 
 ## 1.6. Latest major change
-> Added logs for channel create, delete, and update
+> Added a command to get messages from db
 
 ## 1.7. Latest minor change
-> Fixed counter channel filter bug
+> Fixed poll channel triggering itself
 
 ## 1.8. To-do
 - [x] Add no-mic roles to users when they join a vc to access hidden channel
