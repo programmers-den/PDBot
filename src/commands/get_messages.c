@@ -52,11 +52,12 @@ void get_messages(struct discord *client, const struct discord_user *bot, const 
 
 static int callback(void *handle, int argc, char **argv, char **azColName) {
      FILE *fp = handle;
-     const char *sep = NULL;
+     char sep[] = ", ";
 
-     for (size_t i=0; i<argc ;i++) {
-         fprintf(fp, "\"%s\"", argv[i]);
-         sep = ", ";
+     fprintf(fp, "\"timestamp\", \"author_id\", \"message_id\", \"content\"");
+
+     for (size_t i=0; i<argc; i++) {
+         fprintf(fp, "%s\"%s\"", sep, argv[i]);
      }
 
      fprintf(fp, "\n");
