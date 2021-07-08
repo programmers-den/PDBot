@@ -14,7 +14,7 @@ void on_channel_create(struct discord *client, const struct discord_user *bot, c
     id_to_str(channel_id_str, channel->id);
     channel_mention(channel_str, channel->id);
 
-    snprintf(embed->title, 257, "Channel created");
+    snprintf(embed->title, sizeof(embed->title), "Channel created");
     discord_embed_add_field(embed, "Channel name", (char*)channel->name, true);
     discord_embed_add_field(embed, "Channel ID", channel_id_str, true);
     discord_embed_add_field(embed, "Channel", channel_str, true);

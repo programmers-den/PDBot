@@ -56,7 +56,7 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
 
             embed->color = COLOR_MAGENTA;
             discord_embed_set_author(embed, message->content, NULL, avatar_url, NULL);
-            snprintf(embed->description, 2049, "<:%s:%lu> Yes\n<:%s:%lu> No", E_YES_NAME, E_YES_ID, E_NO_NAME, E_NO_ID);
+            snprintf(embed->description, sizeof(embed->description), "<:%s:%lu> Yes\n<:%s:%lu> No", E_YES_NAME, E_YES_ID, E_NO_NAME, E_NO_ID);
             discord_create_message(client, message->channel_id, &params, poll_message);
             discord_delete_message(client, message->channel_id, message->id);
             discord_create_reaction(client, poll_message->channel_id, poll_message->id, E_YES_ID, E_YES_NAME);

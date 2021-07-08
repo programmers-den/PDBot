@@ -22,7 +22,7 @@ void on_guild_member_add(struct discord *client, const struct discord_user *bot,
     if (member->user->bot) {
         discord_add_guild_member_role(client, guild_id, member->user->id, R_BOT);
 
-        snprintf(embed->title, 257, "New bot %s", username_and_discriminator);
+        snprintf(embed->title, sizeof(embed->title), "New bot %s", username_and_discriminator);
         discord_embed_add_field(embed, "Bot ID", user_id_str, true);
         discord_embed_add_field(embed, "Bot", user_mention_str, true);
     }
@@ -35,13 +35,13 @@ void on_guild_member_add(struct discord *client, const struct discord_user *bot,
         discord_add_guild_member_role(client, guild_id, member->user->id, R_FUN);
         discord_add_guild_member_role(client, guild_id, member->user->id, R_OTHER);
 
-        snprintf(embed->title, 257, "Welcome %s!", username_and_discriminator);
-        snprintf(embed->description, 2049, "Welcome **%s** to PD! Please checkout <#%lu> and <#%lu> to get started!", user_mention_str, C_SERVER_INFO, C_ROLES);
-        snprintf(embed->footer->text, 2049, "ID: %lu", member->user->id);
+        snprintf(embed->title, sizeof(embed->title), "Welcome %s!", username_and_discriminator);
+        snprintf(embed->description, sizeof(embed->description), "Welcome **%s** to PD! Please checkout <#%lu> and <#%lu> to get started!", user_mention_str, C_SERVER_INFO, C_ROLES);
+        snprintf(embed->footer->text, sizeof(embed->footer->text), "ID: %lu", member->user->id);
 
         discord_create_message(client, C_WELCOME, &params, NULL);
 
-        snprintf(embed->title, 257, "New user %s", username_and_discriminator);
+        snprintf(embed->title, sizeof(embed->title), "New user %s", username_and_discriminator);
         snprintf(embed->description, 1, "");
         discord_embed_add_field(embed, "User ID", user_id_str, true);
         discord_embed_add_field(embed, "User", user_mention_str, true);
