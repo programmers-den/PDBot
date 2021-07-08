@@ -27,7 +27,7 @@ void on_message_reaction_remove(struct discord *client, const struct discord_use
     username_and_discriminator_to_str(username_and_discriminator, member);
     emoji_mention(emoji_str, emoji);
 
-    snprintf(embed->title, 257, "Reaction removed by %s %s", username_and_discriminator, emoji_str);
+    snprintf(embed->title, sizeof(embed->title), "Reaction removed by %s %s", username_and_discriminator, emoji_str);
 
     discord_get_channel_message(client, channel_id, message_id, message);
     discord_embed_set_author(embed, member->username, NULL, avatar_url, NULL);
@@ -38,7 +38,7 @@ void on_message_reaction_remove(struct discord *client, const struct discord_use
     discord_embed_add_field(embed, "Channel", channel_str, false);
     discord_embed_add_field(embed, "Author", author_str, true);
     discord_embed_add_field(embed, "Content", message->content, false);
-    snprintf(embed->footer->text, 2049, "Author ID: %lu", member->id);
+    snprintf(embed->footer->text, sizeof(embed->footer->text), "Author ID: %lu", member->id);
 
     discord_create_message(client, C_LOG, &params, NULL);
 

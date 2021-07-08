@@ -19,9 +19,9 @@ void on_guild_member_remove(struct discord *client, const struct discord_user *b
 
     discord_embed_set_author(embed, (char*)user->username, NULL, avatar_url, NULL);
     discord_embed_set_thumbnail(embed, avatar_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
-    snprintf(embed->footer->text, 2049, "ID: %lu", user->id);
-    snprintf(embed->title, 257, "User left %s", username_and_discriminator);
-    snprintf(embed->description, 2049, "");
+    snprintf(embed->footer->text, sizeof(embed->footer->text), "ID: %lu", user->id);
+    snprintf(embed->title, sizeof(embed->title), "User left %s", username_and_discriminator);
+    snprintf(embed->description, sizeof(embed->description), "");
     discord_embed_add_field(embed, "User ID", user_id_str, true);
     discord_embed_add_field(embed, "User", user_str, true);
     discord_embed_add_field(embed, "Left at ", timestamp_str, true);

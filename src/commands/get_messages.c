@@ -31,8 +31,8 @@ void get_messages(struct discord *client, const struct discord_user *bot, const 
         else {
             size_t filename_len = strlen(filename);
             embed->color = COLOR_MINT;
-            snprintf(embed->title, 257, "Sent!");
-            snprintf(embed->description, 2049, "Please check your dms from the bot");
+            snprintf(embed->title, sizeof(embed->title), "Sent!");
+            snprintf(embed->description, sizeof(embed->description), "Please check your dms from the bot");
 
             discord_create_dm(client, msg->author->id, dm_channel);
             discord_create_message(client, msg->channel_id, &params, NULL);

@@ -27,7 +27,7 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
         user_mention(author_str, message->author->id);
         username_and_discriminator_to_str(username_and_discriminator, message->author);
 
-        snprintf(embed->title, 257, "Deleted message by %s", username_and_discriminator);
+        snprintf(embed->title, sizeof(embed->title), "Deleted message by %s", username_and_discriminator);
 
         discord_embed_set_author(embed, message->author->username, NULL, author_avatar_url, NULL);
         discord_embed_set_thumbnail(embed, author_avatar_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
@@ -37,7 +37,7 @@ void on_message_delete(struct discord *client, const struct discord_user *bot, c
         discord_embed_add_field(embed, "Channel", channel_str, false);
         discord_embed_add_field(embed, "Author", author_str, true);
         discord_embed_add_field(embed, "Content", message->content, false);
-        snprintf(embed->footer->text, 2049, "Author ID: %lu", message->author->id);
+        snprintf(embed->footer->text, sizeof(embed->footer->text), "Author ID: %lu", message->author->id);
 
         discord_create_message(client, C_LOG, &params, NULL);
 
