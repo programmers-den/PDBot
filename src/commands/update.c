@@ -32,8 +32,8 @@ void update(struct discord *client, const struct discord_user *bot, const struct
     }
     else {
         embed->color = COLOR_MINT;
-        snprintf(embed->title, sizeof(embed->title), "No permission!");
-        snprintf(embed->description, sizeof(embed->description), "Updating...");
+        snprintf(embed->title, sizeof(embed->title), "Updating...");
+        snprintf(embed->description, sizeof(embed->description), "Please wait a brief moment...");
 
         discord_create_message(client, msg->channel_id, &params, NULL);
 
