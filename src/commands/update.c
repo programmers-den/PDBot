@@ -4,6 +4,7 @@
 void update(struct discord *client, const struct discord_user *bot, const struct discord_message *msg) {
     if (msg->author->bot) return;
 
+    char *author_avatar_url = malloc(AVATAR_URL_LEN), *owner_role_mention = malloc(ROLE_MENTION_LEN);
     struct discord_guild *guild = discord_guild_alloc();
     struct discord_guild_member *guild_member = discord_guild_member_alloc();
     struct discord_embed *embed = discord_embed_alloc();
