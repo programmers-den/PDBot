@@ -102,12 +102,13 @@ make -j$(nproc) # or number of threads
 | add_role_all_user | `./add_role_all_user ROLE_ID` |
 | rm_role_all_user  | `./rm_role_all_user ROLE_ID`  |
 | get_messages      | `./get_messages`              |
+| update            | `./update`                    |
 
 ## 1.6. Latest major change
-> Added a command to get messages from db
+> Added bot update command
 
 ## 1.7. Latest minor change
-> Fixed poll channel triggering itself
+> Changed fixed buffer to sizeof for snprintf statements for future lib flexibility
 
 ## 1.8. To-do
 - [x] Add no-mic roles to users when they join a vc to access hidden channel
