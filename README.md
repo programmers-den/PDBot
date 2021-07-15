@@ -108,7 +108,7 @@ make -j$(nproc) # or number of threads
 > Added bot update command
 
 ## 1.7. Latest minor change
-> Changed fixed buffer to sizeof for snprintf statements for future lib flexibility
+> Updated and improved poll
 
 ## 1.8. To-do
 - [x] Add no-mic roles to users when they join a vc to access hidden channel

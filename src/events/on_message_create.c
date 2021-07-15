@@ -47,24 +47,40 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
         case C_POLL: {
             if (message->author->bot) break;
 
+            char author_str[USER_AND_DESCRIM_LEN];
             char *avatar_url = malloc(AVATAR_URL_LEN);
+            struct discord_emoji *emoji_yes = discord_emoji_alloc();
+            struct discord_emoji *emoji_no = discord_emoji_alloc();
             struct discord_embed *embed = discord_embed_alloc();
             struct discord_create_message_params params = {.embed = embed};
             struct discord_message *poll_message = discord_message_alloc();
 
+            discord_get_guild_emoji(client, message->guild_id, E_YES_ID, emoji_yes);
+            discord_get_guild_emoji(client, message->guild_id, E_NO_ID, emoji_no);
+            char emoji_yes_str[emoji_mention_len(emoji_yes)], emoji_no_str[emoji_mention_len(emoji_no)];
+
+            username_and_discriminator_to_str(&author_str, message->author);
             get_avatar_url(avatar_url, message->author);
+            emoji_mention(&emoji_yes_str, emoji_yes);
+            emoji_mention(&emoji_no_str, emoji_no);
 
             embed->color = COLOR_MAGENTA;
-            discord_embed_set_author(embed, message->content, NULL, avatar_url, NULL);
-            snprintf(embed->description, sizeof(embed->description), "<:%s:%lu> Yes\n<:%s:%lu> No", E_YES_NAME, E_YES_ID, E_NO_NAME, E_NO_ID);
+            embed->timestamp = message->timestamp;
+            discord_embed_set_author(embed, message->content, message->author->username, avatar_url, NULL);
+            snprintf(embed->title, sizeof(embed->title), avatar_url);
+            discord_embed_add_field(embed, "Yes", emoji_yes_str, true);
+            discord_embed_add_field(embed, "No", emoji_no_str, true);
+            snprintf(embed->description, sizeof(embed->description), author_str);
             discord_create_message(client, message->channel_id, &params, poll_message);
             discord_delete_message(client, message->channel_id, message->id);
             discord_create_reaction(client, poll_message->channel_id, poll_message->id, E_YES_ID, E_YES_NAME);
             discord_create_reaction(client, poll_message->channel_id, poll_message->id, E_NO_ID, E_NO_NAME);
 
             free(avatar_url);
-            discord_message_free(poll_message);
+            discord_emoji_free(emoji_yes);
+            discord_emoji_free(emoji_no);
             discord_embed_free(embed);
+            discord_message_free(poll_message);
 
             break;
         }
