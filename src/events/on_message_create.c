@@ -59,10 +59,10 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
             discord_get_guild_emoji(client, message->guild_id, E_NO_ID, emoji_no);
             char emoji_yes_str[emoji_mention_len(emoji_yes)], emoji_no_str[emoji_mention_len(emoji_no)];
 
-            username_and_discriminator_to_str(&author_str, message->author);
+            username_and_discriminator_to_str((char*)&author_str, message->author);
             get_avatar_url(avatar_url, message->author);
-            emoji_mention(&emoji_yes_str, emoji_yes);
-            emoji_mention(&emoji_no_str, emoji_no);
+            emoji_mention((char*)&emoji_yes_str, emoji_yes);
+            emoji_mention((char*)&emoji_no_str, emoji_no);
 
             embed->color = COLOR_MAGENTA;
             embed->timestamp = message->timestamp;
