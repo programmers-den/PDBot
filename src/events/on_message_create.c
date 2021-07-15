@@ -66,14 +66,14 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
 
             embed->color = COLOR_MAGENTA;
             embed->timestamp = message->timestamp;
-            discord_embed_set_author(embed, message->content, message->author->username, avatar_url, NULL);
-            snprintf(embed->title, sizeof(embed->title), avatar_url);
+            discord_embed_set_author(embed, author_str, NULL, avatar_url, NULL);
+            snprintf(embed->description, sizeof(embed->description), message->content);
             discord_embed_add_field(embed, "Yes", emoji_yes_str, true);
             discord_embed_add_field(embed, "No", emoji_no_str, true);
-            snprintf(embed->description, sizeof(embed->description), author_str);
             discord_create_message(client, message->channel_id, &params, poll_message);
             discord_delete_message(client, message->channel_id, message->id);
             discord_create_reaction(client, poll_message->channel_id, poll_message->id, E_YES_ID, E_YES_NAME);
+            cee_sleep_ms(100);
             discord_create_reaction(client, poll_message->channel_id, poll_message->id, E_NO_ID, E_NO_NAME);
 
             free(avatar_url);
