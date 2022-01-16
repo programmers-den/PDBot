@@ -1,7 +1,7 @@
-#include <orca/discord.h>
+#include <concord/discord.h>
 #include "../libs/bot_include.h"
 
-void on_message_reaction_add(struct discord *client, const struct discord_user *bot, const u64_snowflake_t user_id, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t guild_id, const struct discord_guild_member *member, const struct discord_emoji *emoji) {
+void on_message_reaction_add(struct discord *client, const u64_snowflake_t user_id, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t guild_id, const struct discord_guild_member *member, const struct discord_emoji *emoji) {
     if (member->user->bot) return;
 
     // size_t count = 0;
@@ -14,7 +14,7 @@ void on_message_reaction_add(struct discord *client, const struct discord_user *
     struct discord_create_message_params params = {.embed = &embed};
 
     message.guild_id = guild_id;
-    embed.timestamp = cee_timestamp_ms();
+    embed.timestamp = cog_timestamp_ms();
     embed.color = COLOR_LIGHT_GREEN;
 
     get_avatar_url(avatar_url, member->user);

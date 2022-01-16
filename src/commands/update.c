@@ -1,7 +1,7 @@
-#include <orca/discord.h>
+#include <concord/discord.h>
 #include "../libs/bot_include.h"
 
-void update(struct discord *client, const struct discord_user *bot, const struct discord_message *msg) {
+void update(struct discord *client, const struct discord_message *msg) {
     if (msg->author->bot) return;
 
     char *author_avatar_url = malloc(AVATAR_URL_LEN), *owner_role_mention = malloc(ROLE_MENTION_LEN);
@@ -48,7 +48,7 @@ void update(struct discord *client, const struct discord_user *bot, const struct
         discord_guild_cleanup(&guild);
         discord_embed_cleanup(&embed);
         discord_cleanup(client);
-        discord_global_cleanup();
+        ccord_global_cleanup();
     }
 
     return;

@@ -1,7 +1,7 @@
-#include <orca/discord.h>
+#include <concord/discord.h>
 #include "../libs/bot_include.h"
 
-void rm_role_all_user(struct discord *client, const struct discord_user *bot, const struct discord_message *msg) {
+void rm_role_all_user(struct discord *client, const struct discord_message *msg) {
     if (msg->author->bot) return;
 
     char *author_avatar_url = malloc(AVATAR_URL_LEN), *owner_role_mention = malloc(ROLE_MENTION_LEN);
@@ -89,7 +89,7 @@ void rm_role_all_user(struct discord *client, const struct discord_user *bot, co
             }
 
             embed.color = COLOR_PINK_PANTONE;
-            snprintf(embed.title, sizeof(embed.title), "Done! Took %lu ms", cee_timestamp_ms()-msg->timestamp);
+            snprintf(embed.title, sizeof(embed.title), "Done! Took %lu ms", cog_timestamp_ms()-msg->timestamp);
             snprintf(embed.description, sizeof(embed.description), "Removed %s from %d members", role_mention_str, guild_preview.approximate_member_count);
 
             discord_edit_message(client, msg->channel_id, embed_message.id, &edit_params, NULL);

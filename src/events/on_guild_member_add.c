@@ -1,7 +1,7 @@
-#include <orca/discord.h>
+#include <concord/discord.h>
 #include "../libs/bot_include.h"
 
-void on_guild_member_add(struct discord *client, const struct discord_user *bot, const u64_snowflake_t guild_id, const struct discord_guild_member *member) {
+void on_guild_member_add(struct discord *client, const u64_snowflake_t guild_id, const struct discord_guild_member *member) {
     char username_and_discriminator[DISCORD_MAX_USERNAME_LEN], user_id_str[ID_STR_LEN], timestamp_str[TIMESTAMP_NORMAL_STR_LEN];
     char *avatar_url = malloc(AVATAR_URL_LEN), *user_mention_str = malloc(USER_MENTION_LEN);
     struct discord_embed embed;
@@ -12,7 +12,7 @@ void on_guild_member_add(struct discord *client, const struct discord_user *bot,
     username_and_discriminator_to_str(username_and_discriminator, member->user);
     id_to_str(user_id_str, member->user->id);
     user_mention(user_mention_str, member->user->id);
-    cee_timestamp_str(timestamp_str, TIMESTAMP_NORMAL_STR_LEN);
+    snprintf(timestamp_str, TIMESTAMP_NORMAL_STR_LEN, "<t:%lu>", cog_timestamp_ms()/1000);
 
     embed.color = COLOR_MINT;
     embed.timestamp = member->joined_at;

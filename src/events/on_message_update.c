@@ -1,8 +1,8 @@
-#include <orca/discord.h>
-#include <orca/cee-utils.h>
+#include <concord/discord.h>
+#include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
-void on_message_update(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
+void on_message_update(struct discord *client, const struct discord_message *message) {
     if (message->channel_id == C_LOG || message->author->bot || !message->author->id) return;
 
     char message_id_str[ID_STR_LEN], message_str[MESSAGE_URL_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
@@ -16,7 +16,7 @@ void on_message_update(struct discord *client, const struct discord_user *bot, c
     else if (message->content) add_message_db(message);
 
     embed.color = COLOR_YELLOW;
-    embed.timestamp = cee_timestamp_ms();
+    embed.timestamp = cog_timestamp_ms();
 
     get_avatar_url(author_avatar_url, message->author);
     discord_embed_set_author(&embed, message->author->username, NULL, author_avatar_url, NULL);

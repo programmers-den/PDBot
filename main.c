@@ -1,8 +1,8 @@
-#include <orca/discord.h>
+#include <concord/discord.h>
 #include "src/libs/bot_include.h"
 
 int main() {
-    discord_global_init();
+    ccord_global_init();
     struct discord *client = discord_config_init("bot.config");
 
     discord_set_on_ready(client, &on_ready);
@@ -30,7 +30,7 @@ int main() {
     discord_run(client);
 
     discord_cleanup(client);
-    discord_global_cleanup();
+    ccord_global_cleanup();
 
     return 0;
 }

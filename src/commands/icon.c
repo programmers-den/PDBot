@@ -1,8 +1,8 @@
-#include <orca/discord.h>
-#include <orca/cee-utils.h>
+#include <concord/discord.h>
+#include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
-void icon(struct discord *client, const struct discord_user *bot, const struct discord_message *msg) {
+void icon(struct discord *client, const struct discord_message *msg) {
     if (msg->author->bot) return;
 
     char *author_avatar_url = malloc(AVATAR_URL_LEN);
@@ -10,7 +10,7 @@ void icon(struct discord *client, const struct discord_user *bot, const struct d
     discord_embed_init(&embed);
     struct discord_create_message_params params = {.embed = &embed};
 
-    embed.timestamp = cee_timestamp_ms();
+    embed.timestamp = cog_timestamp_ms();
     embed.color = COLOR_AERO;
 
     get_avatar_url(author_avatar_url, msg->author);

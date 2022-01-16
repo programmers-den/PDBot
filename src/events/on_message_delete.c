@@ -1,15 +1,15 @@
-#include <orca/discord.h>
-#include <orca/cee-utils.h>
+#include <concord/discord.h>
+#include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
-void on_message_delete(struct discord *client, const struct discord_user *bot, const u64_snowflake_t message_id, const u64_snowflake_t channel_id, const u64_snowflake_t guild_id) {
+void on_message_delete(struct discord *client, const u64_snowflake_t message_id, const u64_snowflake_t channel_id, const u64_snowflake_t guild_id) {
     struct discord_embed embed;
     discord_embed_init(&embed);
     struct discord_create_message_params params = {.embed = &embed};
     struct discord_message message = fetch_message_db(client, guild_id, message_id);
 
     embed.color = COLOR_RED;
-    embed.timestamp = cee_timestamp_ms();
+    embed.timestamp = cog_timestamp_ms();
 
     if (!message.content[0]) {
         discord_embed_cleanup(&embed);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <orca/discord.h>
+#include <concord/discord.h>
 
 #define BOT_DB "bot.db"
 #define MESSAGE_TABLE "messages"
@@ -76,7 +76,7 @@
 #define USER_AND_DESCRIM_LEN DISCORD_MAX_USERNAME_LEN+DISCORD_MAX_DISCRIMINATOR_LEN-1 // username + nullbye + discriminator + nullbyte - nullbyte
 #define ROLE_MENTION_LEN ID_LEN+5 // <@&ROLE_ID>
 #define TIMESTAMP_LEN 10
-#define TIMESTAMP_STR_LEN TIMESTAMP_LEN+1
+#define TIMESTAMP_STR_LEN TIMESTAMP_LEN+5
 #define TIMESTAMP_NORMAL_LEN 25
 #define TIMESTAMP_NORMAL_STR_LEN TIMESTAMP_NORMAL_LEN+1
 #define MAX_CMD_ARGS_LEN 1024

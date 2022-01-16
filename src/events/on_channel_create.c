@@ -1,15 +1,15 @@
-#include <orca/discord.h>
-#include <orca/cee-utils.h>
+#include <concord/discord.h>
+#include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
-void on_channel_create(struct discord *client, const struct discord_user *bot, const struct discord_channel *channel) {
+void on_channel_create(struct discord *client, const struct discord_channel *channel) {
     char channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN];
     char *avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_embed embed;
     discord_embed_init(&embed);
     struct discord_create_message_params params = {.embed = &embed};
 
-    embed.timestamp = cee_timestamp_ms();
+    embed.timestamp = cog_timestamp_ms();
     embed.color = COLOR_LIGHT_GREEN;
 
     id_to_str(channel_id_str, channel->id);

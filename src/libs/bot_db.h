@@ -1,8 +1,8 @@
 #pragma once
 
 #include <sqlite3.h>
-#include <orca/discord.h>
-#include <orca/cee-utils.h>
+#include <concord/discord.h>
+#include <concord/cog-utils.h>
 #include "bot_include.h"
 
 void check_for_db();

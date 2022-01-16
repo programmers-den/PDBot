@@ -1,7 +1,7 @@
-#include <orca/discord.h>
+#include <concord/discord.h>
 #include "../libs/bot_include.h"
 
-void on_voice_state_update(struct discord *client, const struct discord_user *bot, const struct discord_voice_state *vs) {
+void on_voice_state_update(struct discord *client, const struct discord_voice_state *vs) {
     struct discord_guild_member guild_member;
     discord_guild_member_init(&guild_member);
     discord_get_guild_member(client, vs->guild_id, vs->user_id, &guild_member);

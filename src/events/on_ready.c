@@ -1,10 +1,12 @@
-#include <orca/discord.h>
+#include <concord/discord.h>
 #include "../libs/bot_include.h"
 
-void on_ready(struct discord *client, const struct discord_user *bot) {
+void on_ready(struct discord *client) {
     char username_and_descrim[USER_AND_DESCRIM_LEN];
+    const struct discord_user *bot = discord_get_self(client);
 
     username_and_discriminator_to_str(username_and_descrim, bot);
+
     printf("%s connected successfully\n\n", username_and_descrim);
 
     check_for_json();

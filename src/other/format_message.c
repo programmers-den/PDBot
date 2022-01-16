@@ -1,5 +1,5 @@
-#include <orca/discord.h>
-#include <orca/cee-utils.h>
+#include <concord/discord.h>
+#include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
 void id_to_str(char *buf, u64_snowflake_t id) {

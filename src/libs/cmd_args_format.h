@@ -1,6 +1,6 @@
 #include <regex.h>
-#include <orca/discord.h>
-#include <orca/cee-utils.h>
+#include <concord/discord.h>
+#include <concord/cog-utils.h>
 #include "bot_include.h"
 
 size_t get_args_len(const struct discord_message *message, char *split);
