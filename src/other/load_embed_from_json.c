@@ -12,7 +12,6 @@ struct discord_embed *load_embed_from_json(char *filename) {
     new_embed->timestamp = cog_timestamp_ms();
 
     free(json_payload);
-    free(new_embed);
 
     return new_embed;
 }

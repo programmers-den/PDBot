@@ -70,7 +70,7 @@
 #define ID_LEN 18
 #define ID_STR_LEN ID_LEN+1
 #define MESSAGE_MENTION_LEN MESSAGE_URL_LEN+8+1
-#define CHANNEL_MENTiON_LEN ID_LEN+4 // <#ID>
+#define CHANNEL_MENTION_LEN ID_LEN+4 // <#ID>
 #define USER_MENTION_LEN ID_LEN+4 // <@ID>
 #define USER_NICK_MENTION_LEN USER_MENTION_LEN+1 // <@!ID>
 #define USER_AND_DESCRIM_LEN DISCORD_MAX_USERNAME_LEN+DISCORD_MAX_DISCRIMINATOR_LEN-1 // username + nullbye + discriminator + nullbyte - nullbyte

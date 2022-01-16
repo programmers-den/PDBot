@@ -5,7 +5,7 @@
 void on_message_update(struct discord *client, const struct discord_message *message) {
     if (message->channel_id == C_LOG || message->author->bot || !message->author->id) return;
 
-    char message_id_str[ID_STR_LEN], message_str[MESSAGE_URL_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
+    char message_id_str[ID_STR_LEN], message_str[MESSAGE_URL_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTION_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
     char *author_avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_embed embed;
     discord_embed_init(&embed);
@@ -21,9 +21,11 @@ void on_message_update(struct discord *client, const struct discord_message *mes
     get_avatar_url(author_avatar_url, message->author);
     discord_embed_set_author(&embed, message->author->username, NULL, author_avatar_url, NULL);
     discord_embed_set_thumbnail(&embed, author_avatar_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
-    snprintf(embed.footer->text, sizeof(embed.footer->text), "Author ID: %lu", message->author->id);
+    char footer_text[1024];
+    snprintf(footer_text, sizeof(footer_text), "Author ID: %lu", message->author->id);
+    discord_embed_set_footer(&embed, footer_text, author_avatar_url, NULL);
     username_and_discriminator_to_str(username_and_discriminator, message->author);
-    snprintf(embed.title, sizeof(&embed.title), "Edit message by %s", username_and_discriminator);
+    discord_embed_set_title(&embed, "Edit message by %s", username_and_discriminator);
     id_to_str(message_id_str, message->id);
     discord_embed_add_field(&embed, "Message ID", message_id_str, true);
     id_to_str(channel_id_str, message->channel_id);

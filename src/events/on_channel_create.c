@@ -3,7 +3,7 @@
 #include "../libs/bot_include.h"
 
 void on_channel_create(struct discord *client, const struct discord_channel *channel) {
-    char channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN];
+    char channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTION_LEN];
     char *avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_embed embed;
     discord_embed_init(&embed);

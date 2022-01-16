@@ -5,7 +5,7 @@ void on_message_reaction_add(struct discord *client, const u64_snowflake_t user_
     if (member->user->bot) return;
 
     // size_t count = 0;
-    char message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTiON_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN], emoji_str[emoji_mention_len(emoji)];
+    char message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTION_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN], emoji_str[emoji_mention_len(emoji)];
     char *avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_message message;
     struct discord_embed embed;

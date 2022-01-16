@@ -46,9 +46,9 @@ void user_nick_mention(char *buf, u64_snowflake_t user_id) {
 }
 
 void channel_mention(char *buf, u64_snowflake_t channel_id) {
-    // buf[CHANNEL_MENTiON_LEN]
-    memset(buf, 0, CHANNEL_MENTiON_LEN);
-    snprintf(buf, CHANNEL_MENTiON_LEN, "<#%lu>", channel_id);
+    // buf[CHANNEL_MENTION_LEN]
+    memset(buf, 0, CHANNEL_MENTION_LEN);
+    snprintf(buf, CHANNEL_MENTION_LEN, "<#%lu>", channel_id);
 
     return;
 }
