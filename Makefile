@@ -2,7 +2,7 @@ TARGET = main
 CC = gcc
 SRC = $(wildcard src/*/*.c)
 OBJ = $(SRC:.c=.o)
-FLAGS = -g -ldiscord -lcurl -lcrypto -lssl -lm -lpthread -pthread -lsqlite3 `pkg-config --libs --cflags json-c`
+FLAGS = -g -ldiscord -lcurl -lm -lpthread -pthread -lsqlite3 `pkg-config --libs --cflags json-c`
 
 all: $(TARGET)
 

@@ -5,6 +5,7 @@ void add_role_all_user(struct discord *client, const struct discord_message *msg
     if (msg->author->bot) return;
 
     char *author_avatar_url = malloc(AVATAR_URL_LEN), *owner_role_mention = malloc(ROLE_MENTION_LEN);
+    char author_id_str[ID_STR_LEN+11];
     struct discord_guild guild;
     struct discord_guild_member guild_member;
     struct discord_embed embed;
@@ -13,16 +14,18 @@ void add_role_all_user(struct discord *client, const struct discord_message *msg
     discord_embed_init(&embed);
     struct discord_create_message_params params = {.embed = &embed};
 
+    
     embed.timestamp = msg->timestamp;
     role_mention(owner_role_mention, R_OWNER);
     get_avatar_url(author_avatar_url, msg->author);
-    snprintf(embed.footer->text, sizeof(embed.footer->text), "Author ID: %lu", msg->author->id);
+    snprintf(author_id_str, sizeof(&author_id_str), "Author ID: %lu", msg->author->id);
+    discord_embed_set_footer(&embed, author_id_str, author_avatar_url, NULL);
     discord_embed_set_author(&embed, msg->author->username, NULL, author_avatar_url, NULL);
     discord_get_guild_member(client, msg->guild_id, msg->author->id, &guild_member);
 
     if (!guild_member_has_role(&guild_member, R_OWNER)) {
         embed.color = COLOR_RED;
-        snprintf(embed.title, sizeof(embed.title), "No permission!");
+        discord_embed_set_title(&embed, "No permission!");
         discord_embed_add_field(&embed, "Required role", owner_role_mention, true);
 
         discord_create_message(client, msg->channel_id, &params, NULL);
@@ -44,8 +47,8 @@ void add_role_all_user(struct discord *client, const struct discord_message *msg
             get_arg_at(arg_str, msg, err_arg, " ");
 
             embed.color = COLOR_RED;
-            snprintf(embed.title, sizeof(embed.title), "Not an id!");
-            snprintf(embed.description, sizeof(embed.description), "Error arg[%zu]: %s", err_arg, arg_str[0]?arg_str:"NULL");
+            discord_embed_set_title(&embed, "Not an id!");
+            discord_embed_set_description(&embed, "Error arg[%zu]: %s", err_arg, arg_str[0]?arg_str:"NULL");
 
             discord_create_message(client, msg->channel_id, &params, NULL);
 
@@ -77,8 +80,8 @@ void add_role_all_user(struct discord *client, const struct discord_message *msg
             discord_get_guild_preview(client, msg->guild_id, &guild_preview);
             role_mention(role_mention_str, arg_id_int);
 
-            snprintf(embed.title, sizeof(embed.title), "Please wait...");
-            snprintf(embed.description, sizeof(embed.description), "Adding %s to %d members", role_mention_str, guild_preview.approximate_member_count);
+            discord_embed_set_title(&embed, "Please wait...");
+            discord_embed_set_description(&embed, "Adding %s to %d memebers", role_mention_str, guild_preview.approximate_member_count);
 
             discord_create_message(client, msg->channel_id, &params, &embed_message);
 
@@ -89,8 +92,8 @@ void add_role_all_user(struct discord *client, const struct discord_message *msg
             }
 
             embed.color = COLOR_MINT;
-            snprintf(embed.title, sizeof(embed.title), "Done! Took %lu ms", cog_timestamp_ms()-msg->timestamp);
-            snprintf(embed.description, sizeof(embed.description), "Added %s to %d members", role_mention_str, guild_preview.approximate_member_count);
+            discord_embed_set_title(&embed, "Done! Took %lu ms", (cog_timestamp_ms()-msg->timestamp)/1000);
+            discord_embed_set_description(&embed, "Added %s to %d members", role_mention_str, guild_preview.approximate_member_count);
 
             discord_edit_message(client, msg->channel_id, embed_message.id, &edit_params, NULL);
 

@@ -15,8 +15,8 @@ void get_messages(struct discord *client, const struct discord_message *msg) {
     struct discord_attachment attachment;
     discord_channel_init(&dm_channel);
     discord_embed_init(&embed);
+    discord_attachment_init(&attachment);
     struct discord_create_message_params params = {.embed = &embed};
-    params.attachments[0] = &attachment;
     struct discord_create_dm_params dm_params = {.recipient_id = msg->author->id};
 
     filename = sqlite3_mprintf("%s.csv", msg->author->username);
@@ -35,15 +35,16 @@ void get_messages(struct discord *client, const struct discord_message *msg) {
         }
         else {
             embed.color = COLOR_MINT;
-            snprintf(embed.title, sizeof(embed.title), "Sent!");
-            snprintf(embed.description, sizeof(embed.description), "Please check your dms from the bot");
+	    discord_embed_set_title(&embed, "Sent!");
+            discord_embed_set_description(&embed, "Please check your dms from the bot");
 
-            discord_create_dm(client, &dm_params, &dm_channel);
             discord_create_message(client, msg->channel_id, &params, NULL);
 
             params.embed = NULL;
+	    params.attachments = (struct discord_attachment *[]){&attachment, NULL};
             attachment.filename = filename;
-            discord_create_message(client, dm_channel.id, &params, NULL);
+            discord_create_dm(client, &dm_params, &dm_channel);
+	    discord_create_message(client, dm_channel.id, &params, NULL);
 
             remove(attachment.filename);
         }
