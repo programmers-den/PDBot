@@ -2,7 +2,7 @@
 #include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
-void stat(struct discord *client, const struct discord_message *message) {
+void stats(struct discord *client, const struct discord_message *message) {
     if (message->author->bot) return;
 
     char user_id[ID_STR_LEN];

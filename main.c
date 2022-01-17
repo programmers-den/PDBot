@@ -24,7 +24,7 @@ int main() {
     discord_set_on_command(client, "ping", &ping);
     discord_set_on_command(client, "icon", &icon);
     discord_set_on_command(client, "rm_role_all_user", &rm_role_all_user);
-    discord_set_on_command(client, "stat", &stat);
+    discord_set_on_command(client, "stat", &stats);
     discord_set_on_command(client, "update", &update);
 
     discord_run(client);
