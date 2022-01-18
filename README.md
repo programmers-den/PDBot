@@ -20,7 +20,7 @@ PDBot is the official Discord bot for the [Programmer's Den](https://pden.net) s
 apt install -y git build-essential libcurl4-openssl-dev cmake libsqlite3-dev
 ```
 
-> [orca](https://github.com/Cogmasters/concord)
+> [concord](https://github.com/Cogmasters/concord)
 ```bash
 apt install -y git build-essential libcurl4-openssl-dev libssl-dev
 
