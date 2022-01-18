@@ -3,7 +3,7 @@
 #include "../libs/bot_include.h"
 
 void on_guild_member_remove(struct discord *client, const u64_snowflake_t guild_id, const struct discord_user *user) {
-    char user_id_str[ID_STR_LEN], user_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN], timestamp_str[TIMESTAMP_NORMAL_STR_LEN];
+    char user_id_str[ID_STR_LEN], user_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN], timestamp_str[TIMESTAMP_NORMAL_STR_LEN], footer_text[ID_STR_LEN+4];
     char *avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_embed embed;
     discord_embed_init(&embed);
@@ -20,9 +20,10 @@ void on_guild_member_remove(struct discord *client, const u64_snowflake_t guild_
 
     discord_embed_set_author(&embed, (char*)user->username, NULL, avatar_url, NULL);
     discord_embed_set_thumbnail(&embed, avatar_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
-    snprintf(embed.footer->text, sizeof(embed.footer->text), "ID: %lu", user->id);
-    snprintf(embed.title, sizeof(embed.title), "User left %s", username_and_discriminator);
-    snprintf(embed.description, sizeof(embed.description), "");
+    snprintf(footer_text, sizeof(footer_text), "ID: %lu", user->id);
+    discord_embed_set_footer(&embed, footer_text, avatar_url, NULL);
+    discord_embed_set_title(&embed, "User left %s", username_and_discriminator);
+    discord_embed_set_description(&embed, "");
     discord_embed_add_field(&embed, "User ID", user_id_str, true);
     discord_embed_add_field(&embed, "User", user_str, true);
     discord_embed_add_field(&embed, "Left at ", timestamp_str, true);
