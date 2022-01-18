@@ -62,3 +62,4 @@ help.json
 *.sh
 *.csv
 main
+*.swp
