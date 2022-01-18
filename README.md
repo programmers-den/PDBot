@@ -20,13 +20,13 @@ PDBot is the official Discord bot for the [Programmer's Den](https://pden.net) s
 apt install -y git build-essential libcurl4-openssl-dev cmake libsqlite3-dev
 ```
 
-> [orca](https://github.com/cee-studio/orca)
+> [concord](https://github.com/Cogmasters/concord)
 ```bash
 apt install -y git build-essential libcurl4-openssl-dev libssl-dev
 
-git clone "https://github.com/cee-studio/orca.git"
+git clone "https://github.com/Cogmasters/concord.git"
 
-cd orca/
+cd concord/
 make purge
 make -j$(nproc) # or number of threads
 make install

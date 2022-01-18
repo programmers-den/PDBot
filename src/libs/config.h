@@ -1,6 +1,6 @@
 #pragma once
 
-#include <orca/discord.h>
+#include <concord/discord.h>
 
 #define BOT_DB "bot.db"
 #define MESSAGE_TABLE "messages"
@@ -45,20 +45,20 @@
 #define ID_LEN 18
 #define ID_STR_LEN ID_LEN+1
 #define MESSAGE_MENTION_LEN MESSAGE_URL_LEN+8+1
-#define CHANNEL_MENTiON_LEN ID_LEN+4 // <#ID>
+#define CHANNEL_MENTION_LEN ID_LEN+4 // <#ID>
 #define USER_MENTION_LEN ID_LEN+4 // <@ID>
 #define USER_NICK_MENTION_LEN USER_MENTION_LEN+1 // <@!ID>
 #define USER_AND_DESCRIM_LEN DISCORD_MAX_USERNAME_LEN+DISCORD_MAX_DISCRIMINATOR_LEN-1 // username + nullbye + discriminator + nullbyte - nullbyte
 #define ROLE_MENTION_LEN ID_LEN+5 // <@&ROLE_ID>
 #define TIMESTAMP_LEN 10
-#define TIMESTAMP_STR_LEN TIMESTAMP_LEN+1
+#define TIMESTAMP_STR_LEN TIMESTAMP_LEN+5
 #define TIMESTAMP_NORMAL_LEN 25
 #define TIMESTAMP_NORMAL_STR_LEN TIMESTAMP_NORMAL_LEN+1
 #define MAX_CMD_ARGS_LEN 1024
 #define MAX_GUILD_ROLES 250
 #define MAX_GUILD_ROLES_STR MAX_GUILD_ROLES+1
 #define ID_OWNER 300126997718237195
-#define R_OWNER 668317861743165441
+#define R_OWNER 932778909450256414
 #define REGEX_ID "^[[:digit:]]{18}$"
 #define COLOR_RED 16711680
 #define COLOR_GREEN 65280

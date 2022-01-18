@@ -1,13 +1,13 @@
-#include <orca/discord.h>
+#include <concord/discord.h>
 #include "../libs/bot_include.h"
 
-void on_message_create(struct discord *client, const struct discord_user *bot, const struct discord_message *message) {
+void on_message_create(struct discord *client, const struct discord_message *message) {
     if (!message->author->bot) add_message_db(message);
 
     switch (message->channel_id) {
         case C_VERIFY: {
             if (message->author->id != ID_OWNER) {
-                cee_sleep_ms(VERIFY_SLEEP);
+                cog_sleep_ms(VERIFY_SLEEP);
                 discord_delete_message(client, message->channel_id, message->id);
             }
 
@@ -77,7 +77,7 @@ void on_message_create(struct discord *client, const struct discord_user *bot, c
             discord_create_message(client, message->channel_id, &params, &poll_message);
             discord_delete_message(client, message->channel_id, message->id);
             discord_create_reaction(client, poll_message.channel_id, poll_message.id, E_YES_ID, E_YES_NAME);
-            cee_sleep_ms(100);
+            cog_sleep_ms(100);
             discord_create_reaction(client, poll_message.channel_id, poll_message.id, E_NO_ID, E_NO_NAME);
 
             free(avatar_url);
