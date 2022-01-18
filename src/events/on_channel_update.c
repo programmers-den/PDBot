@@ -15,7 +15,7 @@ void on_channel_update(struct discord *client, const struct discord_channel *cha
     id_to_str(channel_id_str, channel->id);
     channel_mention(channel_str, channel->id);
 
-    snprintf(embed.title, sizeof(embed.title), "Channel updated");
+    discord_embed_set_title(&embed, "Channel updated");
     discord_embed_add_field(&embed, "Channel name", (char*)channel->name, true);
     discord_embed_add_field(&embed, "Channel ID", channel_id_str, true);
     discord_embed_add_field(&embed, "Channel", channel_str, true);
