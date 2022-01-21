@@ -31,7 +31,6 @@
 #define R_FIELDS 856234950424395796
 #define R_FUN 856236052732706837
 #define R_OTHER 856235532631408640
-#define R_OTHER 856235532631408640
 #define STARBOARD_REACTION_COUNT 1
 #define MESSAGE_URL_LEN 31+18+18+18+1 // https://discord.com/channels/{guild.id}/{channel.id}/{message.id} url + channel_id + message_id + nullbyte
 #define AVATAR_URL_LEN 40+18+1024+1 // https://cdn.discordapp.com/ url + id + avatar length + nullbyte
