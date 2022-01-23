@@ -5,6 +5,7 @@ void on_ready(struct discord *client) {
     char username_and_descrim[USER_AND_DESCRIM_LEN];
     const struct discord_user *bot = discord_get_self(client);
 
+    on_application_command_create(client);
     username_and_discriminator_to_str(username_and_descrim, bot);
 
     printf("%s connected successfully\n\n", username_and_descrim);

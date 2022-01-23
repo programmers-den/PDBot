@@ -2,13 +2,15 @@
 #include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
-void ping(struct discord *client, const struct discord_message *msg) {
-    if (msg->author->bot) return;
-
+void ping(struct discord *client, const struct discord_interaction *interaction) {
     char content[TIMESTAMP_STR_LEN+10];
+    struct discord_embed *embed;
+    struct discord_interaction_response interaction_params = {
+	    .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
+	    .data = &(struct discord_interaction_callback_data) {.content = content} 
+    };
 
-    snprintf(content, TIMESTAMP_STR_LEN+10, "Pong! %lums", cog_timestamp_ms()-msg->timestamp);
-    struct discord_create_message_params params = {.content = content};
+    snprintf(content, TIMESTAMP_STR_LEN+10, "Pong! %dms", discord_get_ping(client));
 
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_params, NULL);
 }
