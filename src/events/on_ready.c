@@ -18,7 +18,7 @@ void on_ready(struct discord *client) {
     printf("\nLoading etc:\n\n");
     get_files(NULL, "src/other/");
 
-    check_for_db();
+    ready_db();
 
     printf("\n✔️  Ready!\n\n");
 
