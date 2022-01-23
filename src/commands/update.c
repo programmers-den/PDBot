@@ -10,8 +10,8 @@ void update(struct discord *client, const struct discord_interaction *interactio
     discord_guild_init(&guild);
     discord_guild_member_init(&guild_member);
     discord_embed_init(&embed);
-    struct discord_create_message_params params = {.embed = &embed};
-    struct discord_interaction_response interaction_params = {
+    struct discord_create_message params = {.embed = &embed};
+    struct discord_interaction_response interaction = {
 	    .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
 	    .data = &(struct discord_interaction_callback_data) {.embeds = (struct discord_embed *[]) {&embed, NULL}}
     };
@@ -30,7 +30,7 @@ void update(struct discord *client, const struct discord_interaction *interactio
 	discord_embed_set_title(&embed, "No permission");
         discord_embed_add_field(&embed, "Required role", owner_role_mention, true);
 
-    	discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_params, NULL);
+    	discord_create_interaction_response(client, interaction->id, interaction->token, &interaction, NULL);
 
         free(author_avatar_url);
         free(owner_role_mention);
@@ -43,7 +43,7 @@ void update(struct discord *client, const struct discord_interaction *interactio
         discord_embed_set_title(&embed, "Updating...");
 	discord_embed_set_description(&embed, "Please wait a brief moment...");
 
-    	discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_params, NULL);
+    	discord_create_interaction_response(client, interaction->id, interaction->token, &interaction, NULL);
 
         system("git pull && make");
 

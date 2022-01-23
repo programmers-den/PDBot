@@ -16,7 +16,7 @@ void on_message_create(struct discord *client, const struct discord_message *mes
             size_t val = atoi((char*)message->content);
             if (val) {
                 NTL_T(struct discord_message) msgs = NULL;
-                struct discord_get_channel_messages_params params = {.limit = 2};
+                struct discord_get_channel_messages params = {.limit = 2};
                 discord_get_channel_messages(client, message->channel_id, &params, &msgs);
                 if (msgs) {
                     size_t prev_val = atoi((char*)msgs[1]->content);
@@ -47,7 +47,7 @@ void on_message_create(struct discord *client, const struct discord_message *mes
             discord_emoji_init(&emoji_yes);
             discord_emoji_init(&emoji_no);
             discord_embed_init(&embed);
-            struct discord_create_message_params params = {.embed = &embed};
+            struct discord_create_message params = {.embed = &embed};
             struct discord_message poll_message;
             discord_message_init(&poll_message);
 

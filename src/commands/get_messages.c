@@ -10,7 +10,7 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
     int rc = sqlite3_open(BOT_DB, &db);
     struct discord_attachment attachment;
     discord_attachment_init(&attachment);
-    struct discord_interaction_response interaction_params = {
+    struct discord_interaction_response interaction = {
 	    .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
 	    .data = &(struct discord_interaction_callback_data) {.attachments = (struct discord_attachment *[]) {&attachment, NULL}}
     };
@@ -19,10 +19,10 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
     FILE *fp = fopen(filename, "w");
 
     if (rc) {
-	    interaction_params.data->content = (char*)sqlite3_errmsg(db);
-	    interaction_params.data->attachments = NULL;
+	    interaction.data->content = (char*)sqlite3_errmsg(db);
+	    interaction.data->attachments = NULL;
 
-	    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_params, NULL);
+	    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction, NULL);
     }
     else {
         fprintf(fp, "\"timestamp\", \"author_id\", \"message_id\", \"content\", \n");
@@ -31,14 +31,14 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
         fclose(fp);
 
         if (rc != SQLITE_OK) {
-            interaction_params.data->content = errMsg;
+            interaction.data->content = errMsg;
             sqlite3_free(errMsg);
         }
         else {
-	    interaction_params.data->content = filename;
+	    interaction.data->content = filename;
 	    attachment.filename = filename;
 
-	    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_params, NULL);
+	    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction, NULL);
 
             remove(attachment.filename);
         }

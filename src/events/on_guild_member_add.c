@@ -6,7 +6,7 @@ void on_guild_member_add(struct discord *client, const u64_snowflake_t guild_id,
     char *avatar_url = malloc(AVATAR_URL_LEN), *user_mention_str = malloc(USER_MENTION_LEN);
     struct discord_embed embed;
     discord_embed_init(&embed);
-    struct discord_create_message_params params = {.embed = &embed};
+    struct discord_create_message params = {.embed = &embed};
 
     get_avatar_url(avatar_url, member->user);
     username_and_discriminator_to_str(username_and_discriminator, member->user);

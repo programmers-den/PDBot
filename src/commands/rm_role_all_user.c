@@ -10,7 +10,7 @@ void rm_role_all_user(struct discord *client, const struct discord_interaction *
     discord_guild_init(&guild);
     discord_guild_member_init(&guild_member);
     discord_embed_init(&embed);
-    struct discord_interaction_response interaction_params = {
+    struct discord_interaction_response interaction = {
         .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
         .data = &(struct discord_interaction_callback_data) {.embeds = (struct discord_embed *[]) {&embed, NULL}},
     };
@@ -28,7 +28,7 @@ void rm_role_all_user(struct discord *client, const struct discord_interaction *
         discord_embed_set_title(&embed, "No permission!");
         discord_embed_add_field(&embed, "Required role", owner_role_mention, true);
 
-        discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_params, NULL);
+        discord_create_interaction_response(client, interaction->id, interaction->token, &interaction, NULL);
 
         free(author_avatar_url);
         free(owner_role_mention);
@@ -46,17 +46,17 @@ void rm_role_all_user(struct discord *client, const struct discord_interaction *
 
         u64_snowflake_t role_id;
         char role_mention_str[ROLE_MENTION_LEN];
-        struct discord_edit_message_params edit_params = {.embed = &embed};
-        struct discord_list_guild_members_params list_guild_members_params = {.limit = 1000};
+        struct discord_edit_message edit = {.embed = &embed};
+        struct discord_list_guild_members list_guild_members = {.limit = 1000};
         struct discord_guild_preview guild_preview;
-        struct discord_edit_original_interaction_response_params interaction_response_params = {
+        struct discord_edit_original_interaction_response interaction_response = {
             .embeds = (struct discord_embed *[]) {&embed, NULL}
         };
 
         embed.color = COLOR_YELLOW;
 
         discord_get_guild(client, interaction->guild_id, &guild);
-        discord_list_guild_members(client, interaction->guild_id, &list_guild_members_params, &guild.members);
+        discord_list_guild_members(client, interaction->guild_id, &list_guild_members, &guild.members);
         discord_get_guild_preview(client, interaction->guild_id, &guild_preview);
 
         for (int i=0; interaction->data->options[i]; i++) {
@@ -67,7 +67,7 @@ void rm_role_all_user(struct discord *client, const struct discord_interaction *
                 discord_embed_set_title(&embed, "Please wait...");
                 discord_embed_set_description(&embed, "Removing %s from %d memebers", role_mention_str, guild_preview.approximate_member_count);
 
-                discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_params, NULL);
+                discord_create_interaction_response(client, interaction->id, interaction->token, &interaction, NULL);
 
                 for (size_t j=0; guild.members[j]; j++) {
                     if (!guild.members[j]->user->bot) {
@@ -81,7 +81,7 @@ void rm_role_all_user(struct discord *client, const struct discord_interaction *
         discord_embed_set_title(&embed, "Done! Took %lu ms", (discord_timestamp(client)-embed.timestamp)/1000);
         discord_embed_set_description(&embed, "Removed %s from %d members", role_mention_str, guild_preview.approximate_member_count);
 
-        discord_edit_original_interaction_response(client, ID_APPLICATION, interaction->token, &interaction_response_params, NULL);
+        discord_edit_original_interaction_response(client, ID_APPLICATION, interaction->token, &interaction_response, NULL);
 
         discord_guild_cleanup(&guild);
         discord_embed_cleanup(&embed);

@@ -6,7 +6,7 @@ void stats(struct discord *client, const struct discord_interaction *interaction
     char user_id[ID_STR_LEN];
     char *author_avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_embed embed;
-    struct discord_interaction_response interaction_params = {
+    struct discord_interaction_response interaction = {
 	    .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
 	    .data = &(struct discord_interaction_callback_data) {.embeds = (struct discord_embed *[]) {&embed, NULL}}
     };
@@ -20,7 +20,7 @@ void stats(struct discord *client, const struct discord_interaction *interaction
     discord_embed_set_image(&embed, author_avatar_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
     discord_embed_add_field(&embed, "ID", user_id, false);
 
-    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_params, NULL);
+    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction, NULL);
 
     free(author_avatar_url);
     discord_embed_cleanup(&embed);

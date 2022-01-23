@@ -11,7 +11,7 @@ void on_message_reaction_add(struct discord *client, const u64_snowflake_t user_
     struct discord_embed embed;
     discord_message_init(&message);
     discord_embed_init(&embed);
-    struct discord_create_message_params params = {.embed = &embed};
+    struct discord_create_message params = {.embed = &embed};
 
     message.guild_id = guild_id;
     embed.timestamp = cog_timestamp_ms();
