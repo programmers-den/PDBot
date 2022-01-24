@@ -10,19 +10,19 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
     int rc = sqlite3_open(BOT_DB, &db);
     struct discord_attachment attachment;
     discord_attachment_init(&attachment);
-    struct discord_interaction_response interaction = {
-	    .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
-	    .data = &(struct discord_interaction_callback_data) {.attachments = (struct discord_attachment *[]) {&attachment, NULL}}
+    struct discord_interaction_response interaction_response = {
+        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
+        .data = &(struct discord_interaction_callback_data) {.attachments = (struct discord_attachment *[]) {&attachment, NULL}}
     };
 
     filename = sqlite3_mprintf("%s.csv", interaction->member->user->username);
     FILE *fp = fopen(filename, "w");
 
     if (rc) {
-	    interaction.data->content = (char*)sqlite3_errmsg(db);
-	    interaction.data->attachments = NULL;
+        interaction_response.data->content = (char*)sqlite3_errmsg(db);
+        interaction_response.data->attachments = NULL;
 
-	    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction, NULL);
+        discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_response, NULL);
     }
     else {
         fprintf(fp, "\"timestamp\", \"author_id\", \"message_id\", \"content\", \n");
@@ -31,14 +31,14 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
         fclose(fp);
 
         if (rc != SQLITE_OK) {
-            interaction.data->content = errMsg;
+            interaction_response.data->content = errMsg;
             sqlite3_free(errMsg);
         }
         else {
-	    interaction.data->content = filename;
-	    attachment.filename = filename;
+            interaction_response.data->content = filename;
+            attachment.filename = filename;
 
-	    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction, NULL);
+            discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_response, NULL);
 
             remove(attachment.filename);
         }

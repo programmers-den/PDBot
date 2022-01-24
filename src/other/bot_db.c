@@ -54,10 +54,11 @@ struct discord_message fetch_message_db(struct discord *client, u64_snowflake_t 
                 free(message.content);
                 printf("%lu, %lu\n", db_message_id, message_id);
                 struct discord_user *member = malloc(sizeof(*member));
+                struct discord_ret_user ret_user = {.sync = member};
                 discord_user_init(member);
                 message.timestamp = sqlite3_column_int64(stmt, 0);
                 member->id = sqlite3_column_int64(stmt, 1);
-                discord_get_user(client, member->id, member);
+                discord_get_user(client, member->id, &ret_user);
                 message.author = member;
                 message.id = db_message_id;
                 message.content = malloc(4001);

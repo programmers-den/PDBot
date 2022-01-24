@@ -12,6 +12,7 @@ void on_message_reaction_add(struct discord *client, const u64_snowflake_t user_
     discord_message_init(&message);
     discord_embed_init(&embed);
     struct discord_create_message params = {.embed = &embed};
+    struct discord_ret_message ret_message = {.sync = &message};
 
     message.guild_id = guild_id;
     embed.timestamp = cog_timestamp_ms();
@@ -26,7 +27,7 @@ void on_message_reaction_add(struct discord *client, const u64_snowflake_t user_
     username_and_discriminator_to_str(username_and_discriminator, member->user);
     emoji_mention(emoji_str, emoji);
 
-    discord_get_channel_message(client, channel_id, message_id, &message);
+    discord_get_channel_message(client, channel_id, message_id, &ret_message);
     discord_embed_set_title(&embed, "Reaction added by %s %s", username_and_discriminator, emoji_str);
     discord_embed_set_author(&embed, member->user->username, NULL, avatar_url, NULL);
     discord_embed_set_thumbnail(&embed, avatar_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);

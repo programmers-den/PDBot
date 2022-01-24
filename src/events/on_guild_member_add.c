@@ -21,30 +21,30 @@ void on_guild_member_add(struct discord *client, const u64_snowflake_t guild_id,
     discord_embed_set_thumbnail(&embed, avatar_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
 
     if (member->user->bot) {
-        discord_add_guild_member_role(client, guild_id, member->user->id, R_BOT);
+        discord_add_guild_member_role(client, guild_id, member->user->id, R_BOT, NULL);
 
         discord_embed_set_title(&embed, "New bot %s", username_and_discriminator);
         discord_embed_add_field(&embed, "Bot ID", user_id_str, true);
         discord_embed_add_field(&embed, "Bot", user_mention_str, true);
     }
     else {
-        discord_add_guild_member_role(client, guild_id, member->user->id, R_SPECIAL);
-        discord_add_guild_member_role(client, guild_id, member->user->id, R_PRONOUNS);
-        discord_add_guild_member_role(client, guild_id, member->user->id, R_LANGS);
-        discord_add_guild_member_role(client, guild_id, member->user->id, R_LANS_HELP);
-        discord_add_guild_member_role(client, guild_id, member->user->id, R_FIELDS);
-        discord_add_guild_member_role(client, guild_id, member->user->id, R_FUN);
-        discord_add_guild_member_role(client, guild_id, member->user->id, R_OTHER);
+        discord_add_guild_member_role(client, guild_id, member->user->id, R_SPECIAL, NULL);
+        discord_add_guild_member_role(client, guild_id, member->user->id, R_PRONOUNS, NULL);
+        discord_add_guild_member_role(client, guild_id, member->user->id, R_LANGS, NULL);
+        discord_add_guild_member_role(client, guild_id, member->user->id, R_LANS_HELP, NULL);
+        discord_add_guild_member_role(client, guild_id, member->user->id, R_FIELDS, NULL);
+        discord_add_guild_member_role(client, guild_id, member->user->id, R_FUN, NULL);
+        discord_add_guild_member_role(client, guild_id, member->user->id, R_OTHER, NULL);
 
         discord_embed_set_title(&embed, "Welcome %s!", username_and_discriminator);
-	discord_embed_set_description(&embed, "Welcome **%s** to PD! Please checkout <#%lu> and <#%lu> to get started!", user_mention_str, C_SERVER_INFO, C_ROLES);
+        discord_embed_set_description(&embed, "Welcome **%s** to PD! Please checkout <#%lu> and <#%lu> to get started!", user_mention_str, C_SERVER_INFO, C_ROLES);
         snprintf(footer_text, sizeof(footer_text), "ID: %lu", member->user->id);
-	discord_embed_set_footer(&embed, footer_text, avatar_url, NULL);
+        discord_embed_set_footer(&embed, footer_text, avatar_url, NULL);
 
         discord_create_message(client, C_WELCOME, &params, NULL);
 
         discord_embed_set_title(&embed, "New user %s", username_and_discriminator);
-	discord_embed_set_description(&embed, "");
+        discord_embed_set_description(&embed, "");
         discord_embed_add_field(&embed, "User ID", user_id_str, true);
         discord_embed_add_field(&embed, "User", user_mention_str, true);
     }
