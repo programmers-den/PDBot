@@ -35,7 +35,7 @@ uint8_t get_arg_at(char *buf, const struct discord_message *message, size_t argc
 
             break;
         }
-            
+
         tok = strtok(NULL, split);
     }
 
