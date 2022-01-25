@@ -7,7 +7,7 @@ void on_channel_delete(struct discord *client, const struct discord_channel *cha
     char *avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_embed embed;
     discord_embed_init(&embed);
-    struct discord_create_message_params params = {.embed = &embed};
+    struct discord_create_message params = {.embed = &embed};
 
     embed.timestamp = cog_timestamp_ms();
     embed.color = COLOR_PINK_PANTONE;

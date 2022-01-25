@@ -4,7 +4,7 @@
 
 void icon(struct discord *client, const struct discord_interaction *interaction) {
     struct discord_embed embed;
-    struct discord_interaction_response interaction_params = {
+    struct discord_interaction_response interaction_response = {
 	    .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
 	    .data = &(struct discord_interaction_callback_data) {.embeds = (struct discord_embed *[]) {&embed, NULL}}
     };
@@ -19,7 +19,7 @@ void icon(struct discord *client, const struct discord_interaction *interaction)
     discord_embed_set_author(&embed, interaction->member->user->username, NULL, author_avatar_url, NULL);
     discord_embed_set_image(&embed, author_avatar_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);
 
-    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_params, NULL);
+    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_response, NULL);
  
     free(author_avatar_url);
     discord_embed_cleanup(&embed);

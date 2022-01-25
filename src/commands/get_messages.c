@@ -2,6 +2,7 @@
 #include <concord/discord.h>
 #include "../libs/bot_include.h"
 
+void file_cleanup(void *data);
 static int callback(void *handle, int argc, char **argv, char **azColName);
 
 void get_messages(struct discord *client, const struct discord_interaction *interaction) {
@@ -10,43 +11,54 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
     int rc = sqlite3_open(BOT_DB, &db);
     struct discord_attachment attachment;
     discord_attachment_init(&attachment);
-    struct discord_interaction_response interaction_params = {
-	    .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
-	    .data = &(struct discord_interaction_callback_data) {.attachments = (struct discord_attachment *[]) {&attachment, NULL}}
+    struct discord_interaction_response interaction_response = {
+        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
+        .data = &(struct discord_interaction_callback_data) {
+            .flags = DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL,
+            .attachments = (struct discord_attachment *[]) {&attachment, NULL}
+        }
     };
 
     filename = sqlite3_mprintf("%s.csv", interaction->member->user->username);
     FILE *fp = fopen(filename, "w");
 
-    if (rc) {
-	    interaction_params.data->content = (char*)sqlite3_errmsg(db);
-	    interaction_params.data->attachments = NULL;
+    if (rc || !fp) {
+        interaction_response.data->content = (char*)sqlite3_errmsg(db);
+        interaction_response.data->attachments = NULL;
 
-	    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_params, NULL);
+        discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_response, NULL);
     }
     else {
         fprintf(fp, "\"timestamp\", \"author_id\", \"message_id\", \"content\", \n");
         query = sqlite3_mprintf("SELECT timestamp, author_id, message_id, content FROM %s WHERE author_id = %lu;", MESSAGE_TABLE, interaction->member->user->id);
         rc = sqlite3_exec(db, query, &callback, fp, &errMsg);
-        fclose(fp);
 
         if (rc != SQLITE_OK) {
-            interaction_params.data->content = errMsg;
+            interaction_response.data->content = errMsg;
             sqlite3_free(errMsg);
         }
         else {
-	    interaction_params.data->content = filename;
-	    attachment.filename = filename;
+            struct discord_ret_interaction_response ret_interaction_response = {
+                .data = strdup(filename),
+                .cleanup = &file_cleanup
+            };
 
-	    discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_params, NULL);
+            interaction_response.data->content = attachment.filename = ret_interaction_response.data;
 
-            remove(attachment.filename);
+            discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_response, &ret_interaction_response);
         }
+
+        fclose(fp);
     }
 
     sqlite3_close(db);
 
     return;
+}
+
+void file_cleanup(void *data) {
+    remove(data);
+    free(data);
 }
 
 static int callback(void *handle, int argc, char **argv, char **azColName) {
