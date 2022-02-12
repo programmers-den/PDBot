@@ -5,6 +5,10 @@
 #include <concord/cog-utils.h>
 #include "bot_include.h"
 
+extern sqlite3 *db;
+extern FILE *dbFile;
+extern int dbIsOpen;
+
 void ready_db();
 void close_db();
 struct discord_message fetch_message_db(struct discord *client, u64_snowflake_t guild_id, u64_snowflake_t message_id);

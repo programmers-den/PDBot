@@ -3,17 +3,18 @@
 #include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
-sqlite3* db = NULL;
-FILE* dbFile = NULL;
-int dbIsOpen = 0;
+extern sqlite3 *db;
+extern FILE *dbFile;
+extern int dbIsOpen;
 
 void ready_db() {
-    if(dbIsOpen == 0) {
+    if (!dbIsOpen) {
         dbFile = fopen(BOT_DB, "r");
-        if(dbFile) {
+        if (dbFile) {
             printf("✔️  Found DB: %s\n", BOT_DB);
             fclose(dbFile);
             int rc = sqlite3_open(BOT_DB, &db);
+            dbIsOpen = 1;
         }
         else {
             printf("❌ Failed to open DB: %s\n❗ Creating %s\n", BOT_DB, BOT_DB);
@@ -42,9 +43,10 @@ void ready_db() {
 }
 
 void close_db() {
-    if(dbIsOpen == 1) {
+    if (dbIsOpen) {
+        printf("✔️  Closed DB: %s\n\n", BOT_DB);
         sqlite3_close(db);
-        dbIsOpen == 0;
+        dbIsOpen = 0;
     }
     else {
         printf("❌ Tried to close a non-open DB!\n\n");
@@ -58,10 +60,10 @@ struct discord_message fetch_message_db(struct discord *client, u64_snowflake_t 
     message.content = malloc(1);
     memset(message.content, 0, 1);
     sqlite3_stmt *stmt = NULL;
-    if(dbIsOpen == 0) {
+    if (dbIsOpen == 0) {
         ready_db();
     }
-    if(db != NULL) {
+    if (db != NULL) {
         char *query = NULL, *errMsg = NULL;
         query = sqlite3_mprintf("SELECT timestamp, author_id, message_id, content FROM %s WHERE message_id = %lu;", MESSAGE_TABLE, message_id);
         int rc = sqlite3_prepare_v2(db, query, -1, &stmt, NULL);
@@ -94,10 +96,10 @@ struct discord_message fetch_message_db(struct discord *client, u64_snowflake_t 
 
 void add_message_db(const struct discord_message *message) {
     if (!message->content[0]) return;
-    if(dbIsOpen == 0) {
+    if (!dbIsOpen) {
         ready_db();
     }
-    if(db != NULL) {
+    if (db != NULL) {
         char *query = NULL, *errMsg = NULL;
         query = sqlite3_mprintf("INSERT INTO %s(timestamp, author_id, message_id, content) values(%lu, %lu, %lu, '%s');", MESSAGE_TABLE, cog_timestamp_ms(), message->author->id, message->id, message->content);
         int rc = sqlite3_exec(db, query, NULL, NULL, &errMsg);
@@ -111,10 +113,10 @@ void add_message_db(const struct discord_message *message) {
 }
 
 void remove_message_db(u64_snowflake_t message_id) {
-    if(dbIsOpen == 0) {
+    if (!dbIsOpen) {
         ready_db();
     }
-    if(db != NULL) {
+    if (db != NULL) {
         char *query = NULL, *errMsg = NULL;
         query = sqlite3_mprintf("DELETE FROM %s WHERE message_id = %lu", MESSAGE_TABLE, message_id);
         int rc = sqlite3_exec(db, query, NULL, NULL, &errMsg);
@@ -129,10 +131,10 @@ void remove_message_db(u64_snowflake_t message_id) {
 
 void update_message_db(const struct discord_message *message) {
     if (!message->content[0]) return;
-    if(dbIsOpen == 0) {
+    if (!dbIsOpen) {
         ready_db();
     }
-    if(db != NULL) {
+    if (db != NULL) {
         char *query = NULL, *errMsg = NULL;
         query = sqlite3_mprintf("UPDATE %s SET content = '%s' WHERE message_id = %lu;", MESSAGE_TABLE, message->content, message->id);
         int rc = sqlite3_exec(db, query, NULL, NULL, &errMsg);

@@ -1,7 +1,11 @@
 #include <signal.h>
+#include <sqlite3.h>
 #include <concord/discord.h>
 #include "src/libs/bot_include.h"
 
+sqlite3 *db = NULL;
+FILE *dbFile = NULL;
+int dbIsOpen = 0;
 struct discord *client = NULL;
 
 int main() {
