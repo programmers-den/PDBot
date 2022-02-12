@@ -15,15 +15,13 @@ PDBot is the official Discord bot for the [Programmer's Den](https://pden.net) s
   - [1.8. To-do](#18-to-do)
 
 ## 1.2. Dependencies and install instructions
-> Requirements
+> Requirements (Debian)
 ```bash
 apt install -y git build-essential libcurl4-openssl-dev cmake libsqlite3-dev
 ```
 
 > [concord](https://github.com/Cogmasters/concord)
 ```bash
-apt install -y git build-essential libcurl4-openssl-dev libssl-dev
-
 git clone "https://github.com/Cogmasters/concord.git"
 
 cd concord/
@@ -34,8 +32,6 @@ make install
 
 > [json-c](https://github.com/json-c/json-c)
 ```bash
-apt install -y git cmake build-essential
-
 git clone "https://github.com/json-c/json-c.git"
 
 cd json-c/
@@ -46,15 +42,15 @@ make -j$(nproc) # or number of threads
 make test
 make install
 ```
-> [sqlite3](https://sqlite.org/index.html)
-```bash
-apt install -y libsqlite3-dev
-```
+
+> Windows
+PDBot supports Microsoft Windows through compilation by Cygwin or Mingw64. Cygwin is recommended, and Mingw64 is currently untested.
+
 
 ## 1.3. Bot config file
-> Create a `bot.config` file in the root directory of the bot with the following contents
+> Create a `bot.config` file in the root directory of the bot with the following contents:
 
-> Delete comments if copy and pasting from below or will not work
+> *Delete comments if copy and pasting from below or will not work!*
 ```json
 {
   "logging": {
@@ -78,12 +74,12 @@ apt install -y libsqlite3-dev
 }
 ```
 
-## 1.4. Compiling and running bot
+## 1.4. Compiling and running the bot
 ```bash
 git clone "https://github.com/programmers-den/PDBot.git"
 
 cd PDBot/
-# Must create bot.config and paste token as defined in section 1.2
+# You must create bot.config and paste in your token as defined in section 1.2 before running.
 
 make -j$(nproc) # or number of threads
 ./main
@@ -105,13 +101,13 @@ make -j$(nproc) # or number of threads
 | update            | `./update`                    |
 
 ## 1.6. Latest major change
-> Added bot update command
+> Slash command support
 
 ## 1.7. Latest minor change
-> Updated and improved poll
+> SQL database is now loaded at all times and is much more performant
 
 ## 1.8. To-do
-- [x] Add no-mic roles to users when they join a vc to access hidden channel
+- [x] Add no-mic roles to users when they join a VC to access a hidden channel
 - [ ] Implement blacklist words filter
 - [ ] Add more information to stat command embed
 - [x] Add logs for channel events

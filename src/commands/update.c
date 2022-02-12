@@ -28,6 +28,7 @@ void update(struct discord *client, const struct discord_interaction *interactio
 
     free(author_avatar_url);
     discord_embed_cleanup(&embed);
+    close_db();
     discord_shutdown(client);
 
     return;
