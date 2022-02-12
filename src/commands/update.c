@@ -52,6 +52,7 @@ void update(struct discord *client, const struct discord_interaction *interactio
         discord_guild_member_cleanup(&guild_member);
         discord_guild_cleanup(&guild);
         discord_embed_cleanup(&embed);
+        close_db();
         discord_shutdown(client);
     }
 
