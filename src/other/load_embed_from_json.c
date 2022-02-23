@@ -2,7 +2,7 @@
 #include <concord/discord.h>
 #include <concord/cog-utils.h>
 
-struct discord_embed *load_embeds_from_json(char *filename) {
+struct discord_embed *load_embed_from_json(char *filename) {
     size_t len = 0;
     char *json_payload = cog_load_whole_file(filename, &len);
 
