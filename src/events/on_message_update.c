@@ -9,7 +9,7 @@ void on_message_update(struct discord *client, const struct discord_message *mes
     char *author_avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_embed embed;
     discord_embed_init(&embed);
-    struct discord_create_message params = {.embed = &embed};
+    struct discord_create_message params = {.embeds = &embed};
     struct discord_message db_message = fetch_message_db(client, message->guild_id, message->id);
 
     if (db_message.content[0] && message->content) update_message_db(message);

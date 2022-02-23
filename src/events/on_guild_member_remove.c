@@ -2,12 +2,17 @@
 #include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
-void on_guild_member_remove(struct discord *client, const u64_snowflake_t guild_id, const struct discord_user *user) {
+void on_guild_member_remove(struct discord *client, const u64snowflake guild_id, const struct discord_user *user) {
     char user_id_str[ID_STR_LEN], user_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN], timestamp_str[TIMESTAMP_NORMAL_STR_LEN], footer_text[ID_STR_LEN+4];
     char *avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_embed embed;
     discord_embed_init(&embed);
-    struct discord_create_message params = {.embed = &embed};
+    struct discord_create_message params = {
+        .embeds = &(struct discord_embeds) { 
+            .size = 1,
+            .array = &embed
+        }
+    };
 
     get_avatar_url(avatar_url, user);
     id_to_str(user_id_str, user->id);

@@ -2,16 +2,21 @@
 #include "../libs/bot_include.h"
 
 void add_role_all_user(struct discord *client, const struct discord_interaction *interaction) {
-    u64_snowflake_t role_id;
+    u64snowflake role_id;
     char *author_avatar_url = malloc(AVATAR_URL_LEN);
     char author_id_str[ID_STR_LEN+11];
-    struct discord_guild guild;
+    struct discord_guild guild = {.members = &(struct discord_guild_members) { 0 }};
     struct discord_embed embed;
     discord_guild_init(&guild);
     discord_embed_init(&embed);
     struct discord_interaction_response interaction_response = {
-        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
-        .data = &(struct discord_interaction_callback_data) {.embeds = (struct discord_embed *[]) {&embed, NULL}},
+        .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
+        .data = &(struct discord_interaction_callback_data) {
+            .embeds = &(struct discord_embeds) {
+                .size = 1,
+                .array = &embed
+            }
+        }
     };
 
     embed.color = COLOR_YELLOW;
@@ -22,23 +27,31 @@ void add_role_all_user(struct discord *client, const struct discord_interaction 
     discord_embed_set_author(&embed, interaction->member->user->username, NULL, author_avatar_url, NULL);
 
     char role_mention_str[ROLE_MENTION_LEN];
-    struct discord_edit_message edit = {.embed = &embed};
+    struct discord_edit_message edit = {
+        .embeds = &(struct discord_embeds) {
+            .size = 1,
+            .array = &embed
+        }
+    };
     struct discord_list_guild_members list_guild_members = {.limit = 1000};
     struct discord_guild_preview guild_preview;
     struct discord_ret_guild ret_guild = {.sync = &guild};
-    struct discord_ret_guild_members ret_guild_members = {.sync = &guild.members};
+    struct discord_ret_guild_members ret_guild_members = {.sync = guild.members};
     struct discord_ret_guild_preview ret_guild_preview = {.sync = &guild_preview};
     struct discord_edit_original_interaction_response original_interaction_response = {
-        .embeds = (struct discord_embed *[]) {&embed, NULL}
+        .embeds = &(struct discord_embeds) { 
+            .size = 1,
+            .array = &embed
+        }
     };
 
     discord_get_guild(client, interaction->guild_id, &ret_guild);
     discord_list_guild_members(client, interaction->guild_id, &list_guild_members, &ret_guild_members);
     discord_get_guild_preview(client, interaction->guild_id, &ret_guild_preview);
 
-    for (int i=0; interaction->data->options[i]; i++) {
-        if (!strcmp(interaction->data->options[i]->name, "id")) {
-            role_id = strtol(interaction->data->options[i]->value, NULL, 10);
+    for (int i=0; i<interaction->data->options->size; i++) {
+        if (!strcmp(interaction->data->options->array[i].name, "id")) {
+            role_id = strtol(interaction->data->options->array[i].value, NULL, 10);
             role_mention(role_mention_str, role_id);
 
             discord_embed_set_title(&embed, "Please wait...");
@@ -46,9 +59,9 @@ void add_role_all_user(struct discord *client, const struct discord_interaction 
 
             discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_response, NULL);
 
-            for (size_t j=0; guild.members[j]; j++) {
-                if (!guild.members[j]->user->bot) {
-                    discord_add_guild_member_role(client, interaction->guild_id, guild.members[j]->user->id, role_id, NULL);
+            for (size_t j=0; j<guild.members->size; j++) {
+                if (!guild.members->array[j].user->bot) {
+                    discord_add_guild_member_role(client, interaction->guild_id, guild.members->array[j].user->id, role_id, NULL);
                 }
             }
         }

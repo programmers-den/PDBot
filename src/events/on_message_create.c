@@ -15,13 +15,13 @@ void on_message_create(struct discord *client, const struct discord_message *mes
 
             size_t val = atoi((char*)message->content);
             if (val) {
-                NTL_T(struct discord_message) msgs = NULL;
+                struct discord_messages msgs = { 0 };
                 struct discord_get_channel_messages params = {.limit = 2};
                 struct discord_ret_messages ret_msgs = {.sync = &msgs};
 
                 discord_get_channel_messages(client, message->channel_id, &params, &ret_msgs);
-                if (msgs) {
-                    size_t prev_val = atoi((char*)msgs[1]->content);
+                if (msgs.size) {
+                    size_t prev_val = atoi((char*)msgs.array[1].content);
                     if (val-1 == prev_val) break;
                     else discord_delete_message(client, message->channel_id, message->id, NULL);
                 }
@@ -46,7 +46,12 @@ void on_message_create(struct discord *client, const struct discord_message *mes
             struct discord_emoji emoji_yes;
             struct discord_emoji emoji_no;
             struct discord_embed embed;
-            struct discord_create_message params = {.embed = &embed};
+            struct discord_create_message params = {
+                .embeds = &(struct discord_embeds) {
+                    .size = 1,
+                    .array = &embed
+                }
+            };
             struct discord_message poll_message;
             struct discord_ret_emoji ret_emoji_yes = {.sync = &emoji_yes};
             struct discord_ret_emoji ret_emoji_no = {.sync = &emoji_no};

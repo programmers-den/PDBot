@@ -2,10 +2,15 @@
 #include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
-void on_message_delete(struct discord *client, const u64_snowflake_t message_id, const u64_snowflake_t channel_id, const u64_snowflake_t guild_id) {
+void on_message_delete(struct discord *client, const u64snowflake message_id, const u64snowflake channel_id, const u64snowflake guild_id) {
     struct discord_embed embed;
     discord_embed_init(&embed);
-    struct discord_create_message params = {.embed = &embed};
+    struct discord_create_message params = {
+        .embeds = &(struct discord_embeds) {
+            .size = 1,
+            .array = &embed
+        }
+    };
     struct discord_message message = fetch_message_db(client, guild_id, message_id);
 
     embed.color = COLOR_RED;

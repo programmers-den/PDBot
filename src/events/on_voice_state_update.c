@@ -31,8 +31,8 @@ void on_voice_state_update(struct discord *client, const struct discord_voice_st
         }
     }
     else {
-        for (size_t i=0; vs->member->roles[i]; i++) {
-            switch (vs->member->roles[i]->value) {
+        for (size_t i=0; i<vs->member->roles->size; i++) {
+            switch (vs->member->roles->array[i]) {
                 case R_VC_CHAT_ONE: discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_ONE, NULL); break;
                 case R_VC_CHAT_TWO: discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_CHAT_TWO, NULL); break;
                 case R_VC_MUSIC: discord_remove_guild_member_role(client, vs->guild_id, vs->user_id, R_VC_MUSIC, NULL); break;

@@ -9,13 +9,15 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
     sqlite3 *db = NULL;
     char *errMsg = NULL, *query = NULL, *filename = NULL;
     int rc = sqlite3_open(BOT_DB, &db);
-    struct discord_attachment attachment;
-    discord_attachment_init(&attachment);
+    struct discord_attachment attachment = { 0 };
     struct discord_interaction_response interaction_response = {
-        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
+        .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
         .data = &(struct discord_interaction_callback_data) {
-            .flags = DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL,
-            .attachments = (struct discord_attachment *[]) {&attachment, NULL}
+            .flags = DISCORD_MESSAGE_EPHEMERAL,
+            .attachments = &(struct discord_attachments) {
+                .size = 1,
+                .array = &attachment
+            }
         }
     };
 

@@ -7,8 +7,13 @@ void stats(struct discord *client, const struct discord_interaction *interaction
     char *author_avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_embed embed;
     struct discord_interaction_response interaction_response = {
-        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
-        .data = &(struct discord_interaction_callback_data) {.embeds = (struct discord_embed *[]) {&embed, NULL}}
+        .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
+        .data = &(struct discord_interaction_callback_data) {
+            .embeds = &(struct discord_embeds) {
+                .size = 1,
+                .array = &embed
+            }
+        }
     };
 
     get_avatar_url(author_avatar_url, interaction->member->user);

@@ -68,7 +68,7 @@ size_t check_if_args_ids(const struct discord_message *message, char *split) {
     return 0;
 }
 
-u64_snowflake_t get_args_ids_as_int_at(const struct discord_message *message, size_t argc, char *split) {
+u64snowflake get_args_ids_as_int_at(const struct discord_message *message, size_t argc, char *split) {
     // returns 1 if successful, 0 if not
     char tmpMsg[2001];
     strcpy(tmpMsg, message->content);

@@ -5,8 +5,13 @@
 void help(struct discord *client, const struct discord_interaction *interaction) {
     struct discord_embed *embed = load_embed_from_json(HELP_JSON);
     struct discord_interaction_response interaction_response = {
-        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
-        .data = &(struct discord_interaction_callback_data) {.embeds = (struct discord_embed *[]) {embed, NULL}}
+        .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
+        .data = &(struct discord_interaction_callback_data) {
+            .embeds = &(struct discord_embeds) {
+                .size = 1,
+                .array = embed
+            }
+        }
     };
 
     embed->author = &(struct discord_embed_author) {.name = interaction->member->user->username};

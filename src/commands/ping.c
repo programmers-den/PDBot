@@ -4,9 +4,8 @@
 
 void ping(struct discord *client, const struct discord_interaction *interaction) {
     char content[TIMESTAMP_STR_LEN+10];
-    struct discord_embed *embed;
     struct discord_interaction_response interaction_response = {
-        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
+        .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
         .data = &(struct discord_interaction_callback_data) {.content = content} 
     };
 

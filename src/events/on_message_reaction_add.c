@@ -1,7 +1,7 @@
 #include <concord/discord.h>
 #include "../libs/bot_include.h"
 
-void on_message_reaction_add(struct discord *client, const u64_snowflake_t user_id, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t guild_id, const struct discord_guild_member *member, const struct discord_emoji *emoji) {
+void on_message_reaction_add(struct discord *client, const u64snowflake user_id, const u64snowflake channel_id, const u64snowflake message_id, const u64snowflake guild_id, const struct discord_guild_member *member, const struct discord_emoji *emoji) {
     if (member->user->bot) return;
 
     // size_t count = 0;
@@ -11,7 +11,12 @@ void on_message_reaction_add(struct discord *client, const u64_snowflake_t user_
     struct discord_embed embed;
     discord_message_init(&message);
     discord_embed_init(&embed);
-    struct discord_create_message params = {.embed = &embed};
+    struct discord_create_message params = {
+        .embeds = &(struct discord_embeds) {
+            .size = 1,
+            .array = &embed
+        }
+    };
     struct discord_ret_message ret_message = {.sync = &message};
 
     message.guild_id = guild_id;
@@ -45,10 +50,10 @@ void on_message_reaction_add(struct discord *client, const u64_snowflake_t user_
     // starboard
     // for (size_t i=0; message->reactions[i]; i++) if (!strcmp(message->reactions[i]->emoji->name, E_STAR)) count = message->reactions[i]->count;
     // if ((channel_id != C_STARBOARD) && (count == STARBOARD_REACTION_COUNT) && (!strcmp(emoji->name, E_STAR))) {
-    //     embed->color = COLOR_YELLOW;
+    //     embeds->color = COLOR_YELLOW;
 
     //     message_mention(message_desc, "Jump to message", message);
-    //     snprintf(embed->description, MAX_DESCRIPTION_LEN, "%s\n\n%s", message->content, message_desc);
+    //     snprintf(embeds->description, MAX_DESCRIPTION_LEN, "%s\n\n%s", message->content, message_desc);
 
     //     discord_create_message(client, C_STARBOARD, &params, NULL);        
     // }

@@ -6,10 +6,20 @@ void update(struct discord *client, const struct discord_interaction *interactio
     char author_id_str[ID_STR_LEN+11];
     struct discord_embed embed;
     discord_embed_init(&embed);
-    struct discord_create_message params = {.embed = &embed};
+    struct discord_create_message params = {
+        .embeds = &(struct discord_embeds) {
+            .size = 1,
+            .array = &embed
+        }
+    };
     struct discord_interaction_response interaction_response = {
-        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
-        .data = &(struct discord_interaction_callback_data) {.embeds = (struct discord_embed *[]) {&embed, NULL}}
+        .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
+        .data = &(struct discord_interaction_callback_data) {
+            .embeds = &(struct discord_embeds) {
+                .size = 1,
+                .array = &embed
+            }
+        }
     };
 
     embed.color = COLOR_MINT;

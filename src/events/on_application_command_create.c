@@ -5,23 +5,26 @@ void on_application_command_create(struct discord *client) {
     struct discord_application_command application_command;
     struct discord_ret_application_command ret_application_command = {.sync = &application_command};
     struct discord_edit_application_command_permissions command_permissions = {
-        .permissions = (struct discord_application_command_permissions*[]) {
-            &(struct discord_application_command_permissions) {
-                .id = R_OWNER,
-                .type = DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE,
-                .permission = true,
-            },
-            NULL
+        .size = 1,
+        .array = &(struct discord_application_command_permission) {
+            .permissions = &(discord_application_command_permissions) { 
+                .size = 1,
+                .array = &(struct discord_application_command_permission) {
+                    .id = R_OWNER,
+                    .type = DISCORD_APPLICATION_PERMISSION_ROLE,
+                    .permission = true,
+                }
+            }
         }
     };
     struct discord_create_guild_application_command params = {
-        .type = DISCORD_APPLICATION_COMMAND_CHAT_INPUT,
+        .type = DISCORD_APPLICATION_CHAT_INPUT,
         .name = "add_role_all_user",
         .description = "Adds a role to all users",
         .default_permission = false,
         .options = (struct discord_application_command_option *[]) {
             &(struct discord_application_command_option) {
-                .type = DISCORD_APPLICATION_COMMAND_OPTION_ROLE,
+                .type = DISCORD_APPLICATION_OPTION_ROLE,
                 .name = "id",
                 .description = "Role ID",
                 .required = true
@@ -69,7 +72,7 @@ void on_application_command_create(struct discord *client) {
     discord_create_guild_application_command(client, ID_APPLICATION, ID_GUILD, &params, NULL);
 
     command_permissions.permissions[0]->id = ID_OWNER;
-    command_permissions.permissions[0]->type = DISCORD_APPLICATION_COMMAND_PERMISSION_USER;
+    command_permissions.permissions[0]->type = DISCORD_APPLICATION_PERMISSION_USER;
     params.name = "update";
     params.description = "Updates the bot";
     params.default_permission = false;

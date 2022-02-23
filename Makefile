@@ -13,8 +13,8 @@ src/events/on_message_reaction_remove.o src/other/load_embed_from_json.o \
 src/events/on_application_command_create.o src/events/on_message_update.o src/other/role_utils.o \
 src/events/on_channel_create.o src/events/on_ready.o src/signals/on_sigint.o
 RUNOBJS = main.o
-CFLAGS = -I/usr/local/include
-LINKLIBS = -g -std=c89 -Wall -Wextra -Werror -ldiscord -lcurl -lm -lpthread -pthread -lsqlite3 -ljson-c -L/usr/local/lib
+CFLAGS = -I/usr/local/include -g
+LINKLIBS = -g -ldiscord -lcurl -lm -lpthread -pthread -lsqlite3 -ljson-c -L/usr/local/lib
 
 all: $(TARGET)
 
