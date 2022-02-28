@@ -14,12 +14,17 @@ void help(struct discord *client, const struct discord_interaction *interaction)
         }
     };
 
-    embed->author = &(struct discord_embed_author) {.name = interaction->member->user->username};
+
+    char *author_avatar_url = malloc(AVATAR_URL_LEN);
+    get_avatar_url(author_avatar_url, interaction->member->user);
+
+    discord_embed_set_author(embed, interaction->member->user->username, NULL, author_avatar_url, NULL);
     embed->timestamp = cog_timestamp_ms();
 
     discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_response, NULL);
 
-    free(embed);
+    free(author_avatar_url);
+    discord_embed_cleanup(embed);
 
     return;
 }
