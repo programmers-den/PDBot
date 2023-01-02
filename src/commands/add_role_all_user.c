@@ -44,6 +44,9 @@ void add_role_all_user(struct discord *client, const struct discord_interaction 
             .array = &embed
         }
     };
+    struct discord_add_guild_member_role params = {
+        .reason = "PDBot command ran by a mod"
+    };
 
     discord_get_guild(client, interaction->guild_id, &ret_guild);
     discord_list_guild_members(client, interaction->guild_id, &list_guild_members, &ret_guild_members);
@@ -61,7 +64,7 @@ void add_role_all_user(struct discord *client, const struct discord_interaction 
 
             for (size_t j=0; j<guild.members->size; j++) {
                 if (!guild.members->array[j].user->bot) {
-                    discord_add_guild_member_role(client, interaction->guild_id, guild.members->array[j].user->id, role_id, NULL);
+                    discord_add_guild_member_role(client, interaction->guild_id, guild.members->array[j].user->id, role_id, &params, NULL);
                 }
             }
         }

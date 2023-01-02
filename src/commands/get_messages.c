@@ -2,7 +2,7 @@
 #include <concord/discord.h>
 #include "../libs/bot_include.h"
 
-void file_cleanup(void *data);
+void file_cleanup(struct discord *client, void *data);
 static int callback(void *handle, int argc, char **argv, char **azColName);
 
 void get_messages(struct discord *client, const struct discord_interaction *interaction) {
@@ -58,7 +58,7 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
     return;
 }
 
-void file_cleanup(void *data) {
+void file_cleanup(struct discord *client, void *data) {
     remove(data);
     free(data);
 }

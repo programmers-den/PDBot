@@ -1,5 +1,6 @@
 #include <signal.h>
 #include <concord/discord.h>
+#include <concord/log.h>
 #include "../libs/bot_include.h"
 
 extern struct discord *client;

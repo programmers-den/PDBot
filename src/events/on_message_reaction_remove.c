@@ -2,18 +2,18 @@
 #include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
-void on_message_reaction_remove(struct discord *client, const u64snowflake user_id, const u64snowflake channel_id, const u64snowflake message_id, const u64snowflake guild_id, const struct discord_emoji *emoji) {
+void on_message_reaction_remove(struct discord *client, const struct discord_message_reaction_remove *event) {
     struct discord_user member;
     struct discord_ret_user ret_member = {.sync = &member};
     discord_user_init(&member);
-    discord_get_user(client, user_id, &ret_member);
+    discord_get_user(client, event->user_id, &ret_member);
 
     if (member.bot) {
         discord_user_cleanup(&member);
         return;
     }
 
-    char message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTION_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN], emoji_str[emoji_mention_len(emoji)], footer_text[ID_STR_LEN+11];
+    char message_id_str[ID_STR_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTION_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN], emoji_str[emoji_mention_len(event->emoji)], footer_text[ID_STR_LEN+11];
     char *avatar_url = malloc(AVATAR_URL_LEN);
     struct discord_message message;
     struct discord_embed embed;
@@ -27,20 +27,20 @@ void on_message_reaction_remove(struct discord *client, const u64snowflake user_
         }
     };
 
-    message.guild_id = guild_id;
+    message.guild_id = event->guild_id;
     embed.timestamp = discord_timestamp(client);
     embed.color = COLOR_PINK_PANTONE;
 
     get_avatar_url(avatar_url, &member);
-    id_to_str(message_id_str, message_id);
-    id_to_str(channel_id_str, channel_id);
-    channel_mention(channel_str, channel_id);
+    id_to_str(message_id_str, event->message_id);
+    id_to_str(channel_id_str, event->channel_id);
+    channel_mention(channel_str, event->channel_id);
     id_to_str(author_id_str, member.id);
     user_mention(author_str, member.id);
     username_and_discriminator_to_str(username_and_discriminator, &member);
-    emoji_mention(emoji_str, emoji);
+    emoji_mention(emoji_str, event->emoji);
 
-    discord_get_channel_message(client, channel_id, message_id, &ret_message);
+    discord_get_channel_message(client, event->channel_id, event->message_id, &ret_message);
     discord_embed_set_title(&embed, "Reaction removed by %s %s", username_and_discriminator, emoji_str);
     discord_embed_set_author(&embed, member.username, NULL, avatar_url, NULL);
     discord_embed_set_thumbnail(&embed, avatar_url, NULL, AVATAR_HEIGHT, AVATAR_WIDTH);

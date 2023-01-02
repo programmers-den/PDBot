@@ -1,7 +1,7 @@
 #include <concord/discord.h>
 #include "../libs/bot_include.h"
 
-void on_ready(struct discord *client) {
+void on_ready(struct discord *client, const struct discord_ready *event) {
     char username_and_descrim[USER_AND_DESCRIM_LEN];
     const struct discord_user *bot = discord_get_self(client);
 

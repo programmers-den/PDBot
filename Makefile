@@ -1,7 +1,7 @@
 TARGET = main
 CC = gcc
 OBJS = \
-src/commands/add_role_all_user.o src/events/on_channel_delete.o src/events/on_voice_state_update.o \
+src/commands/add_role_all_user.o src/events/on_channel_delete.o \
 src/commands/get_messages.o src/events/on_channel_update.o src/db/bot_db.o \
 src/commands/help.o src/events/on_guild_member_add.o src/other/check_for_json.o \
 src/commands/icon.o src/events/on_guild_member_remove.o src/other/cmd_args_format.o \

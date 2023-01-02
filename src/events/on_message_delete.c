@@ -2,7 +2,7 @@
 #include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
-void on_message_delete(struct discord *client, const u64snowflake message_id, const u64snowflake channel_id, const u64snowflake guild_id) {
+void on_message_delete(struct discord *client, const struct discord_message_delete *event) {
     struct discord_embed embed;
     discord_embed_init(&embed);
     struct discord_create_message params = {
@@ -11,7 +11,7 @@ void on_message_delete(struct discord *client, const u64snowflake message_id, co
             .array = &embed
         }
     };
-    struct discord_message message = fetch_message_db(client, guild_id, message_id);
+    struct discord_message message = fetch_message_db(client, event->guild_id, event->id);
 
     embed.color = COLOR_RED;
     embed.timestamp = cog_timestamp_ms();
@@ -26,9 +26,9 @@ void on_message_delete(struct discord *client, const u64snowflake message_id, co
         char *author_avatar_url = malloc(AVATAR_URL_LEN);
 
         get_avatar_url(author_avatar_url, message.author);
-        id_to_str(message_id_str, message_id);
+        id_to_str(message_id_str, event->id);
         id_to_str(channel_id_str, message.id);
-        channel_mention(channel_str, channel_id);
+        channel_mention(channel_str, event->channel_id);
         id_to_str(author_id_str, message.author->id);
         user_mention(author_str, message.author->id);
         username_and_discriminator_to_str(username_and_discriminator, message.author);
@@ -53,7 +53,7 @@ void on_message_delete(struct discord *client, const u64snowflake message_id, co
         discord_embed_cleanup(&embed);
         discord_message_cleanup(&message);
 
-        remove_message_db(message_id);
+        remove_message_db(event->id);
     }
 
 
