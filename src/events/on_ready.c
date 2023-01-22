@@ -10,8 +10,6 @@ void on_ready(struct discord *client, const struct discord_ready *event) {
 
     printf("%s connected successfully\n\n", username_and_descrim);
 
-    check_for_json();
-
     printf("\nLoading events:\n\n");
     get_files(NULL, "src/events/");
 
