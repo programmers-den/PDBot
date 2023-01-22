@@ -60,12 +60,12 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
 }
 
 static void file_cleanup(struct discord *client, struct discord_timer *timer) {
-    // remove(timer->data);
+    remove(timer->data);
     free(timer->data);
 }
 
 void ret_cleanup(struct discord *client, void *data) {
-    discord_timer(client, file_cleanup, NULL, data, 0*1000);
+    discord_timer(client, file_cleanup, NULL, data, 30*1000);
 }
 
 static int callback(void *handle, int argc, char **argv, char **azColName) {
