@@ -54,7 +54,7 @@ void close_db() {
 }
 
 
-struct discord_message fetch_message_db(struct discord *client, u64_snowflake_t guild_id, u64_snowflake_t message_id) {
+struct discord_message fetch_message_db(struct discord *client, u64snowflake guild_id, u64snowflake message_id) {
     struct discord_message message;
     discord_message_init(&message);
     message.content = malloc(1);
@@ -68,7 +68,7 @@ struct discord_message fetch_message_db(struct discord *client, u64_snowflake_t 
         query = sqlite3_mprintf("SELECT timestamp, author_id, message_id, content FROM %s WHERE message_id = %lu;", MESSAGE_TABLE, message_id);
         int rc = sqlite3_prepare_v2(db, query, -1, &stmt, NULL);
         while ((rc = sqlite3_step(stmt)) != SQLITE_DONE) {
-            u64_snowflake_t db_message_id = 0;
+            u64snowflake db_message_id = 0;
             // printf("Timestamp: %lu, Author_id: %lu, Message_id: %lu, Content: %s\n", sqlite3_column_int64(stmt, 0), sqlite3_column_int64(stmt, 1), sqlite3_column_int64(stmt, 2), sqlite3_column_text(stmt, 3));
             if ((db_message_id = sqlite3_column_int64(stmt, 2)) == message_id) {
                 free(message.content);
@@ -112,7 +112,7 @@ void add_message_db(const struct discord_message *message) {
     return;
 }
 
-void remove_message_db(u64_snowflake_t message_id) {
+void remove_message_db(u64snowflake message_id) {
     if (!dbIsOpen) {
         ready_db();
     }

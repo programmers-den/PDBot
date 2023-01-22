@@ -2,20 +2,22 @@
 #include <concord/discord.h>
 #include "../libs/bot_include.h"
 
-void file_cleanup(void *data);
+void file_cleanup(struct discord *client, void *data);
 static int callback(void *handle, int argc, char **argv, char **azColName);
 
 void get_messages(struct discord *client, const struct discord_interaction *interaction) {
     sqlite3 *db = NULL;
     char *errMsg = NULL, *query = NULL, *filename = NULL;
     int rc = sqlite3_open(BOT_DB, &db);
-    struct discord_attachment attachment;
-    discord_attachment_init(&attachment);
+    struct discord_attachment attachment = { 0 };
     struct discord_interaction_response interaction_response = {
-        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
+        .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
         .data = &(struct discord_interaction_callback_data) {
-            .flags = DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL,
-            .attachments = (struct discord_attachment *[]) {&attachment, NULL}
+            .flags = DISCORD_MESSAGE_EPHEMERAL,
+            .attachments = &(struct discord_attachments) {
+                .size = 1,
+                .array = &attachment
+            }
         }
     };
 
@@ -56,7 +58,7 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
     return;
 }
 
-void file_cleanup(void *data) {
+void file_cleanup(struct discord *client, void *data) {
     remove(data);
     free(data);
 }

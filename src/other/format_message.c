@@ -2,7 +2,7 @@
 #include <concord/cog-utils.h>
 #include "../libs/bot_include.h"
 
-void id_to_str(char *buf, u64_snowflake_t id) {
+void id_to_str(char *buf, u64snowflake id) {
     // buf[ID_STR_LEN]
     memset(buf, 0, ID_STR_LEN);
     snprintf(buf, ID_STR_LEN, "%lu", id);
@@ -10,7 +10,7 @@ void id_to_str(char *buf, u64_snowflake_t id) {
     return;
 }
 
-void timestamp_to_str(char *buf, u64_unix_ms_t timestamp) {
+void timestamp_to_str(char *buf, u64unix_ms timestamp) {
     // buf[TIMESTAMP_STR_LEN]
     memset(buf, 0, TIMESTAMP_STR_LEN);
     snprintf(buf, TIMESTAMP_STR_LEN, "%lu", timestamp);
@@ -29,7 +29,7 @@ void message_mention(char *buf, char *mention_label, const struct discord_messag
     return;
 }
 
-void user_mention(char *buf, u64_snowflake_t user_id) {
+void user_mention(char *buf, u64snowflake user_id) {
     // buf[USER_MENTION_LEN]
     memset(buf, 0, USER_MENTION_LEN);
     snprintf(buf, USER_MENTION_LEN, "<@%lu>", user_id);
@@ -37,7 +37,7 @@ void user_mention(char *buf, u64_snowflake_t user_id) {
     return;
 }
 
-void user_nick_mention(char *buf, u64_snowflake_t user_id) {
+void user_nick_mention(char *buf, u64snowflake user_id) {
     // buf[USER_NICK_MENTION_LEN]
     memset(buf, 0, USER_NICK_MENTION_LEN);
     snprintf(buf, USER_NICK_MENTION_LEN, "<@!%lu>", user_id);
@@ -45,7 +45,7 @@ void user_nick_mention(char *buf, u64_snowflake_t user_id) {
     return;
 }
 
-void channel_mention(char *buf, u64_snowflake_t channel_id) {
+void channel_mention(char *buf, u64snowflake channel_id) {
     // buf[CHANNEL_MENTION_LEN]
     memset(buf, 0, CHANNEL_MENTION_LEN);
     snprintf(buf, CHANNEL_MENTION_LEN, "<#%lu>", channel_id);
@@ -53,7 +53,7 @@ void channel_mention(char *buf, u64_snowflake_t channel_id) {
     return;
 }
 
-void role_mention(char *buf, u64_snowflake_t role_id) {
+void role_mention(char *buf, u64snowflake role_id) {
     // buf[ROLE_MENTION_LEN]
     memset(buf, 0, ROLE_MENTION_LEN);
     snprintf(buf, ROLE_MENTION_LEN, "<@&%lu>", role_id);
@@ -61,7 +61,7 @@ void role_mention(char *buf, u64_snowflake_t role_id) {
     return;
 }
 
-void role_list_mention(char **buf, u64_snowflake_t *role_ids) {
+void role_list_mention(char **buf, u64snowflake *role_ids) {
     // *buf[ROLE_MENTION_LEN]
     for (size_t i=0; role_ids[i]; i++) {
         memset(buf[i], 0, ROLE_MENTION_LEN);
@@ -94,10 +94,10 @@ void username_and_discriminator_to_str(char *buf, const struct discord_user *use
     return;
 }
 
-void failed_message(struct discord *client, struct discord_embed *embed, struct discord_create_message *params, char *reason, u64_snowflake_t channel_id) {
-    embed->color = COLOR_RED;
-    snprintf(embed->title, sizeof(embed->title), "Failed!");
-    snprintf(embed->description, sizeof(embed->description), "Reason: %s", reason);
+void failed_message(struct discord *client, struct discord_embed *embeds, struct discord_create_message *params, char *reason, u64snowflake channel_id) {
+    embeds->color = COLOR_RED;
+    snprintf(embeds->title, sizeof(embeds->title), "Failed!");
+    snprintf(embeds->description, sizeof(embeds->description), "Reason: %s", reason);
 
     discord_create_message(client, channel_id, params, NULL);
 }
