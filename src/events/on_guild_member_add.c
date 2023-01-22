@@ -38,9 +38,6 @@ void on_guild_member_add(struct discord *client, const struct discord_guild_memb
     else {
         discord_add_guild_member_role(client, event->guild_id, event->user->id, R_SPECIAL, &role_params, NULL);
         discord_add_guild_member_role(client, event->guild_id, event->user->id, R_PRONOUNS, &role_params, NULL);
-        discord_add_guild_member_role(client, event->guild_id, event->user->id, R_LANGS, &role_params, NULL);
-        discord_add_guild_member_role(client, event->guild_id, event->user->id, R_LANS_HELP, &role_params, NULL);
-        discord_add_guild_member_role(client, event->guild_id, event->user->id, R_FIELDS, &role_params, NULL);
         discord_add_guild_member_role(client, event->guild_id, event->user->id, R_FUN, &role_params, NULL);
         discord_add_guild_member_role(client, event->guild_id, event->user->id, R_OTHER, &role_params, NULL);
 
