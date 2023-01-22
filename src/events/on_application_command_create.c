@@ -14,11 +14,6 @@ void on_application_command_create(struct discord *client) {
 
     discord_create_global_application_command(client, ID_APPLICATION, &params, NULL);
 
-    params.name = "help";
-    params.description = "Help menu";
-
-    discord_create_global_application_command(client, ID_APPLICATION, &params, NULL);
-
     params.name = "icon";
     params.description = "Display user icon";
 
