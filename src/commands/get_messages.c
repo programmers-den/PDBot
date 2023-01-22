@@ -2,7 +2,8 @@
 #include <concord/discord.h>
 #include "../libs/bot_include.h"
 
-void file_cleanup(struct discord *client, void *data);
+static void file_cleanup(struct discord *client, struct discord_timer *timer);
+void ret_cleanup(struct discord *client, void *data);
 static int callback(void *handle, int argc, char **argv, char **azColName);
 
 void get_messages(struct discord *client, const struct discord_interaction *interaction) {
@@ -42,7 +43,7 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
         else {
             struct discord_ret_interaction_response ret_interaction_response = {
                 .data = strdup(filename),
-                .cleanup = &file_cleanup
+                .cleanup = &ret_cleanup
             };
 
             interaction_response.data->content = attachment.filename = ret_interaction_response.data;
@@ -58,9 +59,13 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
     return;
 }
 
-void file_cleanup(struct discord *client, void *data) {
-    remove(data);
-    free(data);
+static void file_cleanup(struct discord *client, struct discord_timer *timer) {
+    remove(timer->data);
+    free(timer->data);
+}
+
+void ret_cleanup(struct discord *client, void *data) {
+    discord_timer(client, file_cleanup, NULL, data, 5000);
 }
 
 static int callback(void *handle, int argc, char **argv, char **azColName) {
