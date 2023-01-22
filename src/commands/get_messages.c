@@ -65,7 +65,7 @@ static void file_cleanup(struct discord *client, struct discord_timer *timer) {
 }
 
 void ret_cleanup(struct discord *client, void *data) {
-    discord_timer(client, file_cleanup, NULL, data, 30*1000);
+    discord_timer(client, file_cleanup, NULL, data, 10000);
 }
 
 static int callback(void *handle, int argc, char **argv, char **azColName) {
