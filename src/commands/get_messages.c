@@ -59,7 +59,7 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
 }
 
 void file_cleanup(struct discord *client, void *data) {
-    // remove(data);
+    remove(data);
     free(data);
 }
 
