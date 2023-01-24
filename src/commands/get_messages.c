@@ -24,16 +24,19 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
     filename = sqlite3_mprintf("%s.csv", interaction->member->user->username);
     FILE *fp = fopen(filename, "w");
 
-    if (rc || !fp) {
+    if (rc) {
+        if (fp) fclose(fp);
+
         interaction_response.data->content = (char*)sqlite3_errmsg(db);
         interaction_response.data->attachments = NULL;
 
         discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_response, NULL);
     }
-    else {
+    else if (fp) {
         fprintf(fp, "\"timestamp\", \"author_id\", \"message_id\", \"content\", \n");
         query = sqlite3_mprintf("SELECT timestamp, author_id, message_id, content FROM %s WHERE author_id = %lu;", MESSAGE_TABLE, interaction->member->user->id);
         rc = sqlite3_exec(db, query, &callback, fp, &errMsg);
+        fclose(fp);
 
         if (rc != SQLITE_OK) {
             interaction_response.data->content = errMsg;
@@ -49,8 +52,6 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
 
             discord_create_interaction_response(client, interaction->id, interaction->token, &interaction_response, &ret_interaction_response);
         }
-
-        fclose(fp);
     }
 
     sqlite3_close(db);
@@ -59,7 +60,7 @@ void get_messages(struct discord *client, const struct discord_interaction *inte
 }
 
 void file_cleanup(struct discord *client, void *data) {
-    // remove(data);
+    remove(data);
     free(data);
 }
 
