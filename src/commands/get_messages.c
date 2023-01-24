@@ -3,7 +3,6 @@
 #include "../libs/bot_include.h"
 
 static void file_cleanup(struct discord *client, struct discord_timer *timer);
-void ret_cleanup(struct discord *client, void *data);
 static int callback(void *handle, int argc, char **argv, char **azColName);
 
 void get_messages(struct discord *client, const struct discord_interaction *interaction) {
