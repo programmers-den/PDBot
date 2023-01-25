@@ -3,7 +3,7 @@
 #include "../libs/bot_include.h"
 
 void on_message_update(struct discord *client, const struct discord_message *message) {
-    if (message->channel_id == C_LOG || message->author) return;
+    if (message->channel_id == C_LOG || !message->author) return;
     else if (message->author->bot || !message->author->id) return;
 
     char message_id_str[ID_STR_LEN], message_str[MESSAGE_URL_LEN], channel_id_str[ID_STR_LEN], channel_str[CHANNEL_MENTION_LEN], author_id_str[ID_STR_LEN], author_str[USER_MENTION_LEN], username_and_discriminator[USER_AND_DESCRIM_LEN];
